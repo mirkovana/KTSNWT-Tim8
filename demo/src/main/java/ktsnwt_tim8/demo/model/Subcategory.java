@@ -27,7 +27,7 @@ public class Subcategory {
 	private Set<Offer> offers;
 	
 	@ManyToOne
-	@JoinColumn(name = "category_id")
+	@JoinColumn(name = "category_id",referencedColumnName = "id")
 	private Category category;
 	
 	
@@ -49,6 +49,22 @@ public class Subcategory {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<Offer> getOffers() {
+		return offers;
+	}
+
+	public void setOffers(Set<Offer> offers) {
+		this.offers = offers;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 	
 	
