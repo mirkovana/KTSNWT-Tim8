@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Offer {
 
@@ -119,8 +121,12 @@ public class Offer {
 	public void setLon(double lon) {
 		this.lon = lon;
 	}
-	
-	
-	
-	
+
+	public Subcategory getSubcategory() {
+		return subcategory;
+	}
+
+	public void setSubcategory(Subcategory subcategory) {
+		this.subcategory = subcategory;
+	}
 }

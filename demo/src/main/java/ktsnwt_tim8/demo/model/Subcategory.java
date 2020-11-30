@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="subcategory")
 public class Subcategory {
@@ -24,6 +26,7 @@ public class Subcategory {
 	private String name;
 	
 	@OneToMany(mappedBy = "subcategory")
+	@JsonBackReference
 	private Set<Offer> offers;
 	
 	@ManyToOne

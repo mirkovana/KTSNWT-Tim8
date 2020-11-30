@@ -44,13 +44,14 @@ public class PostController {
 	}
 
 	/* DODAVANJE NOVOG POSTA */
-	@PostMapping(consumes = "application/json")
-	public ResponseEntity<PostDTO> saveCategory(@RequestBody PostDTO postDTO) {
+	@PostMapping(value = "/{idOffer}",consumes = "application/json")
+	public ResponseEntity<PostDTO> savePost(@PathVariable Long idOffer, @RequestBody PostDTO postDTO) {
 
 		Post post = new Post();
 		post.setContent(postDTO.getContent());
 		post.setDate(postDTO.getDate());
-		//post.setOffer(postDTO.getOffer()); TREBA JOS URADITI
+		Offer offer = offerService.get(idOffer);
+		post.setOffer(offer); 
 		post.setTitle(postDTO.getTitle());
 		
 		post = service.save(post);
