@@ -3,8 +3,10 @@ package ktsnwt_tim8.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,12 +48,18 @@ public class OfferController {
 	@Autowired
 	private SubcategoryService serviceSubcategory;
 	
-	/*ISPISIVANJE SVIH PONUDA*/
+	/*ISPISIVANJE SVIH PONUDA SA PAGINACIJOM*/
 	@GetMapping
+	public Page<Offer> findAllPageable(){
+		return service.findAllPageable();
+	}
+	
+	/*ISPISIVANJE SVIH PONUDA*/
+	/*@GetMapping
 	public List<Offer> getAllOffers() {
 		List<Offer> listOffers = service.listAll();
 		return listOffers;
-	}
+	}*/
 	
 	/*DODAVANJE NOVE PONUDE*/
 	@PostMapping(value = "/{idSubcategory}", consumes = "application/json")
@@ -103,6 +111,5 @@ public class OfferController {
 		service.delete(idOffer);
 
 		return offers;
-	}
-
+	}	
 }
