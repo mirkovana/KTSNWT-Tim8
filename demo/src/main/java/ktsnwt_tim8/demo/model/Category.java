@@ -1,5 +1,8 @@
 package ktsnwt_tim8.demo.model;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
+
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 public class Category {
 
@@ -19,7 +23,8 @@ public class Category {
 	@Column(unique = true, nullable = false)
 	private String name;
 	
-	@OneToMany
+	@OneToMany(cascade = {ALL}, fetch = LAZY,mappedBy="category")
+	@JsonBackReference
 	private Set<Subcategory> subcategories;
 	
 	public Category() {

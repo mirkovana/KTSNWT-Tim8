@@ -30,6 +30,14 @@ public class Post {
 	@JoinColumn(name = "offer_id")
 	private Offer offer;
 	
+	public Offer getOffer() {
+		return offer;
+	}
+
+	public void setOffer(Offer offer) {
+		this.offer = offer;
+	}
+
 	public Post() {
 		super();
 	}
