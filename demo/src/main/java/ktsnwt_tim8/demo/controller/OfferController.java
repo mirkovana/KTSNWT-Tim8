@@ -138,7 +138,22 @@ public class OfferController {
 		return null;
 	}
 	
-	
+	@DeleteMapping(value = "/unsubscribe/{idOffer}", consumes = "application/json")
+	public ResponseEntity<UserDTO> unsubscribeUser(@PathVariable Long idOffer, @RequestBody UserDTO subUser){
+		Offer offer = service.get(idOffer);
+		User user = serviceUser.findByUsername(subUser.getUsername());
+		
+		if(user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		if(offer == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		offer.getUsers().remove((RegisteredUser) user);
+		service.save(offer);
+		
+		return null;
+	}
 	
 	
 }
