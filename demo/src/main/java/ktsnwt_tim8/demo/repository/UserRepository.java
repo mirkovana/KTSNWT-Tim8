@@ -7,5 +7,6 @@ import ktsnwt_tim8.demo.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	User findByUsername(String username);
+	User findOneByID(Long i);
 
 }

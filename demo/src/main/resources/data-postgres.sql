@@ -31,3 +31,4 @@ INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subc
 
 INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 2);
 INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 2);
+

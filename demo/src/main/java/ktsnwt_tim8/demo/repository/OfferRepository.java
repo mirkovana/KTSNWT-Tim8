@@ -9,4 +9,6 @@ import ktsnwt_tim8.demo.model.Offer;
 public interface OfferRepository extends JpaRepository<Offer, Long> {
 	@Override
 	Page <Offer> findAll(Pageable pageable);
+
+	Offer findOneByID(Long offerId);
 }
