@@ -29,6 +29,10 @@ public class UserService {
 	public User get(Long id) {
 		return repo.findById(id).get();
 	}
+	
+	public User findByUsername(String username) {
+		return repo.findByUsername(username);
+	}
 
 	public void delete(Long id) {
 		repo.deleteById(id);

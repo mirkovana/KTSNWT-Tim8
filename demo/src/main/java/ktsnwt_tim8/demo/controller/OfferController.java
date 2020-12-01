@@ -1,6 +1,7 @@
 package ktsnwt_tim8.demo.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,15 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 import javassist.NotFoundException;
 import ktsnwt_tim8.demo.dto.OfferDTO;
 import ktsnwt_tim8.demo.dto.PostDTO;
+import ktsnwt_tim8.demo.dto.UserDTO;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.OfferImage;
 import ktsnwt_tim8.demo.model.Post;
+import ktsnwt_tim8.demo.model.RegisteredUser;
 import ktsnwt_tim8.demo.model.Subcategory;
+import ktsnwt_tim8.demo.model.User;
 import ktsnwt_tim8.demo.repository.OfferRepository;
 import ktsnwt_tim8.demo.service.OfferImageService;
 import ktsnwt_tim8.demo.service.OfferService;
 import ktsnwt_tim8.demo.service.PostService;
 import ktsnwt_tim8.demo.service.SubcategoryService;
+import ktsnwt_tim8.demo.service.UserService;
 
 @RestController
 @RequestMapping(value = "/api/offers")
@@ -47,6 +52,9 @@ public class OfferController {
 	
 	@Autowired
 	private SubcategoryService serviceSubcategory;
+	
+	@Autowired
+	private UserService serviceUser;
 	
 	/*ISPISIVANJE SVIH PONUDA SA PAGINACIJOM*/
 	@GetMapping
@@ -112,4 +120,40 @@ public class OfferController {
 
 		return offers;
 	}	
+	
+	@PostMapping(value = "/subscribe/{idOffer}", consumes = "application/json")
+	public ResponseEntity<UserDTO> subscribeUser(@PathVariable Long idOffer, @RequestBody UserDTO subUser){
+		Offer offer = service.get(idOffer);
+		User user = serviceUser.findByUsername(subUser.getUsername());
+		
+		if(user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		if(offer == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		offer.getUsers().add((RegisteredUser) user);
+		service.save(offer);
+		
+		return null;
+	}
+	
+	@DeleteMapping(value = "/unsubscribe/{idOffer}", consumes = "application/json")
+	public ResponseEntity<UserDTO> unsubscribeUser(@PathVariable Long idOffer, @RequestBody UserDTO subUser){
+		Offer offer = service.get(idOffer);
+		User user = serviceUser.findByUsername(subUser.getUsername());
+		
+		if(user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		if(offer == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		offer.getUsers().remove((RegisteredUser) user);
+		service.save(offer);
+		
+		return null;
+	}
+	
+	
 }

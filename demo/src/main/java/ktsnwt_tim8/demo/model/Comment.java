@@ -34,7 +34,6 @@ public class Comment {
 	private RegisteredUser user;
 	
 	
-	
 	public Comment() {
 		super();
 	}
