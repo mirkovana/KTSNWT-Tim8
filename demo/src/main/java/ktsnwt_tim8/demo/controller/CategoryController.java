@@ -41,9 +41,14 @@ public class CategoryController {
 
 		Category category = new Category();
 		category.setName(categoryDTO.getName());
-		 
-		category = service.save(category);
-		return new ResponseEntity<>(new CategoryDTO(category), HttpStatus.CREATED);
+		 try {
+			 category = service.save(category);
+		 }
+		 catch (Exception e) {
+		      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		 }
+		
+		return new ResponseEntity<>(new CategoryDTO(category.getName()), HttpStatus.CREATED);
 	}
 	
 	/*BRISANJE KATEGORIJE*/

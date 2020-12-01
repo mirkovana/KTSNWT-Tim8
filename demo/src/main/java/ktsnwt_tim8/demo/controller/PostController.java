@@ -3,6 +3,7 @@ package ktsnwt_tim8.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,11 +37,12 @@ public class PostController {
 
 	/* ISPISIVANJE SVIH POSTOVA ZA PONUDU */
 	@GetMapping(value = "/{idOffer}")
-	public List<Post> getAllByOffer(@PathVariable Long idOffer) {
+	public Page<Post> getAllByOffer(@PathVariable Long idOffer) {
 		Offer offer = offerService.get(idOffer);
 
-		List<Post> listPosts = service.findAllByOffer(offer);
-		return listPosts;
+		
+		
+		return service.findAllByOffer1(offer);
 	}
 
 	/* DODAVANJE NOVOG POSTA */
