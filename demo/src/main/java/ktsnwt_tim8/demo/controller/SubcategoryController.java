@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ktsnwt_tim8.demo.dto.SubcategoryDTO;
+import ktsnwt_tim8.demo.model.Category;
 import ktsnwt_tim8.demo.model.Subcategory;
+import ktsnwt_tim8.demo.service.CategoryService;
 import ktsnwt_tim8.demo.service.SubcategoryService;
 
 @RestController
@@ -24,6 +26,9 @@ public class SubcategoryController {
 	private SubcategoryService service;
 	
 	
+	@Autowired
+	private CategoryService serviceCategory;
+	
 	/* ISPISIVANJE SVIH POD KATEGORIJA */
 	@GetMapping
 	public List<Subcategory> getAllSubcategories() {
@@ -32,15 +37,16 @@ public class SubcategoryController {
 	}
 	
 	
-	/*DODAVANJE NOVE KATEGORIJE*/
+	/*DODAVANJE NOVE POD KATEGORIJE*/
 	
 	
-	@PostMapping(consumes = "application/json")
-	public ResponseEntity<SubcategoryDTO> saveSubcategory(@RequestBody SubcategoryDTO subcategoryDTO) {
+	@PostMapping(value = "/{idCategory}", consumes = "application/json")
+	public ResponseEntity<SubcategoryDTO> saveSubcategory(@PathVariable Long idCategory,@RequestBody SubcategoryDTO subcategoryDTO) {
 
+		Category category = serviceCategory.get(idCategory);
 		Subcategory subcategory = new Subcategory();
 		subcategory.setName(subcategoryDTO.getName());
-		 
+		 subcategory.setCategory(category);
 		subcategory = service.save(subcategory);
 		return new ResponseEntity<>(new SubcategoryDTO(subcategory), HttpStatus.CREATED);
 	}
