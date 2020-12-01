@@ -17,3 +17,12 @@ INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subc
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno pozoriste',2);
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno pozoriste',2);
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno pozoriste',2);
+
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id)
+	VALUES ('2020-5-1 12:00:00','path','ovo je komentar' , 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id)
+	VALUES ('2020-5-1 12:00:00','path','ovo je komentar2' , 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id)
+	VALUES ('2020-5-1 12:00:00','path','ovo je komentar3' , 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id)
+	VALUES ('2020-5-1 12:00:00','path','ovo je komentar4' , 1, 2);

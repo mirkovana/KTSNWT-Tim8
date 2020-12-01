@@ -38,6 +38,12 @@ public class Comment {
 	public Comment() {
 		super();
 	}
+	
+	public Comment(Long ID, String text, Date date) {
+		this.ID = ID;
+		this.text = text;
+		this.date = date;
+	}
 
 	public Long getID() {
 		return ID;
@@ -70,7 +76,21 @@ public class Comment {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
-	
-	
+
+	public Offer getOffer() {
+		return offer;
+	}
+
+	public void setOffer(Offer offer) {
+		this.offer = offer;
+	}
+
+	public RegisteredUser getUser() {
+		return user;
+	}
+
+	public void setUser(RegisteredUser user) {
+		this.user = user;
+	}
 	
 }
