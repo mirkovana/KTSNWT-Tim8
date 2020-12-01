@@ -14,7 +14,7 @@ public class SubcategoryDTO {
 	
 	public SubcategoryDTO(Subcategory subcategory) {
 		 this.name= subcategory.getName();
-		 category= new CategoryDTO(subcategory.getCategory());
+		 category= new CategoryDTO(subcategory.getCategory().getName());
 	}
 
 	public String getName() {
