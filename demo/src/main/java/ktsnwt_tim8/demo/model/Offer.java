@@ -129,4 +129,46 @@ public class Offer {
 	public void setSubcategory(Subcategory subcategory) {
 		this.subcategory = subcategory;
 	}
+
+	public Set<RegisteredUser> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<RegisteredUser> users) {
+		this.users = users;
+	}
+
+	public Set<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(Set<Post> posts) {
+		this.posts = posts;
+	}
+
+	public Set<OfferImage> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<OfferImage> images) {
+		this.images = images;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public Set<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(Set<Rating> ratings) {
+		this.ratings = ratings;
+	}
+	
+	
 }
