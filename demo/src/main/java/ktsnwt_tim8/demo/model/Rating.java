@@ -32,6 +32,15 @@ public class Rating {
 		super();
 	}
 
+	
+	
+	public Rating(int rating) {
+		super();
+		this.rating = rating;
+	}
+
+
+
 	public Long getID() {
 		return ID;
 	}
@@ -46,6 +55,22 @@ public class Rating {
 
 	public void setRating(int rating) {
 		this.rating = rating;
+	}
+
+	public Offer getOffer() {
+		return offer;
+	}
+
+	public void setOffer(Offer offer) {
+		this.offer = offer;
+	}
+
+	public RegisteredUser getUser() {
+		return user;
+	}
+
+	public void setUser(RegisteredUser user) {
+		this.user = user;
 	}
 	
 	
