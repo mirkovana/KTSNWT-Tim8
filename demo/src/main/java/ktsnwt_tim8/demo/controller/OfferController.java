@@ -1,13 +1,11 @@
 package ktsnwt_tim8.demo.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javassist.NotFoundException;
 import ktsnwt_tim8.demo.dto.OfferDTO;
-import ktsnwt_tim8.demo.dto.PostDTO;
 import ktsnwt_tim8.demo.dto.UserDTO;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.OfferImage;
@@ -71,11 +68,17 @@ public class OfferController {
 	
 	/*DODAVANJE NOVE PONUDE*/
 	@PostMapping(value = "/{idSubcategory}", consumes = "application/json")
-	public ResponseEntity<OfferDTO> saveOffer(@PathVariable Long idSubcategory, @RequestBody OfferDTO offerDTO) {
+	public ResponseEntity<OfferDTO> saveOffer(@PathVariable Long idSubcategory, @RequestBody OfferDTO offerDTO) throws Exception {
 		Offer offer = new Offer();
+		if(offerDTO.getDescription().isEmpty()) {
+			throw new Exception("Description cannot be empty");
+		}
 		offer.setDescription(offerDTO.getDescription());
-		offer.setLat(offerDTO.getLat());
+		offer.setLat(offerDTO.getLat());		
 		offer.setLon(offerDTO.getLon());
+		if(offerDTO.getTitle().isEmpty()) {
+			throw new Exception("Title cannot be empty");
+		}
 		offer.setTitle(offerDTO.getTitle());
 		Subcategory subcategory = serviceSubcategory.get(idSubcategory);
 		offer.setSubcategory(subcategory);
@@ -87,7 +90,13 @@ public class OfferController {
 	/*IZMENA PONUDE*/
 	@PutMapping(value = "/{idOffer}", consumes = "application/json")
 	public Offer updateOffer(@PathVariable Long idOffer, @RequestBody OfferDTO offerUpdated)
-			throws NotFoundException {
+			throws NotFoundException, Exception {
+		if(offerUpdated.getDescription().isEmpty()) {
+			throw new Exception("Description cannot be empty");
+		}
+		if(offerUpdated.getTitle().isEmpty()) {
+			throw new Exception("Title cannot be empty");
+		}
 		return repository.findById(idOffer).map(offer -> {
 			//offer.setAvgRating(offerUpdated.getAvgRating());
 			offer.setDescription(offerUpdated.getDescription());
