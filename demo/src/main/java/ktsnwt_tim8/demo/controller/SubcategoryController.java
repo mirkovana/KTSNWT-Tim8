@@ -41,10 +41,15 @@ public class SubcategoryController {
 	
 	
 	@PostMapping(value = "/{idCategory}", consumes = "application/json")
-	public ResponseEntity<SubcategoryDTO> saveSubcategory(@PathVariable Long idCategory,@RequestBody SubcategoryDTO subcategoryDTO) {
+	public ResponseEntity<SubcategoryDTO> saveSubcategory(@PathVariable Long idCategory,@RequestBody SubcategoryDTO subcategoryDTO) throws Exception {
 
 		Category category = serviceCategory.get(idCategory);
 		Subcategory subcategory = new Subcategory();
+		if(subcategoryDTO.getName().isEmpty()) {
+			throw new Exception("Name of subcategory cannot be empty");
+		}
+		
+		
 		subcategory.setName(subcategoryDTO.getName());
 		 subcategory.setCategory(category);
 		subcategory = service.save(subcategory);
