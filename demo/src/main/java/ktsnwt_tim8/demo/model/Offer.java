@@ -41,6 +41,7 @@ public class Offer {
 	private double lon;
 	
 	@OneToMany(mappedBy = "offer")
+	@JsonBackReference
 	private Set<Post> posts;
 	
 	@OneToMany(mappedBy = "offer")
