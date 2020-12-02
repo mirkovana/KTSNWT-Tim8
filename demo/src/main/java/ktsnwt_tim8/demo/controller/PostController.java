@@ -1,5 +1,6 @@
 package ktsnwt_tim8.demo.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +48,23 @@ public class PostController {
 
 	/* DODAVANJE NOVOG POSTA */
 	@PostMapping(value = "/{idOffer}",consumes = "application/json")
-	public ResponseEntity<PostDTO> savePost(@PathVariable Long idOffer, @RequestBody PostDTO postDTO) {
+	public ResponseEntity<PostDTO> savePost(@PathVariable Long idOffer, @RequestBody PostDTO postDTO) throws Exception {
 
+		Date date = new Date();
 		Post post = new Post();
+		 
+		if(postDTO.getContent().isEmpty()) {
+			throw new Exception("Content cannot be empty");
+		}
 		post.setContent(postDTO.getContent());
-		post.setDate(postDTO.getDate());
+		post.setDate(date);
 		Offer offer = offerService.get(idOffer);
 		post.setOffer(offer); 
+		
+		
+		if(postDTO.getTitle().isEmpty()) {
+			throw new Exception("Title cannot be empty");
+		}
 		post.setTitle(postDTO.getTitle());
 		
 		post = service.save(post);
@@ -76,8 +87,18 @@ public class PostController {
 	/*IZMENA POSTA*/
 	@PutMapping(value = "/{idPost}", consumes = "application/json")
 	public Post updatePost(@PathVariable Long idPost, @RequestBody PostDTO postUpdated)
-			throws NotFoundException {
+			throws NotFoundException, Exception{
+		
+		Date date = new Date();
+		if(postUpdated.getContent().isEmpty()) {
+			throw new Exception("Content cannot be empty");
+		}
+		
+		if(postUpdated.getTitle().isEmpty()) {
+			throw new Exception("Title cannot be empty");
+		}
 		return repository.findById(idPost).map(post -> {
+			post.setDate(date);
 			post.setContent(postUpdated.getContent());
 			post.setTitle(postUpdated.getTitle());
 			return repository.save(post);
