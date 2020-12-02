@@ -37,9 +37,15 @@ public class CategoryController {
 	
 	
 	@PostMapping(consumes = "application/json")
-	public ResponseEntity<CategoryDTO> saveCategory(@RequestBody CategoryDTO categoryDTO) {
+	public ResponseEntity<CategoryDTO> saveCategory(@RequestBody CategoryDTO categoryDTO) throws Exception {
 
 		Category category = new Category();
+		
+		if(categoryDTO.getName().isEmpty()) {
+			throw new Exception("Name of category cannot be empty");
+		}
+		
+		
 		category.setName(categoryDTO.getName());
 		 try {
 			 category = service.save(category);
