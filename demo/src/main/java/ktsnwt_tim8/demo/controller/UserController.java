@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ktsnwt_tim8.demo.dto.SubcategoryDTO;
 import ktsnwt_tim8.demo.dto.UserDTO;
 import ktsnwt_tim8.demo.model.RegisteredUser;
 import ktsnwt_tim8.demo.service.UserService;
@@ -22,12 +21,21 @@ public class UserController {
 
 	/* REGISTRACIJA KORISNIKA*/
 	@PostMapping(consumes = "application/json")
-	public ResponseEntity<UserDTO> saveSubcategory(@RequestBody UserDTO usersDTO) {
+	public ResponseEntity<UserDTO> saveSubcategory(@RequestBody UserDTO usersDTO) throws Exception {
 
 		RegisteredUser user = new RegisteredUser();
+	
 		user.setName(usersDTO.getName());
+
+		if(usersDTO.getPassword().isEmpty()) {
+			throw new Exception("Password cannot be empty");
+		}
 		user.setPassword(usersDTO.getPassword());
 		user.setSurname(usersDTO.getSurname());
+
+		if(usersDTO.getUsername().isEmpty()) {
+			throw new Exception("Username cannot be empty");
+		}
 		user.setUsername(usersDTO.getUsername());
 		
 		
