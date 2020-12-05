@@ -28,6 +28,9 @@ public class RegisteredUser extends User {
 	@OneToMany(mappedBy = "user")
 	private Set<Rating> ratings;
 	
+	
+	
+
 	public RegisteredUser(String name, String surname) {
 		super();
 		this.name = name;

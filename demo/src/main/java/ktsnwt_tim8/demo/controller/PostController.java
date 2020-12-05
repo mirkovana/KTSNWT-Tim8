@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ public class PostController {
 
 	/* ISPISIVANJE SVIH POSTOVA ZA PONUDU */
 	@GetMapping(value = "/{idOffer}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	public Page<Post> getAllByOffer(@PathVariable Long idOffer) {
 		Offer offer = offerService.get(idOffer);
 
@@ -48,6 +50,7 @@ public class PostController {
 
 	/* DODAVANJE NOVOG POSTA */
 	@PostMapping(value = "/{idOffer}",consumes = "application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<PostDTO> savePost(@PathVariable Long idOffer, @RequestBody PostDTO postDTO) throws Exception {
 
 		Date date = new Date();
@@ -73,6 +76,7 @@ public class PostController {
 
 	/* BRISANJE POSTA */
 	@DeleteMapping(value = "/{idPost}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public List<Post> deletePost(@PathVariable Long idPost) {
 
 		Post post = service.get(idPost);
@@ -86,6 +90,7 @@ public class PostController {
 	
 	/*IZMENA POSTA*/
 	@PutMapping(value = "/{idPost}", consumes = "application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Post updatePost(@PathVariable Long idPost, @RequestBody PostDTO postUpdated)
 			throws NotFoundException, Exception{
 		
