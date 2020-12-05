@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +55,7 @@ public class OfferController {
 	private UserService serviceUser;
 	
 	/*ISPISIVANJE SVIH PONUDA SA PAGINACIJOM*/
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping
 	public Page<Offer> findAllPageable(){
 		return service.findAllPageable();
@@ -67,6 +69,7 @@ public class OfferController {
 	}*/
 	
 	/*DODAVANJE NOVE PONUDE*/
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "/{idSubcategory}", consumes = "application/json")
 	public ResponseEntity<OfferDTO> saveOffer(@PathVariable Long idSubcategory, @RequestBody OfferDTO offerDTO) throws Exception {
 		Offer offer = new Offer();
@@ -88,6 +91,7 @@ public class OfferController {
 	}
 	
 	/*IZMENA PONUDE*/
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value = "/{idOffer}", consumes = "application/json")
 	public Offer updateOffer(@PathVariable Long idOffer, @RequestBody OfferDTO offerUpdated)
 			throws NotFoundException, Exception {
@@ -110,6 +114,7 @@ public class OfferController {
 	}
 	
 	/*BRISANJE PONUDE*/
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(value = "/{idOffer}")
 	public List<Offer> deleteOffer(@PathVariable Long idOffer) {
 		Offer offer = service.get(idOffer);
