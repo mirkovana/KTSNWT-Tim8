@@ -49,14 +49,25 @@ public class User implements UserDetails{
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
+	
+	@Column(name="enabled")
+	private boolean active =true; 
+	
+	
+	public boolean isActive() {
+		return active;
+	}
 
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 	public String getEmail() {
-		return email;
+		return username;
 	}
 
 
 	public void setEmail(String email) {
-		this.email = getUsername();
+		this.email = email;
 	}
 
 
@@ -103,7 +114,9 @@ public class User implements UserDetails{
 		// TODO Auto-generated method stub
 		return this.authorities;
 	}
-
+	public void setAuthorities(List<Authority> authorities) {
+		this.authorities = authorities;
+	}
 
 	@Override
 	public boolean isAccountNonExpired() {

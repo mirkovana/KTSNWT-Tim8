@@ -7,7 +7,8 @@ public class UserDTO {
 	private String password;
 	private String name;
 	private String surname;
-
+	private String email;
+	
 	public UserDTO() {
 		
 	}
@@ -17,6 +18,7 @@ public class UserDTO {
 		this.name=user.getName();
 		this.surname=user.getSurname();
 		this.username=user.getUsername();
+		this.email=user.getUsername();
 		
 	}
 	public String getName() {
