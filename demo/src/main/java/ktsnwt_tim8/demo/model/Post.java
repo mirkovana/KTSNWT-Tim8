@@ -16,20 +16,32 @@ public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ID;
-	
+
 	@Column(nullable = false)
 	private String title;
-	
+
 	@Column
 	private String content;
-	
+
 	@Column
 	private Date date;
 
 	@ManyToOne
 	@JoinColumn(name = "offer_id")
 	private Offer offer;
+
+	public Post(Long iD, String title, String content, Date date) {
+
+		this.ID = iD;
+		this.title = title;
+		this.content = content;
+		this.date = date;
+	}
+
+	public Post() {
 	
+	}
+
 	public Offer getOffer() {
 		return offer;
 	}
@@ -38,9 +50,6 @@ public class Post {
 		this.offer = offer;
 	}
 
-	public Post() {
-		super();
-	}
 
 	public Long getID() {
 		return ID;
@@ -73,5 +82,5 @@ public class Post {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+
 }

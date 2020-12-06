@@ -2,6 +2,8 @@ package ktsnwt_tim8.demo.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +43,7 @@ public class SubcategoryController {
 	@PostMapping(value = "/{idCategory}", consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<SubcategoryDTO> saveSubcategory(@PathVariable Long idCategory,
-			@RequestBody SubcategoryDTO subcategoryDTO) throws Exception {
+			@Valid @RequestBody SubcategoryDTO subcategoryDTO) throws Exception {
 
 		Category category = serviceCategory.get(idCategory);
 		Subcategory subcategory = new Subcategory();
