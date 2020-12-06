@@ -3,6 +3,8 @@ package ktsnwt_tim8.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javassist.NotFoundException;
-import ktsnwt_tim8.demo.dto.CommentDTO;
 import ktsnwt_tim8.demo.dto.OfferDTO;
 import ktsnwt_tim8.demo.dto.UserDTO;
 import ktsnwt_tim8.demo.helper.OfferMapper;
@@ -93,7 +94,7 @@ public class OfferController {
 	/*DODAVANJE NOVE PONUDE*/
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "/{idSubcategory}", consumes = "application/json")
-	public ResponseEntity<OfferDTO> saveOffer(@PathVariable Long idSubcategory, @RequestBody OfferDTO offerDTO) throws Exception {
+	public ResponseEntity<OfferDTO> saveOffer(@PathVariable Long idSubcategory, @Valid @RequestBody OfferDTO offerDTO) throws Exception {
 		Offer offer = new Offer();
 		if(offerDTO.getDescription().isEmpty()) {
 			throw new Exception("Description cannot be empty");
@@ -109,7 +110,7 @@ public class OfferController {
 		offer.setSubcategory(subcategory);
 		
 		offer = service.save(offer);
-		return new ResponseEntity<>(new OfferDTO(offer), HttpStatus.CREATED);
+		return new ResponseEntity<>(new OfferDTO(offer.getID(), offer.getTitle(), offer.getDescription(), offer.getAvgRating(), offer.getNmbOfRatings(), offer.getLat(), offer.getLon()), HttpStatus.CREATED);
 	}
 	
 	/*IZMENA PONUDE*/
