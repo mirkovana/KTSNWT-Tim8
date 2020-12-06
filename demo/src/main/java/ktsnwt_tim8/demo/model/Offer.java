@@ -52,6 +52,7 @@ public class Offer {
 	
 	@OneToMany(mappedBy = "offer")
 	private Set<Rating> ratings;
+	
 	@ManyToMany
 	@JoinTable(name = "user_offer", 
     		joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
@@ -65,6 +66,15 @@ public class Offer {
 	
 	public Offer() {
 		super();
+	}
+	
+	public Offer(Long ID, String title, String description, double lat, double lon) {
+		super();
+		this.ID = ID;
+		this.title = title;
+		this.description = description;
+		this.lat = lat;
+		this.lon = lon;
 	}
 
 	public Long getID() {
@@ -170,6 +180,4 @@ public class Offer {
 	public void setRatings(Set<Rating> ratings) {
 		this.ratings = ratings;
 	}
-	
-	
 }

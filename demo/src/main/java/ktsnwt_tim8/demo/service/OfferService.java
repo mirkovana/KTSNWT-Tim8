@@ -36,7 +36,7 @@ public class OfferService {
 		repo.deleteById(id);
 	}
 	
-	public Page<Offer> findAllPageable() { 
-		return repo.findAll(PageRequest.of(0, 5));
+	public Page<Offer> findAllPageable(Pageable page) { 
+		return repo.findAll(page);
 	}
 }
