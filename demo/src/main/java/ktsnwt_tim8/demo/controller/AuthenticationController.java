@@ -115,7 +115,7 @@ public class AuthenticationController {
 
 	// Endpoint za registraciju novog korisnika
 	@PostMapping("/sign-up")
-	public ResponseEntity<?> addUser(@RequestBody UserDTO usersDTO, HttpServletRequest request) throws Exception {
+	public ResponseEntity<?> addUser(@Valid @RequestBody UserDTO usersDTO, HttpServletRequest request) throws Exception {
 
 		User existUser = this.userService.findByUsername(usersDTO.getUsername());
 		if (existUser != null) {

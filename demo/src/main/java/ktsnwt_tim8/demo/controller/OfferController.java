@@ -116,7 +116,7 @@ public class OfferController {
 	/*IZMENA PONUDE*/
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value = "/{idOffer}", consumes = "application/json")
-	public Offer updateOffer(@PathVariable Long idOffer, @RequestBody OfferDTO offerUpdated)
+	public Offer updateOffer(@PathVariable Long idOffer, @Valid @RequestBody OfferDTO offerUpdated)
 			throws NotFoundException, Exception {
 		if(offerUpdated.getDescription().isEmpty()) {
 			throw new Exception("Description cannot be empty");

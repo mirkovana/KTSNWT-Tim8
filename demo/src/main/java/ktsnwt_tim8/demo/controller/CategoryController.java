@@ -2,6 +2,8 @@ package ktsnwt_tim8.demo.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +38,7 @@ public class CategoryController {
 	/* DODAVANJE NOVE KATEGORIJE */
 	@PostMapping(consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<CategoryDTO> saveCategory(@RequestBody CategoryDTO categoryDTO) throws Exception {
+	public ResponseEntity<CategoryDTO> saveCategory(@Valid @RequestBody CategoryDTO categoryDTO) throws Exception {
 
 		Category category = new Category();
 
@@ -51,7 +53,7 @@ public class CategoryController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		return new ResponseEntity<>(new CategoryDTO(category.getName()), HttpStatus.CREATED);
+		return new ResponseEntity<>(new CategoryDTO(category.getName(), category.getID()), HttpStatus.CREATED);
 	}
 
 	/* BRISANJE KATEGORIJE */
