@@ -52,10 +52,11 @@ public class Offer {
 	
 	@OneToMany(mappedBy = "offer")
 	private Set<Rating> ratings;
+	
 	@ManyToMany
 	@JoinTable(name = "user_offer", 
-    		joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
-    		inverseJoinColumns = @JoinColumn(name = "offer_id", 
+    		joinColumns = @JoinColumn(name = "offer_id", referencedColumnName = "id"), 
+    		inverseJoinColumns = @JoinColumn(name = "user_id", 
     		referencedColumnName = "id"))
 	private Set<RegisteredUser> users;
 	

@@ -53,6 +53,30 @@ public class RegisteredUser extends User {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
+
+	public Set<Offer> getSubscriptions() {
+		return subscriptions;
+	}
+
+	public void setSubscriptions(Set<Offer> subscriptions) {
+		this.subscriptions = subscriptions;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public Set<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(Set<Rating> ratings) {
+		this.ratings = ratings;
+	}
 	
 	
 	

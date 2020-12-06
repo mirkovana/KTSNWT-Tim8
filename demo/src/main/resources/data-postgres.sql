@@ -17,6 +17,9 @@ INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','202
 INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
 INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
 
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko  pozoriste',2);
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno ',2);
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Narodno pozoriste',2);
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno pozoriste',2);
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno pozoriste',2);
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno pozoriste',2);
@@ -24,9 +27,11 @@ INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subc
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno pozoriste',2);
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno pozoriste',2);
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno pozoriste',2);
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno pozoriste',2);
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno pozoriste',2);
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id) VALUES (4.5,'ovo je neki opis', 40,40,25,'Srpsko narodno pozoriste',2);
+
+INSERT INTO USER_OFFER (user_id, offer_id) VALUES (2,1);
+INSERT INTO USER_OFFER (user_id, offer_id) VALUES (2,2);
+INSERT INTO USER_OFFER (user_id, offer_id) VALUES (2,3);
+INSERT INTO USER_OFFER (user_id, offer_id) VALUES (2,4);
 
 
 INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 2);
