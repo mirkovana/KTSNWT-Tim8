@@ -4,6 +4,7 @@ import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.Subcategory;
 
 public class OfferDTO {
+	private Long ID;
 	private String title;
 	private String description;
 	private double avgRating;
@@ -15,6 +16,7 @@ public class OfferDTO {
 	public OfferDTO() {}
 	
 	public OfferDTO(Offer offer) {
+		this.ID = offer.getID();
 		this.title = offer.getTitle();
 		this.description = offer.getDescription();
 		this.avgRating = offer.getAvgRating();
@@ -24,6 +26,14 @@ public class OfferDTO {
 		this.subcategory = new SubcategoryDTO(offer.getSubcategory());
 	}
 	
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
 	public String getTitle() {
 		return title;
 	}

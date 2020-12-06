@@ -1,9 +1,12 @@
 package ktsnwt_tim8.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javassist.NotFoundException;
+import ktsnwt_tim8.demo.dto.CommentDTO;
 import ktsnwt_tim8.demo.dto.OfferDTO;
 import ktsnwt_tim8.demo.dto.UserDTO;
+import ktsnwt_tim8.demo.helper.OfferMapper;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.OfferImage;
 import ktsnwt_tim8.demo.model.Post;
@@ -54,12 +59,29 @@ public class OfferController {
 	@Autowired
 	private UserService serviceUser;
 	
+	private static OfferMapper mapper = new OfferMapper();
+	
 	/*ISPISIVANJE SVIH PONUDA SA PAGINACIJOM*/
+	/*@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@GetMapping
+	public Page<Offer> findAllPageable(Pageable page){
+		return service.findAllPageable(page);
+	}*/
+	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping
-	public Page<Offer> findAllPageable(){
-		return service.findAllPageable();
-	}
+	public ResponseEntity<Page<OfferDTO>> getAllOffers(Pageable pageable) {
+		Page<Offer> offers = service.findAllPageable(pageable);
+		List<OfferDTO> offersDTO = new ArrayList<OfferDTO>();
+		
+		for (Offer o: offers) {
+			offersDTO.add(mapper.toDto(o));
+		}
+		
+		Page<OfferDTO> pageOffersDTO = new PageImpl<>(offersDTO, offers.getPageable(), offers.getTotalElements());
+
+        return new ResponseEntity<>(pageOffersDTO, HttpStatus.OK);
+    }
 	
 	/*ISPISIVANJE SVIH PONUDA*/
 	/*@GetMapping
