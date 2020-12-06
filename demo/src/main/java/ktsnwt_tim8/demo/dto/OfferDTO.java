@@ -1,29 +1,31 @@
 package ktsnwt_tim8.demo.dto;
 
-import ktsnwt_tim8.demo.model.Offer;
-import ktsnwt_tim8.demo.model.Subcategory;
+import javax.validation.constraints.NotBlank;
 
 public class OfferDTO {
 	private Long ID;
+	
+	@NotBlank(message = "Title cannot be empty.")
 	private String title;
+	
+	@NotBlank(message = "Description cannot be empty.")
 	private String description;
 	private double avgRating;
 	private int nmbOfRatings;
 	private double lat;
 	private double lon;
-	private SubcategoryDTO subcategory;
 	
 	public OfferDTO() {}
 	
-	public OfferDTO(Offer offer) {
-		this.ID = offer.getID();
-		this.title = offer.getTitle();
-		this.description = offer.getDescription();
-		this.avgRating = offer.getAvgRating();
-		this.nmbOfRatings = offer.getNmbOfRatings();
-		this.lat = offer.getLat();
-		this.lon = offer.getLon();
-		this.subcategory = new SubcategoryDTO(offer.getSubcategory());
+	//zbog validacije prilikom dodavanja novog i izmene 
+	public OfferDTO(Long ID, @NotBlank(message = "Title cannot be empty.") String title, @NotBlank(message = "Description cannot be empty.") String description, double avgRating, int nmbOfRatings, double lat, double lon) {
+		this.ID = ID;
+		this.title = title;
+		this.description = description;
+		this.avgRating = avgRating;
+		this.nmbOfRatings = nmbOfRatings;
+		this.lat = lat;
+		this.lon = lon;
 	}
 	
 	public Long getID() {
@@ -69,11 +71,5 @@ public class OfferDTO {
 	}
 	public void setLon(double lon) {
 		this.lon = lon;
-	}
-	public SubcategoryDTO getSubcategory() {
-		return subcategory;
-	}
-	public void setSubcategory(SubcategoryDTO subcategory) {
-		this.subcategory = subcategory;
 	}
 }
