@@ -53,7 +53,7 @@ public class CommentService {
 		Offer offer = offerRepo.findOneByID(id);
 		
 		if (offer == null) {
-			throw new Exception("Offer with passed if does not exist");
+			throw new Exception("Offer with passed ID does not exist");
 		}
 		
 		Random random = new Random();
@@ -94,13 +94,17 @@ public class CommentService {
 
 	public Comment updateComment(Long commentId, CommentDTO commentDTO, MultipartFile imageFile) throws Exception {
 		
-		Comment c = repo.getOne(commentId);
+		Optional<Comment> comm = repo.findById(commentId);
+		Comment c;
+		if (!comm.isPresent()) {
+			throw new Exception("Comment with given id does not exist.");
+		}
+		
+		c = comm.get();
 		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		if (c == null) {
-			throw new Exception("Comment with given id does not exits.");
-		}
+		
 		if (commentDTO.getText().isEmpty()) {
 			throw new Exception("Comment cannot be empty.");
 		}

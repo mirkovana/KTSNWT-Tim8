@@ -1,6 +1,8 @@
 package ktsnwt_tim8.demo.service;
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -75,11 +77,15 @@ public class RatingService {
 
 	public Rating updateRating(Long ratingId, RatingDTO ratingDTO) throws Exception {
 		
-		Rating rating = repo.getOne(ratingId);
+		Optional<Rating> ratingOpt = repo.findById(ratingId);
 		
-		if (rating == null) {
-			throw new Exception("Rating with given id does not exits.");
+		Rating rating;
+		
+		if (!ratingOpt.isPresent()) {
+			throw new Exception("Rating with given id does not exist!");
 		}
+	
+		rating = ratingOpt.get();
 		
 		if (ratingDTO.getRating() < 1 || ratingDTO.getRating() > 5) {
 			throw new Exception("Rating out of range!");
