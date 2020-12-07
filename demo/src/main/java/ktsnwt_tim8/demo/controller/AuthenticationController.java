@@ -81,29 +81,29 @@ public class AuthenticationController {
 		//proverimo da li je aktivan 
 		//ako jeste nastavi dalje kao sto si  do sad
 		//ako nije onda ona poruka 
-		User userReg =  userService.findByUsername(authenticationRequest.getUsername());
-		if(userReg.isActive()) {
+		try {
+			User userReg =  userService.findByUsername(authenticationRequest.getUsername());
+			if(userReg.isActive()) {
+					Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+							authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 
-			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-					authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+					// Ubaci korisnika u trenutni security kontekst
+					SecurityContextHolder.getContext().setAuthentication(authentication);
 
-			// Ubaci korisnika u trenutni security kontekst
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+					// Kreiraj token za tog korisnika
+					User user = (User) authentication.getPrincipal();
+					String jwt = tokenUtils.generateToken(user.getUsername()); // prijavljujemo se na sistem sa email adresom
+					int expiresIn = tokenUtils.getExpiredIn();
 
-			// Kreiraj token za tog korisnika
-			User user = (User) authentication.getPrincipal();
-			String jwt = tokenUtils.generateToken(user.getUsername()); // prijavljujemo se na sistem sa email adresom
-			int expiresIn = tokenUtils.getExpiredIn();
-
-			// Vrati token kao odgovor na uspesnu autentifikaciju
-			return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn));
-			
-		}
-		else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		
-		
+					// Vrati token kao odgovor na uspesnu autentifikaciju
+					return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn));
+			}
+			else {
+				return new ResponseEntity<>("Account is not activated.", HttpStatus.BAD_REQUEST);
+			}
+		}catch(Exception e) {
+			return new ResponseEntity<>("Incorrect username or password.", HttpStatus.BAD_REQUEST);
+		}		
 	}
 
 	@SuppressWarnings("rawtypes")
