@@ -1,19 +1,20 @@
 package ktsnwt_tim8.demo.service;
 
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import ktsnwt_tim8.demo.dto.RatingDTO;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.Rating;
 import ktsnwt_tim8.demo.model.RegisteredUser;
 import ktsnwt_tim8.demo.model.User;
 import ktsnwt_tim8.demo.repository.OfferRepository;
 import ktsnwt_tim8.demo.repository.RatingRepository;
-import ktsnwt_tim8.demo.repository.UserRepository;
+
 
 @Service
 public class RatingService {
@@ -24,32 +25,32 @@ public class RatingService {
 	@Autowired
 	private OfferRepository offerRepo;
 	
-	@Autowired
-	private UserRepository userRepo;
-	
-	
-	public Page<Rating> findAll(Pageable page){
-		return repo.findAll(page);
-	}
 	
 	public Page<Rating> findAllByOfferID(Long id, Pageable page) {
 		return repo.findAllByOfferID(id, page);
 	}
 
 
-	public Rating create(Long offerId, Rating rating) throws Exception {
-	
+	public Rating create(Long offerId, RatingDTO ratingDTO) throws Exception {
 		
+		if (offerId == null) {
+			throw new Exception("Offer ID cannot be null!");
+		}
+		if (ratingDTO.getRating() < 1 || ratingDTO.getRating() > 5) {
+			throw new Exception("Rating out of range!");
+		}
 		
 		Offer offer = offerRepo.findOneByID(offerId);
 		
 		if (offer == null) {
 			throw new Exception("Offer with passed if does not exist");
 		}
+		
+		Rating rating = new Rating();
+		rating.setRating(ratingDTO.getRating());
 		rating.setOffer(offer);
 		
-		// this is a dummy user, we will get the user automatically once Spring Security is implemented
-		User u = userRepo.findOneByID(2l);
+		User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		Rating ratingOld = repo.findOneByUserIDAndOfferID(u.getID(), offer.getID());
 		if (ratingOld != null) {
@@ -67,22 +68,34 @@ public class RatingService {
 		rating.setUser((RegisteredUser) u);
 		
 		offerRepo.save(offer);
+		
 		return repo.save(rating);
-	
 		}
 
 
-	public Rating updateRating(Long ratingId, Rating r) throws Exception {
+	public Rating updateRating(Long ratingId, RatingDTO ratingDTO) throws Exception {
+		
 		Rating rating = repo.getOne(ratingId);
 		
 		if (rating == null) {
 			throw new Exception("Rating with given id does not exits.");
 		}
 		
+		if (ratingDTO.getRating() < 1 || ratingDTO.getRating() > 5) {
+			throw new Exception("Rating out of range!");
+		}
+		
+		
+		User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (u.getID() != rating.getUser().getID()) {
+			throw new Exception("You can only update your own rating!");			
+		}
+		
+		
 		Offer offer = rating.getOffer();
 		
 		int oldRating = rating.getRating();
-		int newRating = r.getRating();
+		int newRating = ratingDTO.getRating();
 		
 		double oldAvg = offer.getAvgRating();
 		int votes = offer.getNmbOfRatings();
@@ -105,12 +118,22 @@ public class RatingService {
 			
 			Rating r = repo.getOne(ratingId);
 			
+			User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (u.getID() != r.getUser().getID()) {
+				throw new Exception("You can only update your own rating!");			
+			}
+			
 			Offer offer = r.getOffer();
 			
 			double oldRating = offer.getAvgRating();
 			int oldNmbOfRatings = offer.getNmbOfRatings();
 			
-			double newRating = (oldRating * oldNmbOfRatings - r.getRating()) / (oldNmbOfRatings - 1);
+			double newRating = 0;
+			
+			// avoiding division with 0
+			if (oldNmbOfRatings != 1) {
+				newRating = (oldRating * oldNmbOfRatings - r.getRating()) / (oldNmbOfRatings - 1);
+			}
 			
 			offer.setAvgRating(newRating);
 			offer.setNmbOfRatings(oldNmbOfRatings - 1);
