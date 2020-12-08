@@ -36,17 +36,18 @@ public class OfferService {
 	}
 
 	public Offer get(Long id) {
-		return repo.findById(id).get();
+		return repo.findById(id).orElse(null);
 	}
 
 	public void delete(Long id) {
 		repo.deleteById(id);
 	}
 	
-	public Page<Offer> findAllPageable() { 
-		return repo.findAll(PageRequest.of(0, 5));
+	public Page<Offer> findAllPageable(Pageable page) { 
+		return repo.findAll(page);
 	}
 
+	/*REMOVES SUBSCRIBER FROM OFFER*/
 	public Offer deleteSubscriber(Long id) throws Exception {
 		Offer offer = repo.findOneByID(id);
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -62,6 +63,19 @@ public class OfferService {
 		        iterator.remove();
 		    }       
 		}
+		return offer;
+	}
+	
+	/*SUBSRCIBES USER TO OFFER*/
+	public Offer subscribe(Long id) throws Exception{
+		Offer offer = repo.findOneByID(id);
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		if(offer == null) {
+			throw new Exception("Offer with passed ID does not exist");
+		}
+		
+		offer.getUsers().add((RegisteredUser) user);
 		return offer;
 	}
 	 
