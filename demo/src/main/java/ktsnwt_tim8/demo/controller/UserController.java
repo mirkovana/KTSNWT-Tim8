@@ -59,7 +59,7 @@ public class UserController {
 	
 	
 	@PreAuthorize("hasRole('ROLE_USER')")
-	@GetMapping
+	@GetMapping(value = "/getSubscriptions")
 	public ResponseEntity<Page<OfferDTO>> getUserSubscriptions(Pageable page){//
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		

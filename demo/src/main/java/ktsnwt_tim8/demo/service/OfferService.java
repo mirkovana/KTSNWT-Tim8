@@ -56,6 +56,16 @@ public class OfferService {
 			throw new Exception("Offer with given ID does not exits");
 		}
 		
+		boolean uslov = true;
+		for (Offer off : ((RegisteredUser)user).getSubscriptions()) {
+			if(off.getID().equals(id)) {
+				uslov = false;
+			}
+		}
+		if(uslov) {
+			throw new Exception("Cannot unsubscribe from not subscribed offer");
+		}
+		
 		Set<RegisteredUser> users = offer.getUsers();
 		for (Iterator<RegisteredUser> iterator = users.iterator(); iterator.hasNext();) {
 		    RegisteredUser regUser =  iterator.next();
@@ -73,6 +83,11 @@ public class OfferService {
 		
 		if(offer == null) {
 			throw new Exception("Offer with passed ID does not exist");
+		}
+		for (Offer off : ((RegisteredUser)user).getSubscriptions()) {
+			if(off.getID().equals(id)) {
+				throw new Exception("Already subscribed to this offer");
+			}
 		}
 		
 		offer.getUsers().add((RegisteredUser) user);
