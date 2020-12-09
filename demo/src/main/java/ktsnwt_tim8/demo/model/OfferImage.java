@@ -14,20 +14,20 @@ public class OfferImage {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ID;
-	
+
 	@Column
 	private String description;
-	
+
 	@Column(nullable = false)
 	private String path;
 
 	@ManyToOne
 	@JoinColumn(name = "offer_id")
 	private Offer offer;
-	
-	
-	public OfferImage() {}
-	
+
+	public OfferImage() {
+	}
+
 	public Long getID() {
 		return ID;
 	}
@@ -51,7 +51,13 @@ public class OfferImage {
 	public void setPath(String path) {
 		this.path = path;
 	}
-	
-	
-	
+
+	public Offer getOffer() {
+		return offer;
+	}
+
+	public void setOffer(Offer offer) {
+		this.offer = offer;
+	}
+
 }
