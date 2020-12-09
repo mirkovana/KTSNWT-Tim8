@@ -1,7 +1,13 @@
 package ktsnwt_tim8.demo.controller;
 
 import java.util.ArrayList;
+
+import java.util.Iterator;
+
 import java.util.List;
+import java.util.Set;
+
+import javax.validation.Valid;
 
 import javax.validation.Valid;
 
@@ -12,6 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import javassist.NotFoundException;
 import ktsnwt_tim8.demo.dto.OfferDTO;
@@ -158,38 +168,34 @@ public class OfferController {
 		return offers;
 	}	
 	
-	@PostMapping(value = "/subscribe/{idOffer}", consumes = "application/json")
-	public ResponseEntity<UserDTO> subscribeUser(@PathVariable Long idOffer, @RequestBody UserDTO subUser){
-		Offer offer = service.get(idOffer);
-		User user = serviceUser.findByUsername(subUser.getUsername());
-		
-		if(user == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	/*SUBSCRIBING TO OFFER*/
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@PostMapping(value = "/subscribe/{idOffer}")
+	public ResponseEntity<UserDTO> subscribeUser(@PathVariable Long idOffer) throws Exception{
+		Offer offer ;
+		try {
+			offer = service.subscribe(idOffer);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
-		if(offer == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		offer.getUsers().add((RegisteredUser) user);
+
 		service.save(offer);
 		
-		return null;
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping(value = "/unsubscribe/{idOffer}", consumes = "application/json")
-	public ResponseEntity<UserDTO> unsubscribeUser(@PathVariable Long idOffer, @RequestBody UserDTO subUser){
-		Offer offer = service.get(idOffer);
-		User user = serviceUser.findByUsername(subUser.getUsername());
-		
-		if(user == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	/*CANCELING OFFER SUBSCRIPTION*/
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@DeleteMapping(value = "/unsubscribe/{idOffer}")
+	public ResponseEntity<UserDTO> unsubscribeUser(@PathVariable Long idOffer){
+		Offer offer;
+		try {
+			offer = service.deleteSubscriber(idOffer);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
-		if(offer == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		offer.getUsers().remove((RegisteredUser) user);
 		service.save(offer);
-		
-		return null;
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	

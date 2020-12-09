@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -19,7 +20,7 @@ public class RegisteredUser extends User {
 	private String surname;
 	
 	
-	@ManyToMany(mappedBy = "users")
+	@ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
 	private Set<Offer> subscriptions;
 	
 	@OneToMany(mappedBy = "user")
@@ -55,6 +56,30 @@ public class RegisteredUser extends User {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
+	}
+
+	public Set<Offer> getSubscriptions() {
+		return subscriptions;
+	}
+
+	public void setSubscriptions(Set<Offer> subscriptions) {
+		this.subscriptions = subscriptions;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public Set<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(Set<Rating> ratings) {
+		this.ratings = ratings;
 	}
 	
 	
