@@ -1,12 +1,18 @@
 package ktsnwt_tim8.demo.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javassist.NotFoundException;
 import ktsnwt_tim8.demo.dto.PostDTO;
+import ktsnwt_tim8.demo.helper.PostMapper;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.Post;
 import ktsnwt_tim8.demo.repository.PostRepository;
@@ -35,20 +42,37 @@ public class PostController {
 
 	@Autowired
 	private OfferService offerService;
+	
+	private static PostMapper mapper = new PostMapper();
 
 	/* ISPISIVANJE SVIH POSTOVA ZA PONUDU */
 	@GetMapping(value = "/{idOffer}")
-	public Page<Post> getAllByOffer(@PathVariable Long idOffer) {
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	public ResponseEntity<Page<PostDTO>> getAllPosts(@PathVariable Long idOffer, Pageable pageable) {
 		Offer offer = offerService.get(idOffer);
+		Page<Post> posts = service.findAllByOffer1(offer, pageable);
+		List<PostDTO> postsDTO = new ArrayList<PostDTO>();
+		
+		for (Post p: posts) {
+			postsDTO.add(mapper.toDto(p));
+		}
+		
+		Page<PostDTO> postsPageDTO = new PageImpl<>(postsDTO, posts.getPageable(), posts.getTotalElements());
 
-		
-		
-		return service.findAllByOffer1(offer);
-	}
+        return new ResponseEntity<>(postsPageDTO, HttpStatus.OK);
+    }
+//	public Page<Post> getAllByOffer(@PathVariable Long idOffer) {
+//		Offer offer = offerService.get(idOffer);
+//
+//		
+//		
+//		return service.findAllByOffer1(offer);
+//	}
 
 	/* DODAVANJE NOVOG POSTA */
 	@PostMapping(value = "/{idOffer}",consumes = "application/json")
-	public ResponseEntity<PostDTO> savePost(@PathVariable Long idOffer, @RequestBody PostDTO postDTO) throws Exception {
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<PostDTO> savePost(@PathVariable Long idOffer,@Valid @RequestBody PostDTO postDTO) throws Exception {
 
 		Date date = new Date();
 		Post post = new Post();
@@ -73,6 +97,7 @@ public class PostController {
 
 	/* BRISANJE POSTA */
 	@DeleteMapping(value = "/{idPost}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public List<Post> deletePost(@PathVariable Long idPost) {
 
 		Post post = service.get(idPost);
@@ -86,7 +111,8 @@ public class PostController {
 	
 	/*IZMENA POSTA*/
 	@PutMapping(value = "/{idPost}", consumes = "application/json")
-	public Post updatePost(@PathVariable Long idPost, @RequestBody PostDTO postUpdated)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public Post updatePost(@PathVariable Long idPost,@Valid @RequestBody PostDTO postUpdated)
 			throws NotFoundException, Exception{
 		
 		Date date = new Date();

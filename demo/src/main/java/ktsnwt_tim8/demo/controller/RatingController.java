@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import ktsnwt_tim8.demo.dto.CommentDTO;
 import ktsnwt_tim8.demo.dto.RatingDTO;
 import ktsnwt_tim8.demo.helper.RatingMapper;
-import ktsnwt_tim8.demo.model.Comment;
 import ktsnwt_tim8.demo.model.Rating;
 import ktsnwt_tim8.demo.service.RatingService;
 
@@ -31,18 +30,6 @@ public class RatingController {
 	private RatingService ratingService;
 	
 	private static RatingMapper mapper = new RatingMapper();
-	
-	
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Page<RatingDTO>> getAllRatings(Pageable page){
-		Page<Rating> ratings = ratingService.findAll(page);
-		List<RatingDTO> ratingsDTO = new ArrayList<RatingDTO>();
-		for (Rating r: ratings) {
-			ratingsDTO.add(mapper.toDto(r));
-		}
-		Page<RatingDTO> pageRatingsDTO = new PageImpl<>(ratingsDTO, ratings.getPageable(), ratings.getTotalElements());
-        return new ResponseEntity<>(pageRatingsDTO, HttpStatus.OK);
-	}
 	
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
@@ -60,17 +47,13 @@ public class RatingController {
         return new ResponseEntity<>(pageRatingsDTO, HttpStatus.OK);
 	}
 	
-	
-	@RequestMapping(value="/{id}", method=RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<RatingDTO> addRating(@PathVariable Long id, @RequestBody RatingDTO ratingDTO){
-		
-		// da li je string
-		
-		Rating rating = mapper.toEntity(ratingDTO);
-		
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@RequestMapping(value="/{offerId}", method=RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<RatingDTO> addRating(@PathVariable Long offerId, @RequestBody RatingDTO ratingDTO){
+			
 		Rating r;
 		try {
-			r = ratingService.create(id, rating);
+			r = ratingService.create(offerId, ratingDTO);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
@@ -79,13 +62,13 @@ public class RatingController {
         return new ResponseEntity<>(mapper.toDto(r), HttpStatus.CREATED);
 	}
 	
-	
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value="/{ratingId}", method=RequestMethod.PUT, consumes = "application/json")
 	public ResponseEntity<RatingDTO> updateRating(@PathVariable Long ratingId, @RequestBody RatingDTO ratingDTO){
 		
-		Rating r = mapper.toEntity(ratingDTO);
+		Rating r;
 		try {
-			r = ratingService.updateRating(ratingId, r);
+			r = ratingService.updateRating(ratingId, ratingDTO);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
@@ -94,7 +77,7 @@ public class RatingController {
         return new ResponseEntity<>(mapper.toDto(r), HttpStatus.OK);
 	}
 	
-	
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value="/{ratingId}", method=RequestMethod.DELETE)	
 	public ResponseEntity<RatingDTO> deleteRating(@PathVariable Long ratingId){
 		

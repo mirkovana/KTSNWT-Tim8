@@ -42,8 +42,8 @@ public class PostService {
 		return repo.findAllByOffer(offer);
 	}
 	
-	public Page<Post> findAllByOffer1(Offer offer) {
-		return repo.findAllByOffer(offer, PageRequest.of(0, 5));
+	public Page<Post> findAllByOffer1(Offer offer, Pageable page) {
+		return repo.findAllByOffer(offer, page);
 	}
 	
 }

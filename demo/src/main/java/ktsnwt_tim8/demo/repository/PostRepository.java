@@ -11,8 +11,8 @@ import ktsnwt_tim8.demo.model.Post;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 	
+	Page<Post> findAllByOffer(Offer offer, Pageable page);
 	List<Post> findAllByOffer(Offer offer);
- 
-	Page<Post> findAllByOffer(Offer offer, Pageable pageable);
+	//Page<Post> findAllByOffer(Offer offer, Pageable pageable);
 	
 }

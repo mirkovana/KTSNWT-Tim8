@@ -1,11 +1,17 @@
 package ktsnwt_tim8.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javassist.NotFoundException;
 import ktsnwt_tim8.demo.dto.OfferDTO;
 import ktsnwt_tim8.demo.dto.UserDTO;
+import ktsnwt_tim8.demo.helper.OfferMapper;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.OfferImage;
 import ktsnwt_tim8.demo.model.Post;
@@ -53,11 +60,29 @@ public class OfferController {
 	@Autowired
 	private UserService serviceUser;
 	
+	private static OfferMapper mapper = new OfferMapper();
+	
 	/*ISPISIVANJE SVIH PONUDA SA PAGINACIJOM*/
+	/*@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping
-	public Page<Offer> findAllPageable(){
-		return service.findAllPageable();
-	}
+	public Page<Offer> findAllPageable(Pageable page){
+		return service.findAllPageable(page);
+	}*/
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@GetMapping
+	public ResponseEntity<Page<OfferDTO>> getAllOffers(Pageable pageable) {
+		Page<Offer> offers = service.findAllPageable(pageable);
+		List<OfferDTO> offersDTO = new ArrayList<OfferDTO>();
+		
+		for (Offer o: offers) {
+			offersDTO.add(mapper.toDto(o));
+		}
+		
+		Page<OfferDTO> pageOffersDTO = new PageImpl<>(offersDTO, offers.getPageable(), offers.getTotalElements());
+
+        return new ResponseEntity<>(pageOffersDTO, HttpStatus.OK);
+    }
 	
 	/*ISPISIVANJE SVIH PONUDA*/
 	/*@GetMapping
@@ -67,8 +92,9 @@ public class OfferController {
 	}*/
 	
 	/*DODAVANJE NOVE PONUDE*/
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "/{idSubcategory}", consumes = "application/json")
-	public ResponseEntity<OfferDTO> saveOffer(@PathVariable Long idSubcategory, @RequestBody OfferDTO offerDTO) throws Exception {
+	public ResponseEntity<OfferDTO> saveOffer(@PathVariable Long idSubcategory, @Valid @RequestBody OfferDTO offerDTO) throws Exception {
 		Offer offer = new Offer();
 		if(offerDTO.getDescription().isEmpty()) {
 			throw new Exception("Description cannot be empty");
@@ -84,12 +110,13 @@ public class OfferController {
 		offer.setSubcategory(subcategory);
 		
 		offer = service.save(offer);
-		return new ResponseEntity<>(new OfferDTO(offer), HttpStatus.CREATED);
+		return new ResponseEntity<>(new OfferDTO(offer.getID(), offer.getTitle(), offer.getDescription(), offer.getAvgRating(), offer.getNmbOfRatings(), offer.getLat(), offer.getLon()), HttpStatus.CREATED);
 	}
 	
 	/*IZMENA PONUDE*/
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value = "/{idOffer}", consumes = "application/json")
-	public Offer updateOffer(@PathVariable Long idOffer, @RequestBody OfferDTO offerUpdated)
+	public Offer updateOffer(@PathVariable Long idOffer, @Valid @RequestBody OfferDTO offerUpdated)
 			throws NotFoundException, Exception {
 		if(offerUpdated.getDescription().isEmpty()) {
 			throw new Exception("Description cannot be empty");
@@ -110,6 +137,7 @@ public class OfferController {
 	}
 	
 	/*BRISANJE PONUDE*/
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(value = "/{idOffer}")
 	public List<Offer> deleteOffer(@PathVariable Long idOffer) {
 		Offer offer = service.get(idOffer);
