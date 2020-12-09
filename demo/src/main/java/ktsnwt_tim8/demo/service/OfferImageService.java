@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +37,10 @@ public class OfferImageService {
 
 	public List<OfferImage> findAllByOffer(Offer offer) {
 		return repo.findAllByOffer(offer);
+	}
+	
+	public Page<OfferImage> findAllByOfferID(Long id, Pageable page){
+		return repo.findAllByOfferID(id, page);
 	}
 
 	public OfferImage create(Long offerID, OfferImageDTO imageDTO, MultipartFile imagefile) throws Exception {

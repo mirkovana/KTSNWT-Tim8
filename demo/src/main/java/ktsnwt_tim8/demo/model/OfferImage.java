@@ -15,7 +15,7 @@ public class OfferImage {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ID;
 
-	@Column
+	@Column(nullable = false)
 	private String description;
 
 	@Column(nullable = false)

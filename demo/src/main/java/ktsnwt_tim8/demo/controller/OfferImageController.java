@@ -1,6 +1,12 @@
 package ktsnwt_tim8.demo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -72,6 +78,23 @@ public class OfferImageController {
 		}
 
 		OfferImageDTO ret = new OfferImageDTO(img.getID(), img.getDescription(), img.getPath());
+
+		return new ResponseEntity<>(ret, HttpStatus.OK);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{offerID}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	public ResponseEntity<Page<OfferImageDTO>> getAllOfferImages(@PathVariable Long offerID, Pageable page) {
+
+		Page<OfferImage> images = service.findAllByOfferID(offerID, page);
+		List<OfferImageDTO> imagesDTO = new ArrayList<OfferImageDTO>();
+
+		for (OfferImage img : images) {
+			OfferImageDTO imgDTO = new OfferImageDTO(img.getID(), img.getDescription(), img.getPath());
+			imagesDTO.add(imgDTO);
+		}
+
+		Page<OfferImageDTO> ret = new PageImpl<OfferImageDTO>(imagesDTO, page, images.getTotalElements());
 
 		return new ResponseEntity<>(ret, HttpStatus.OK);
 	}
