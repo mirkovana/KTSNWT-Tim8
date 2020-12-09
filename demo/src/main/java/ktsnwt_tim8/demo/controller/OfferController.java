@@ -163,7 +163,12 @@ public class OfferController {
 		}
 		List<OfferImage> offerimages = serviceOfferImage.findAllByOffer(offer);
 		for (OfferImage oi : offerimages) {
-			serviceOfferImage.delete(oi.getID());
+			try {
+				serviceOfferImage.deleteImage(oi.getID());
+				//IZMENJENO SA delete na deleteImage
+			} catch (Exception e) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+			}
 		}
 		service.delete(idOffer);
 

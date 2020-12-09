@@ -41,6 +41,12 @@ public class OfferImageService {
 		Random random = new Random();
 		String path;
 
+		Offer offer = offerRepo.findOneByID(offerID);
+
+		if (offer == null) {
+			throw new Exception("Offer with passed ID does not exist.");
+		}
+
 		if (imageDTO.getDescription().isEmpty()) {
 			throw new Exception("Description cannot be empty.");
 		}
@@ -65,12 +71,6 @@ public class OfferImageService {
 
 		OfferImage offerImage = new OfferImage();
 		offerImage.setDescription(imageDTO.getDescription());
-
-		Offer offer = offerRepo.findOneByID(offerID);
-
-		if (offer == null) {
-			throw new Exception("Offer with passed ID does not exist.");
-		}
 
 		offerImage.setPath(path);
 		offerImage.setOffer(offer);
