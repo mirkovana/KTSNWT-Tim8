@@ -77,7 +77,8 @@ public class OfferImageController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 
-		OfferImageDTO ret = new OfferImageDTO(img.getID(), img.getDescription(), img.getPath());
+		OfferImageDTO ret = new OfferImageDTO(img.getID(), img.getDescription(),
+				Helper.fromFileToBase64(img.getPath()));
 
 		return new ResponseEntity<>(ret, HttpStatus.OK);
 	}
@@ -87,7 +88,7 @@ public class OfferImageController {
 	public ResponseEntity<Page<OfferImageDTO>> getAllOfferImages(@PathVariable Long offerID, Pageable page) {
 
 		Page<OfferImage> images;
-		
+
 		try {
 			images = service.getAllImages(offerID, page);
 		} catch (Exception e) {
@@ -96,7 +97,8 @@ public class OfferImageController {
 		List<OfferImageDTO> imagesDTO = new ArrayList<OfferImageDTO>();
 
 		for (OfferImage img : images) {
-			OfferImageDTO imgDTO = new OfferImageDTO(img.getID(), img.getDescription(), img.getPath());
+			OfferImageDTO imgDTO = new OfferImageDTO(img.getID(), img.getDescription(),
+					Helper.fromFileToBase64(img.getPath()));
 			imagesDTO.add(imgDTO);
 		}
 
