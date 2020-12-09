@@ -41,20 +41,38 @@ public class OfferImageController {
 				Helper.fromFileToBase64(offerImage.getPath()));
 
 		return new ResponseEntity<>(ret, HttpStatus.CREATED);
-	
+
 	}
-	
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{imageID}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<OfferImageDTO> deleteImage(@PathVariable Long imageID){
-		
+	public ResponseEntity<OfferImageDTO> deleteImage(@PathVariable Long imageID) {
+
 		try {
 			service.deleteImage(imageID);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
-		
+
 		return new ResponseEntity<>(null, HttpStatus.OK);
+	}
+
+	@RequestMapping(method = RequestMethod.PUT)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<OfferImageDTO> updateImageDesc(@RequestParam("offerID") Long offerID,
+			@RequestParam("description") String desc) {
+		OfferImageDTO imageDTO = new OfferImageDTO(desc);
+
+		OfferImage img;
+
+		try {
+			img = service.updateImageDesc(offerID, imageDTO);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+
+		OfferImageDTO ret = new OfferImageDTO(img.getID(), img.getDescription(), img.getPath());
+
+		return new ResponseEntity<>(ret, HttpStatus.OK);
 	}
 }

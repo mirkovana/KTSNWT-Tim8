@@ -42,13 +42,13 @@ public class OfferImageService {
 		String path;
 
 		if (imageDTO.getDescription().isEmpty()) {
-			throw new Exception("Description cannot be empty");
+			throw new Exception("Description cannot be empty.");
 		}
 
 		int randNum = random.nextInt(100000);
 
 		if (imagefile.isEmpty()) {
-			throw new Exception("Image cannot be empty");
+			throw new Exception("Image cannot be empty.");
 //			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Image cannot be empty");
 		} else {
 			path = "src/main/resources/images/offerImage" + randNum + ".jpg";
@@ -57,9 +57,9 @@ public class OfferImageService {
 			try (OutputStream ostream = new FileOutputStream(file)) {
 				ostream.write(imagefile.getBytes());
 			} catch (FileNotFoundException e1) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error image corrupted");
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error image corrupted.");
 			} catch (IOException e1) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error image corrupted");
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error image corrupted.");
 			}
 		}
 
@@ -69,7 +69,7 @@ public class OfferImageService {
 		Offer offer = offerRepo.findOneByID(offerID);
 
 		if (offer == null) {
-			throw new Exception("Offer with passed ID does not exist");
+			throw new Exception("Offer with passed ID does not exist.");
 		}
 
 		offerImage.setPath(path);
@@ -88,7 +88,7 @@ public class OfferImageService {
 		if (offerImage.isPresent()) {
 			path = offerImage.get().getPath();
 			if (path == null) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error");
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error.");
 			} else {
 				File image = new File(path);
 				image.delete();
@@ -98,6 +98,26 @@ public class OfferImageService {
 		} else {
 			throw new Exception("Offer image with given ID does not exits.");
 		}
+	}
+
+	public OfferImage updateImageDesc(Long offerID, OfferImageDTO imageDTO) throws Exception {
+
+		if (imageDTO.getDescription().isEmpty()) {
+			throw new Exception("Description cannot be empty.");
+		}
+
+		Optional<OfferImage> offerImage = repo.findById(offerID);
+
+		if (!offerImage.isPresent()) {
+			throw new Exception("Offer image with given id does not exist.");
+		}
+
+		OfferImage o;
+		o = offerImage.get();
+
+		o.setDescription(imageDTO.getDescription());
+
+		return repo.save(o);
 	}
 
 }
