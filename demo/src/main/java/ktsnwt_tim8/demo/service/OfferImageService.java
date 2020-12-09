@@ -38,9 +38,20 @@ public class OfferImageService {
 	public List<OfferImage> findAllByOffer(Offer offer) {
 		return repo.findAllByOffer(offer);
 	}
-	
-	public Page<OfferImage> findAllByOfferID(Long id, Pageable page){
+
+	public Page<OfferImage> findAllByOfferID(Long id, Pageable page) {
 		return repo.findAllByOfferID(id, page);
+	}
+
+	public Page<OfferImage> getAllImages(Long id, Pageable page) throws Exception {
+		Offer offer = offerRepo.findOneByID(id);
+
+		if (offer == null) {
+			throw new Exception("Offer with passed ID does not exist.");
+		}
+		Page<OfferImage> images = repo.findAllByOfferID(id, page);
+
+		return images;
 	}
 
 	public OfferImage create(Long offerID, OfferImageDTO imageDTO, MultipartFile imagefile) throws Exception {

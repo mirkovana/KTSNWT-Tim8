@@ -86,7 +86,13 @@ public class OfferImageController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	public ResponseEntity<Page<OfferImageDTO>> getAllOfferImages(@PathVariable Long offerID, Pageable page) {
 
-		Page<OfferImage> images = service.findAllByOfferID(offerID, page);
+		Page<OfferImage> images;
+		
+		try {
+			images = service.getAllImages(offerID, page);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
 		List<OfferImageDTO> imagesDTO = new ArrayList<OfferImageDTO>();
 
 		for (OfferImage img : images) {
