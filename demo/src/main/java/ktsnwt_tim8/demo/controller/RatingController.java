@@ -35,7 +35,12 @@ public class RatingController {
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Page<RatingDTO>> getRatingsFromPost(@PathVariable Long id, Pageable page){
 		
-		Page<Rating> ratings = ratingService.findAllByOfferID(id, page);
+		Page<Rating> ratings;
+		try {
+			ratings = ratingService.findAllByOfferID(id, page);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
 		List<RatingDTO> ratingsDTO = new ArrayList<RatingDTO>();
 		
 		for (Rating r: ratings) {

@@ -28,8 +28,15 @@ public class RatingService {
 	private OfferRepository offerRepo;
 	
 	
-	public Page<Rating> findAllByOfferID(Long id, Pageable page) {
-		return repo.findAllByOfferID(id, page);
+	public Page<Rating> findAllByOfferID(Long id, Pageable page) throws Exception {
+		
+		Optional<Offer> offer = offerRepo.findById(id);
+		
+		if (offer.isPresent()) {
+			return repo.findAllByOfferID(id, page);
+		}
+		
+		throw new Exception("Offer with the given ID does not exist.");
 	}
 
 
