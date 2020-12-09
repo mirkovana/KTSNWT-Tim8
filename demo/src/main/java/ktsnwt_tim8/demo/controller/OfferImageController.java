@@ -84,7 +84,6 @@ public class OfferImageController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{offerID}")
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	public ResponseEntity<Page<OfferImageDTO>> getAllOfferImages(@PathVariable Long offerID, Pageable page) {
 
 		Page<OfferImage> images;
