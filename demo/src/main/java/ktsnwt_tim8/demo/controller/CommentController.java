@@ -35,7 +35,12 @@ public class CommentController {
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Page<CommentDTO>> getCommentsFromPost(@PathVariable Long id, Pageable page){
 		
-		Page<Comment> comments = commentService.findAllByOfferID(id, page);
+		Page<Comment> comments;
+		try {
+			comments = commentService.findAllByOfferID(id, page);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
 		List<CommentDTO> commentsDTO = new ArrayList<CommentDTO>();
 		
 		for (Comment c: comments) {
