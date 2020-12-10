@@ -35,6 +35,9 @@ public class Offer {
 	private int nmbOfRatings;
 	
 	@Column(nullable = false)
+	private String place;
+	
+	@Column(nullable = false)
 	private double lat;
 	
 	@Column(nullable = false)
@@ -180,4 +183,14 @@ public class Offer {
 	public void setRatings(Set<Rating> ratings) {
 		this.ratings = ratings;
 	}
+
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+	
+	
 }

@@ -68,7 +68,7 @@ public class UserController {
 		
 		for (Offer offer : subscriptions) {
 			System.out.println(offer.getID());
-			OfferDTO off = new OfferDTO(offer.getID(), offer.getTitle(), offer.getDescription(), offer.getAvgRating(), offer.getNmbOfRatings(), offer.getLat(), offer.getLon());
+			OfferDTO off = new OfferDTO(offer.getID(), offer.getTitle(), offer.getDescription(), offer.getAvgRating(), offer.getNmbOfRatings(), offer.getLat(), offer.getLon(), offer.getPlace());
 			subs.add(off);
 		}
 		

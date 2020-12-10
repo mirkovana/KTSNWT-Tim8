@@ -15,10 +15,14 @@ public class OfferDTO {
 	private double lat;
 	private double lon;
 	
+	@NotBlank(message = "Place cannot be empty.")
+	private String place;
+	
 	public OfferDTO() {}
 	
 	//zbog validacije prilikom dodavanja novog i izmene 
-	public OfferDTO(Long ID, @NotBlank(message = "Title cannot be empty.") String title, @NotBlank(message = "Description cannot be empty.") String description, double avgRating, int nmbOfRatings, double lat, double lon) {
+	public OfferDTO(Long ID, @NotBlank(message = "Title cannot be empty.") String title, @NotBlank(message = "Description cannot be empty.") String description, double avgRating, int nmbOfRatings, double lat, double lon,
+			@NotBlank(message = "Place cannot be empty.") String place) {
 		this.ID = ID;
 		this.title = title;
 		this.description = description;
@@ -26,6 +30,7 @@ public class OfferDTO {
 		this.nmbOfRatings = nmbOfRatings;
 		this.lat = lat;
 		this.lon = lon;
+		this.place = place;
 	}
 	
 	public Long getID() {
@@ -72,4 +77,13 @@ public class OfferDTO {
 	public void setLon(double lon) {
 		this.lon = lon;
 	}
+
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+	
 }

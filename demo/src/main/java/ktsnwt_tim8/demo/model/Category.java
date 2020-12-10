@@ -46,6 +46,14 @@ public class Category {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public Set<Subcategory> getSubcategories() {
+		return subcategories;
+	}
+
+	public void setSubcategories(Set<Subcategory> subcategories) {
+		this.subcategories = subcategories;
+	}
 	
 	
 	

@@ -12,7 +12,7 @@ public class OfferMapper implements MapperInterface<Offer, OfferDTO>{
 
 	@Override
 	public OfferDTO toDto(Offer entity) {
-		return new OfferDTO(entity.getID(), entity.getTitle(), entity.getDescription(), entity.getAvgRating(), entity.getNmbOfRatings(), entity.getLat(), entity.getLon());
+		return new OfferDTO(entity.getID(), entity.getTitle(), entity.getDescription(), entity.getAvgRating(), entity.getNmbOfRatings(), entity.getLat(), entity.getLon(), entity.getPlace());
 	}
 
 }

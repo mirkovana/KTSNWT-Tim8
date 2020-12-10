@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import javassist.NotFoundException;
+import ktsnwt_tim8.demo.dto.FilterDTO;
 import ktsnwt_tim8.demo.dto.OfferDTO;
 import ktsnwt_tim8.demo.dto.UserDTO;
 import ktsnwt_tim8.demo.helper.OfferMapper;
@@ -117,12 +118,20 @@ public class OfferController {
 			throw new Exception("Title cannot be empty");
 		}
 		offer.setTitle(offerDTO.getTitle());
+		
+		if (offerDTO.getPlace().isEmpty()) {
+			throw new Exception("Place cannot be empty");
+		}
+		offer.setPlace(offerDTO.getPlace());
+		
 		Subcategory subcategory = serviceSubcategory.get(idSubcategory);
 		offer.setSubcategory(subcategory);
+		offer.setAvgRating(0);
+		offer.setNmbOfRatings(0);
 
 		offer = service.save(offer);
 		return new ResponseEntity<>(new OfferDTO(offer.getID(), offer.getTitle(), offer.getDescription(),
-				offer.getAvgRating(), offer.getNmbOfRatings(), offer.getLat(), offer.getLon()), HttpStatus.CREATED);
+				offer.getAvgRating(), offer.getNmbOfRatings(), offer.getLat(), offer.getLon(), offer.getPlace()), HttpStatus.CREATED);
 	}
 
 	/* IZMENA PONUDE */
@@ -136,12 +145,16 @@ public class OfferController {
 		if (offerUpdated.getTitle().isEmpty()) {
 			throw new Exception("Title cannot be empty");
 		}
+		if (offerUpdated.getPlace().isEmpty()) {
+			throw new Exception("Place cannot be empty");
+		}
 		return repository.findById(idOffer).map(offer -> {
 			// offer.setAvgRating(offerUpdated.getAvgRating());
 			offer.setDescription(offerUpdated.getDescription());
 			// offer.setLat(offerUpdated.getLat());
 			// offer.setLon(offerUpdated.getLon());
 			// offer.setNmbOfRatings(offerUpdated.getNmbOfRatings());
+			offer.setPlace(offerUpdated.getPlace());
 			offer.setTitle(offerUpdated.getTitle());
 			return repository.save(offer);
 		}).orElseThrow(() -> new NotFoundException("Offer not found with id " + idOffer));
@@ -203,6 +216,22 @@ public class OfferController {
 		}
 		service.save(offer);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/filter")
+	public ResponseEntity<Page<OfferDTO>> filter(@RequestBody FilterDTO filterDTO, Pageable pageable) {
+		
+		Page<Offer> offers = service.filter(filterDTO, pageable);
+		
+		List<OfferDTO> offersDTO = new ArrayList<OfferDTO>();
+
+		for (Offer o : offers) {
+			offersDTO.add(mapper.toDto(o));
+		}
+
+		Page<OfferDTO> pageOffersDTO = new PageImpl<>(offersDTO, offers.getPageable(), offers.getTotalElements());
+
+		return new ResponseEntity<>(pageOffersDTO, HttpStatus.OK);
 	}
 
 }

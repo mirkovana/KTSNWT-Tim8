@@ -1,29 +1,40 @@
 package ktsnwt_tim8.demo.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import ktsnwt_tim8.demo.dto.FilterDTO;
+import ktsnwt_tim8.demo.model.Category;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.RegisteredUser;
+import ktsnwt_tim8.demo.model.Subcategory;
 import ktsnwt_tim8.demo.model.User;
+import ktsnwt_tim8.demo.repository.CategoryRepository;
 import ktsnwt_tim8.demo.repository.OfferRepository;
+import ktsnwt_tim8.demo.repository.SubcategoryRepository;
 
 @Service
 public class OfferService {
 	@Autowired
 	private OfferRepository repo;
+	
+	@Autowired
+	private CategoryRepository catRepo;
+	
+	@Autowired
+	private SubcategoryRepository subcatRepo;
 	
 	@JsonIgnore
 	public List<Offer> listAll() {
@@ -93,5 +104,52 @@ public class OfferService {
 		offer.getUsers().add((RegisteredUser) user);
 		return offer;
 	}
+	
+	
+	
+	public Page<Offer> filter(FilterDTO filterDTO, Pageable pageable) {
+		
+		String title = filterDTO.getTitle();
+		String place = filterDTO.getPlace();
+		List<Long> subcatIDs = filterDTO.getSubcatIDs();	// subcategory ids sent from frontend
+		List<Long> catIDs = filterDTO.getCatIDs();			// category ids sent from frontend
+		subcatIDs.remove(null);		// removing null values if there are any
+		catIDs.remove(null);	
+		
+		if (title == null) title = "";	// in the filtering functions, comparing with an empty string returns true 
+		if (place == null) place = "";	// which is what works in this case
+		
+		if (subcatIDs.size() == 0 && catIDs.size() == 0) {	 // filtering only by title and place
+			return repo.filterByTitleAndPlace(title, place, pageable);
+		}
+		
+		List<Subcategory> subs = getSubcategoriesFromCatIdsAndSubcatIds(subcatIDs, catIDs);
+		return repo.filterByTitlePlaceAndSubcategory(title, place, subs, pageable);
+	}
+	
+	
+	private ArrayList<Subcategory> getSubcategoriesFromCatIdsAndSubcatIds(List<Long> subcatIDs, List<Long> catIDs){
+		
+		HashMap<Long, Subcategory> subMap = new HashMap<Long, Subcategory>();	// map made to avoid duplicates
+		// each offer has a subcategory by which we can select it in jpa query
+		// so from categories gotten by their ids, we extract their subcategories
+		for (Long catID: catIDs) {	// cat ids send from front
+			Optional<Category> cat = catRepo.findById(catID);
+			if (cat.isPresent()) { // isPresent to check if a category with the given id exists
+				Set<Subcategory> subcats = cat.get().getSubcategories();
+				for (Subcategory s: subcats) {	// adding (id, subcat) to maps later to be user for filtering
+					subMap.put(s.getID(), s);
+				}
+			}
+		}
+		for (Long id: subcatIDs) {
+			Optional<Subcategory> subcat = subcatRepo.findById(id);
+			if (subcat.isPresent()) {
+				subMap.put(id, subcat.get());	// adding subcategories objects retrieved from repository by their id
+			}									// which was sent from front
+		}
+		return new ArrayList<Subcategory>(subMap.values());		// converting to list
+	}
+	
 	 
 }
