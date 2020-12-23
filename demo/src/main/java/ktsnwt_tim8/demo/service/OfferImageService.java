@@ -31,9 +31,9 @@ public class OfferImageService {
 	@Autowired
 	private OfferRepository offerRepo;
 
-	public void delete(Long id) {
-		repo.deleteById(id);
-	}
+//	public void delete(Long id) {
+//		repo.deleteById(id);
+//	}
 
 	public List<OfferImage> findAllByOffer(Offer offer) {
 		return repo.findAllByOffer(offer);
