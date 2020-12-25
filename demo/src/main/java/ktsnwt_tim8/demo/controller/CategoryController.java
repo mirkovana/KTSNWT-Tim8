@@ -30,9 +30,9 @@ public class CategoryController {
 	/* ISPISIVANJE SVIH KATEGORIJA */
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public List<Category> getAllCategories() {
+	public ResponseEntity<List<Category>> getAllCategories() {
 		List<Category> listCategories = service.listAll();
-		return listCategories;
+		return new ResponseEntity<>(listCategories, HttpStatus.OK);
 	}
 
 	/* DODAVANJE NOVE KATEGORIJE */
@@ -59,15 +59,20 @@ public class CategoryController {
 	/* BRISANJE KATEGORIJE */
 	@DeleteMapping(value = "/{idCategory}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public List<Category> deleteCategory(@PathVariable Long idCategory) {
+	public  ResponseEntity<Void> deleteCategory(@PathVariable Long idCategory) {
 
 		Category cat = service.get(idCategory);
 		List<Category> categories = service.listAll();
 
 		categories.remove(cat);
-		service.delete(idCategory);
-
-		return categories;
+		try {
+			service.delete(idCategory);
+		}
+	
+		catch  (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		 return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

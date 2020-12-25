@@ -25,6 +25,8 @@ public class Subcategory {
 	@Column(unique = true, nullable = false)
 	private String name;
 	
+	
+
 	@OneToMany(mappedBy = "subcategory")
 	@JsonBackReference
 	private Set<Offer> offers;
@@ -33,6 +35,12 @@ public class Subcategory {
 	@JoinColumn(name = "category_id",referencedColumnName = "id")
 	private Category category;
 	
+	public Subcategory(String name) {
+		super();
+		this.name = name;
+		 
+	
+	}
 	
 	public Subcategory() {
 		super();

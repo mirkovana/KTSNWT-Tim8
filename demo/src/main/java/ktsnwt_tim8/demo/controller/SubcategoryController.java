@@ -34,9 +34,9 @@ public class SubcategoryController {
 	/* ISPISIVANJE SVIH POD KATEGORIJA */
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public List<Subcategory> getAllSubcategories() {
+	public ResponseEntity<List<Subcategory>>getAllSubcategories() {
 		List<Subcategory> listSubcategories = service.listAll();
-		return listSubcategories;
+		return new ResponseEntity<>(listSubcategories, HttpStatus.OK);
 	}
 
 	/* DODAVANJE NOVE POD KATEGORIJE */
@@ -60,14 +60,20 @@ public class SubcategoryController {
 	/* BRISANJE KATEGORIJE */
 	@DeleteMapping(value = "/{idSubcategory}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public List<Subcategory> deleteSubcategory(@PathVariable Long idSubcategory) {
+	public  ResponseEntity<Void>  deleteSubcategory(@PathVariable Long idSubcategory) {
 
 		Subcategory subcat = service.get(idSubcategory);
 		List<Subcategory> subcategories = service.listAll();
 
 		subcategories.remove(subcat);
-		service.delete(idSubcategory);
-
-		return subcategories;
+		try {
+			service.delete(idSubcategory);
+		}
+		catch  (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		 return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	
 }
