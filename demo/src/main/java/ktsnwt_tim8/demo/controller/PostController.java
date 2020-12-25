@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javassist.NotFoundException;
+import ktsnwt_tim8.demo.dto.OfferDTO;
 import ktsnwt_tim8.demo.dto.PostDTO;
 import ktsnwt_tim8.demo.helper.PostMapper;
 import ktsnwt_tim8.demo.model.Offer;
@@ -48,7 +49,7 @@ public class PostController {
 	/* ISPISIVANJE SVIH POSTOVA ZA PONUDU */
 	@GetMapping(value = "/{idOffer}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-	public ResponseEntity<Page<PostDTO>> getAllPosts(@PathVariable Long idOffer, Pageable pageable) {
+	public ResponseEntity<List<PostDTO>> getAllPosts(@PathVariable Long idOffer, Pageable pageable) {
 		Offer offer = offerService.get(idOffer);
 		Page<Post> posts = service.findAllByOffer1(offer, pageable);
 		List<PostDTO> postsDTO = new ArrayList<PostDTO>();
@@ -58,8 +59,11 @@ public class PostController {
 		}
 		
 		Page<PostDTO> postsPageDTO = new PageImpl<>(postsDTO, posts.getPageable(), posts.getTotalElements());
-
-        return new ResponseEntity<>(postsPageDTO, HttpStatus.OK);
+		List<PostDTO> lista = new ArrayList<PostDTO>();
+		for(PostDTO p : postsPageDTO) {
+			lista.add(p);
+		}
+        return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 //	public Page<Post> getAllByOffer(@PathVariable Long idOffer) {
 //		Offer offer = offerService.get(idOffer);
@@ -98,21 +102,26 @@ public class PostController {
 	/* BRISANJE POSTA */
 	@DeleteMapping(value = "/{idPost}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public List<Post> deletePost(@PathVariable Long idPost) {
+	public ResponseEntity<Void> deletePost(@PathVariable Long idPost) {
 
 		Post post = service.get(idPost);
 		List<Post> posts = service.listAll();
 
 		posts.remove(post);
+		try {
 		service.delete(idPost);
-
-		return posts;
+		}
+		catch  (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		 return new ResponseEntity<>(HttpStatus.OK);
+		//return posts;
 	}
 	
 	/*IZMENA POSTA*/
 	@PutMapping(value = "/{idPost}", consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Post updatePost(@PathVariable Long idPost,@Valid @RequestBody PostDTO postUpdated)
+	public ResponseEntity<PostDTO> updatePost(@PathVariable Long idPost,@Valid @RequestBody PostDTO postUpdated)
 			throws NotFoundException, Exception{
 		
 		Date date = new Date();
@@ -123,12 +132,20 @@ public class PostController {
 		if(postUpdated.getTitle().isEmpty()) {
 			throw new Exception("Title cannot be empty");
 		}
-		return repository.findById(idPost).map(post -> {
+		
+		Post post = repository.getOne(idPost);
+		post.setDate(date);
+		post.setContent(postUpdated.getContent());
+		post.setTitle(postUpdated.getTitle());
+		repository.save(post);
+		
+		return new ResponseEntity<>(new PostDTO(post), HttpStatus.OK);
+		/*return repository.findById(idPost).map(post -> {
 			post.setDate(date);
 			post.setContent(postUpdated.getContent());
 			post.setTitle(postUpdated.getTitle());
 			return repository.save(post);
-		}).orElseThrow(() -> new NotFoundException("Post not found with id " + idPost));
+		}).orElseThrow(() -> new NotFoundException("Post not found with id " + idPost));*/
 
 	}
 }
