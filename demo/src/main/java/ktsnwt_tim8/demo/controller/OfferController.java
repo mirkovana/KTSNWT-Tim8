@@ -1,13 +1,8 @@
 package ktsnwt_tim8.demo.controller;
 
 import java.util.ArrayList;
-
-import java.util.Iterator;
-
 import java.util.List;
-import java.util.Set;
-
-import javax.validation.Valid;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -18,9 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,9 +31,7 @@ import ktsnwt_tim8.demo.helper.OfferMapper;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.OfferImage;
 import ktsnwt_tim8.demo.model.Post;
-import ktsnwt_tim8.demo.model.RegisteredUser;
 import ktsnwt_tim8.demo.model.Subcategory;
-import ktsnwt_tim8.demo.model.User;
 import ktsnwt_tim8.demo.repository.OfferRepository;
 import ktsnwt_tim8.demo.service.OfferImageService;
 import ktsnwt_tim8.demo.service.OfferService;
@@ -83,7 +73,7 @@ public class OfferController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping
-	public ResponseEntity<Page<OfferDTO>> getAllOffers(Pageable pageable) {
+	public ResponseEntity<List<OfferDTO>> getAllOffers(Pageable pageable) {
 		Page<Offer> offers = service.findAllPageable(pageable);
 		List<OfferDTO> offersDTO = new ArrayList<OfferDTO>();
 
@@ -92,8 +82,11 @@ public class OfferController {
 		}
 
 		Page<OfferDTO> pageOffersDTO = new PageImpl<>(offersDTO, offers.getPageable(), offers.getTotalElements());
-
-		return new ResponseEntity<>(pageOffersDTO, HttpStatus.OK);
+		List<OfferDTO> lista = new ArrayList<OfferDTO>();
+		for(OfferDTO o : pageOffersDTO) {
+			lista.add(o);
+		}
+		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 
 	/* ISPISIVANJE SVIH PONUDA */
@@ -137,7 +130,7 @@ public class OfferController {
 	/* IZMENA PONUDE */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value = "/{idOffer}", consumes = "application/json")
-	public Offer updateOffer(@PathVariable Long idOffer, @Valid @RequestBody OfferDTO offerUpdated)
+	public ResponseEntity<OfferDTO> updateOffer(@PathVariable Long idOffer, @Valid @RequestBody OfferDTO offerUpdated)
 			throws NotFoundException, Exception {
 		if (offerUpdated.getDescription().isEmpty()) {
 			throw new Exception("Description cannot be empty");
@@ -148,7 +141,14 @@ public class OfferController {
 		if (offerUpdated.getPlace().isEmpty()) {
 			throw new Exception("Place cannot be empty");
 		}
-		return repository.findById(idOffer).map(offer -> {
+	    Offer offer = repository.getOne(idOffer);
+		offer.setDescription(offerUpdated.getDescription());
+		offer.setPlace(offerUpdated.getPlace());
+		offer.setTitle(offerUpdated.getTitle());
+		repository.save(offer);
+		return new ResponseEntity<>(new OfferDTO(offer.getID(), offer.getTitle(), offer.getDescription(),
+				offer.getAvgRating(), offer.getNmbOfRatings(), offer.getLat(), offer.getLon(), offer.getPlace()), HttpStatus.OK);
+		/*return repository.findById(idOffer).map(offer -> {
 			// offer.setAvgRating(offerUpdated.getAvgRating());
 			offer.setDescription(offerUpdated.getDescription());
 			// offer.setLat(offerUpdated.getLat());
@@ -157,14 +157,14 @@ public class OfferController {
 			offer.setPlace(offerUpdated.getPlace());
 			offer.setTitle(offerUpdated.getTitle());
 			return repository.save(offer);
-		}).orElseThrow(() -> new NotFoundException("Offer not found with id " + idOffer));
+		}).orElseThrow(() -> new NotFoundException("Offer not found with id " + idOffer));*/
 
 	}
 
 	/* BRISANJE PONUDE */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(value = "/{idOffer}")
-	public List<Offer> deleteOffer(@PathVariable Long idOffer) {
+	public ResponseEntity<Void>  deleteOffer(@PathVariable Long idOffer) {
 		Offer offer = service.get(idOffer);
 		List<Offer> offers = service.listAll();
 
@@ -180,12 +180,16 @@ public class OfferController {
 				serviceOfferImage.deleteImage(oi.getID());
 				//IZMENJENO SA delete na deleteImage
 			} catch (Exception e) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 		}
+		try {
 		service.delete(idOffer);
-
-		return offers;
+		}		catch  (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		 return new ResponseEntity<>(HttpStatus.OK);
+		//return offers;
 	}
 
 	/* SUBSCRIBING TO OFFER */
