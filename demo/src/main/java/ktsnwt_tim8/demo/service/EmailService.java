@@ -38,7 +38,7 @@ public class EmailService {
 	public void sendEmailNotification(String email, Post post) {
 		SimpleMailMessage msg = new SimpleMailMessage();
 		msg.setTo(email);
-		msg.setSubject(post.getTitle());
+		msg.setSubject("New post on " + post.getTitle());
 		String message = post.getContent();
 		message += "\n";
 		message += "Vise o ovome pogledajte na : ..........";

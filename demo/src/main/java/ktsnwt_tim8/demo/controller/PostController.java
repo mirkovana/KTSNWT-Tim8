@@ -38,16 +38,16 @@ import ktsnwt_tim8.demo.service.PostService;
 public class PostController {
 	@Autowired
 	private PostService service;
-	
+
 	@Autowired
 	private PostRepository repository;
 
 	@Autowired
 	private OfferService offerService;
-	
+
 	@Autowired
 	private EmailService emailService;
-	
+
 	private static PostMapper mapper = new PostMapper();
 
 	/* ISPISIVANJE SVIH POSTOVA ZA PONUDU */
@@ -57,15 +57,15 @@ public class PostController {
 		Offer offer = offerService.get(idOffer);
 		Page<Post> posts = service.findAllByOffer1(offer, pageable);
 		List<PostDTO> postsDTO = new ArrayList<PostDTO>();
-		
-		for (Post p: posts) {
+
+		for (Post p : posts) {
 			postsDTO.add(mapper.toDto(p));
 		}
-		
+
 		Page<PostDTO> postsPageDTO = new PageImpl<>(postsDTO, posts.getPageable(), posts.getTotalElements());
 
-        return new ResponseEntity<>(postsPageDTO, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(postsPageDTO, HttpStatus.OK);
+	}
 //	public Page<Post> getAllByOffer(@PathVariable Long idOffer) {
 //		Offer offer = offerService.get(idOffer);
 //
@@ -75,35 +75,33 @@ public class PostController {
 //	}
 
 	/* DODAVANJE NOVOG POSTA */
-	@PostMapping(value = "/{idOffer}",consumes = "application/json")
+	@PostMapping(value = "/{idOffer}", consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<PostDTO> savePost(@PathVariable Long idOffer,@Valid @RequestBody PostDTO postDTO) throws Exception {
+	public ResponseEntity<PostDTO> savePost(@PathVariable Long idOffer, @Valid @RequestBody PostDTO postDTO)
+			throws Exception {
 
 		Date date = new Date();
 		Post post = new Post();
-		 
-		if(postDTO.getContent().isEmpty()) {
+
+		if (postDTO.getContent().isEmpty()) {
 			throw new Exception("Content cannot be empty");
 		}
 		post.setContent(postDTO.getContent());
 		post.setDate(date);
 		Offer offer = offerService.get(idOffer);
-		post.setOffer(offer); 
-		
-		
-		if(postDTO.getTitle().isEmpty()) {
+		post.setOffer(offer);
+
+		if (postDTO.getTitle().isEmpty()) {
 			throw new Exception("Title cannot be empty");
 		}
 		post.setTitle(postDTO.getTitle());
-		
+
 		post = service.save(post);
-		
+
 		for (RegisteredUser user : offer.getUsers()) {
 			emailService.sendEmailNotification(user.getEmail(), post);
-			System.out.println("USAO");
-		
 		}
-		
+
 		return new ResponseEntity<>(new PostDTO(post), HttpStatus.CREATED);
 	}
 
@@ -120,19 +118,19 @@ public class PostController {
 
 		return posts;
 	}
-	
-	/*IZMENA POSTA*/
+
+	/* IZMENA POSTA */
 	@PutMapping(value = "/{idPost}", consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Post updatePost(@PathVariable Long idPost,@Valid @RequestBody PostDTO postUpdated)
-			throws NotFoundException, Exception{
-		
+	public Post updatePost(@PathVariable Long idPost, @Valid @RequestBody PostDTO postUpdated)
+			throws NotFoundException, Exception {
+
 		Date date = new Date();
-		if(postUpdated.getContent().isEmpty()) {
+		if (postUpdated.getContent().isEmpty()) {
 			throw new Exception("Content cannot be empty");
 		}
-		
-		if(postUpdated.getTitle().isEmpty()) {
+
+		if (postUpdated.getTitle().isEmpty()) {
 			throw new Exception("Title cannot be empty");
 		}
 		return repository.findById(idPost).map(post -> {
