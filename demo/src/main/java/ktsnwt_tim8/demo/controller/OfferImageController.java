@@ -83,7 +83,7 @@ public class OfferImageController {
 		return new ResponseEntity<>(ret, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{offerID}")
+	@RequestMapping(method = RequestMethod.GET, value = "/{offerID, page}")
 	public ResponseEntity<Page<OfferImageDTO>> getAllOfferImages(@PathVariable Long offerID, Pageable page) {
 
 		Page<OfferImage> images;

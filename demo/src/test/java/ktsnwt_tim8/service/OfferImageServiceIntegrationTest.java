@@ -39,8 +39,6 @@ public class OfferImageServiceIntegrationTest {
 	@Autowired
 	private OfferImageService offerImageService;
 
-	@Autowired
-	CategoryService categoryService;
 
 //	@Test
 //	public void findAllByOffer() {
@@ -135,7 +133,7 @@ public class OfferImageServiceIntegrationTest {
 	public void deleteImageBadID() throws Exception {
 		offerImageService.deleteImage(OfferImageConstants.OFFER_IMAGE_BAD_ID);
 	}
-	
+
 	@Test
 	public void updateImageDesc() throws Exception {
 		OfferImageDTO dto = new OfferImageDTO(OfferImageConstants.NEW_OFFER_IMAGE_ID,
@@ -143,9 +141,27 @@ public class OfferImageServiceIntegrationTest {
 		FileInputStream inputFile = new FileInputStream(OfferImageConstants.IMAGE_PATH);
 		MockMultipartFile file = new MockMultipartFile("file", "NameOfTheFile", "multipart/form-data", inputFile);
 		OfferImage offer = offerImageService.updateImageDesc(OfferImageConstants.OFFER_ID, dto);
-		
+
 		assertEquals(OfferImageConstants.NEW_IMAGE_DESCRIPTION, offer.getDescription());
 	}
-	
-	
+
+	@Test(expected = java.lang.Exception.class)
+	public void updateImageDescBadDescripiton() throws Exception {
+		OfferImageDTO dto = new OfferImageDTO(OfferImageConstants.NEW_OFFER_IMAGE_ID,
+				OfferImageConstants.BAD_IMAGE_DESCRIPTION, OfferImageConstants.IMAGE_BASE_64);
+		FileInputStream inputFile = new FileInputStream(OfferImageConstants.IMAGE_PATH);
+		MockMultipartFile file = new MockMultipartFile("file", "NameOfTheFile", "multipart/form-data", inputFile);
+		OfferImage offer = offerImageService.updateImageDesc(OfferImageConstants.OFFER_ID, dto);
+
+	}
+
+	@Test(expected = java.lang.Exception.class)
+	public void updateImageDescBadID() throws Exception {
+		OfferImageDTO dto = new OfferImageDTO(OfferImageConstants.NEW_OFFER_IMAGE_ID,
+				OfferImageConstants.NEW_IMAGE_DESCRIPTION, OfferImageConstants.IMAGE_BASE_64);
+		FileInputStream inputFile = new FileInputStream(OfferImageConstants.IMAGE_PATH);
+		MockMultipartFile file = new MockMultipartFile("file", "NameOfTheFile", "multipart/form-data", inputFile);
+		OfferImage offer = offerImageService.updateImageDesc(OfferImageConstants.BAD_OFFER_ID, dto);
+
+	}
 }
