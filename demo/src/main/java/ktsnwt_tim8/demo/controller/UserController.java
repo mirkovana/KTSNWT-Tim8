@@ -52,7 +52,7 @@ public class UserController {
 		}
 		user.setUsername(usersDTO.getUsername());
 		
-		
+		user.setEmail(usersDTO.getUsername());
 		user = (RegisteredUser) service.save(user);
 		return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);
 	}
