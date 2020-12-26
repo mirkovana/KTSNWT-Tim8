@@ -8,7 +8,7 @@ public class OfferImageConstants {
 
 	public static final Long OFFER_ID = 1L;
 	public static final Long NEW_OFFER_ID = 3L;
-	public static final Long BAD_OFFER_ID = 1000L;
+	public static final Long BAD_OFFER_ID = 120L;
 
 	public static final Long NEW_OFFER_IMAGE_ID = 6L;
 

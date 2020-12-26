@@ -70,7 +70,7 @@ public class OfferService {
 		if (offer == null) {
 			throw new Exception("Offer with given ID does not exits");
 		}
-
+		
 		boolean uslov = true;
 		for (Offer off : ((RegisteredUser) user).getSubscriptions()) {
 			if (off.getID().equals(id)) {
@@ -118,7 +118,6 @@ public class OfferService {
 		((RegisteredUser) user).getSubscriptions().add(offer);
 		userRepo.save(user);
 		repo.save(offer);
-		System.out.println(offer.getID());
 		return offer;
 	}
 

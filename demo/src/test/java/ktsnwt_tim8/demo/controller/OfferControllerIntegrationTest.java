@@ -199,7 +199,41 @@ public class OfferControllerIntegrationTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testUnsubscribeUser() {
+	public void testSubscribeUserAllreadySubscribed() throws Exception {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(USER_EMAIL, USER_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/offers/subscribe/" + OfferImageConstants.OFFER_ID, HttpMethod.POST, 
+				httpEntity, OfferDTO.class);
+		
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSubscribeUserBadID() throws Exception {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(USER_EMAIL, USER_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/offers/subscribe/" + OfferImageConstants.BAD_OFFER_ID, HttpMethod.POST, 
+				httpEntity, OfferDTO.class);
+		
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUnsubscribeUser() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(USER_EMAIL, USER_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
@@ -213,5 +247,42 @@ public class OfferControllerIntegrationTest {
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(OfferImageConstants.TOTAL_SUBS_OFFER_ID - 1, size);
+		
+		Class.forName("org.h2.Driver");
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:testdb", "h2db", "root");
+		java.sql.Statement statement = connection.createStatement();
+		statement.execute("INSERT INTO USER_OFFER (offer_id, user_id) values (1, 2)");
+		
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUnsubscribeUserBadID() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(USER_EMAIL, USER_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		
+		ResponseEntity<Void> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/offers/unsubscribe/" + OfferImageConstants.BAD_OFFER_ID, HttpMethod.DELETE,
+				httpEntity, Void.class);
+		
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUnsubscribeUserNotSubsribed() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(USER_EMAIL, USER_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		
+		ResponseEntity<Void> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/offers/unsubscribe/" + OfferImageConstants.NEW_OFFER_ID, HttpMethod.DELETE,
+				httpEntity, Void.class);
+		
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
 }

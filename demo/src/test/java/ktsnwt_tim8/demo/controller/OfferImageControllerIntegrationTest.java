@@ -105,6 +105,29 @@ public class OfferImageControllerIntegrationTest {
 	}
 
 	@Test
+	public void testAddPhotoBadParams() throws ClassNotFoundException, SQLException {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		FileSystemResource fsr = new FileSystemResource(OfferImageConstants.IMAGE_PATH);
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+		body.add("asdas", fsr);
+		body.add("descasdasdription", OfferImageConstants.IMAGE_DESCRIPTION);
+		body.add("ofasdasdferID", OfferImageConstants.OFFER_ID);
+
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<OfferImageDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/Offer-images", HttpMethod.POST, request, OfferImageDTO.class);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+
+	@Test
 	public void testGetAllOfferImages() {
 		ResponseEntity<OfferImageDTO[]> response = restTemplate.exchange("/api/Offer-images/1/0/10", HttpMethod.GET,
 				null, OfferImageDTO[].class);
@@ -113,6 +136,15 @@ public class OfferImageControllerIntegrationTest {
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertEquals(OfferImageConstants.FIND_ALL_NUMBER_OF_ITEMS, images.length);
 
+	}
+
+	@Test(expected = java.lang.Exception.class)
+	public void testGetAllOfferImagesBadID() {
+		ResponseEntity<OfferImageDTO[]> response = restTemplate.exchange(
+				"/api/Offer-images/" + OfferImageConstants.BAD_OFFER_ID + "/0/10", HttpMethod.GET, null,
+				OfferImageDTO[].class);
+
+		OfferImageDTO[] images = response.getBody();
 	}
 
 	@Test
@@ -142,6 +174,22 @@ public class OfferImageControllerIntegrationTest {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteImageBadID() throws SQLException, ClassNotFoundException {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+
+		ResponseEntity<Void> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/Offer-images/" + OfferImageConstants.OFFER_IMAGE_BAD_ID,
+				HttpMethod.DELETE, httpEntity, Void.class);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+
+	@Test
 	public void testUpdateDesc() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
@@ -156,23 +204,40 @@ public class OfferImageControllerIntegrationTest {
 				"http://localhost:" + port + "/api/Offer-images", HttpMethod.PUT, request, OfferImageDTO.class);
 
 		OfferImageDTO ret = responseEntity.getBody();
-		
+
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertNotNull(ret);
-		
+
 		assertEquals(OfferImageConstants.NEW_OFFER_IMAGE_ID, ret.getID());
-		
+
 		assertEquals(OfferImageConstants.NEW_IMAGE_DESCRIPTION, ret.getDescription());
-		
+
 		Pageable paging = PageRequest.of(0, 20);
 		Page<OfferImage> page = service.findAllByOfferID(OfferImageConstants.OFFER_ID, paging);
 		List<OfferImage> list = page.toList();
-		
+
 		assertEquals(OfferImageConstants.NEW_OFFER_IMAGE_ID, list.get(list.size() - 1).getID());
 		assertEquals(OfferImageConstants.NEW_IMAGE_DESCRIPTION, list.get(list.size() - 1).getDescription());
-		
+
 		ret.setDescription(OfferImageConstants.IMAGE_DESCRIPTION);
 		service.updateImageDesc(OfferImageConstants.NEW_OFFER_IMAGE_ID, ret);
+	}
+
+	@Test
+	public void testUpdateDescBadParams() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+		body.add("offerID1231", OfferImageConstants.NEW_OFFER_IMAGE_ID);
+		body.add("descsription12312", OfferImageConstants.NEW_IMAGE_DESCRIPTION);
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<OfferImageDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/Offer-images", HttpMethod.PUT, request, OfferImageDTO.class);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
 
 }
