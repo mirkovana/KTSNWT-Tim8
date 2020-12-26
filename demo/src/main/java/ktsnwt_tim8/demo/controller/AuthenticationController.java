@@ -127,14 +127,16 @@ public class AuthenticationController {
 			user.setName(usersDTO.getName());
 
 			if (usersDTO.getPassword().isEmpty()) {
-				throw new Exception("Password cannot be empty");
+				//throw new Exception("Password cannot be empty");
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 			user.setPassword(passwordEncoder.encode(usersDTO.getPassword()));
 			user.setSurname(usersDTO.getSurname());
 			user.setEmail(usersDTO.getUsername());
 			user.setActive(false);
 			if (usersDTO.getUsername().isEmpty()) {
-				throw new Exception("Username cannot be empty");
+				//throw new Exception("Username cannot be empty");
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 			user.setUsername(usersDTO.getUsername());
 			//user.setAuthorities(authorityService.findByName("ROLE_USER")); //OVO TEK KAD POTVRDI MEJL ADRESU

@@ -32,101 +32,88 @@ import ktsnwt_tim8.demo.model.Subcategory;
 import ktsnwt_tim8.demo.service.SubcategoryService;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:test.properties")
 public class SubcategoryControllerIntegrationTest {
 
-	
-	
 	@Autowired
 	private SubcategoryService subcategoryService;
-	
-	
-	
+
 	@Autowired
-    private TestRestTemplate restTemplate;
-	
+	private TestRestTemplate restTemplate;
+
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	/*ISPISIVANJE SVIH*/
+	/* ISPISIVANJE SVIH */
 	// JWT token za pristup REST servisima. Bice dobijen pri logovanju
-    private String accessToken;
+	private String accessToken;
 
-    @Value("${local.server.port}")
+	@Value("${local.server.port}")
 	private int port;
 
 	public String login(String username, String password) {
 		ResponseEntity<UserTokenStateDTO> responseEntity = restTemplate.postForEntity("/auth/log-in",
-				new UserLoginDTO(username,password), UserTokenStateDTO.class);
+				new UserLoginDTO(username, password), UserTokenStateDTO.class);
 		return "Bearer " + responseEntity.getBody().getAccessToken();
 	}
-	
-	/*BRISANJE*/
+
+	/* BRISANJE */
 	@Test
-    @Transactional
-    @Rollback(true)
-    public void testDeleteSubcategory() throws Exception {
-		
+	@Transactional
+	@Rollback(true)
+	public void testDeleteSubcategory() throws Exception {
+
 		Long id = 1L;
 		login(ADMIN_EMAIL, ADMIN_PASSWORD);
 		HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
 
-     
-       int size = subcategoryService.listAll().size();
-        HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
-        // poziv REST servisa za brisanje
-        ResponseEntity<Void> responseEntity =
-                restTemplate.exchange("http://localhost:" + port +"/api/subcategories/7" ,
-                        HttpMethod.DELETE, httpEntity, Void.class);
+		int size = subcategoryService.listAll().size();
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		// poziv REST servisa za brisanje
+		ResponseEntity<Void> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/subcategories/7",
+				HttpMethod.DELETE, httpEntity, Void.class);
 
-        // provera odgovora servera
-         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		// provera odgovora servera
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        // mora biti jedan manje slog sada nego pre
-         assertEquals(size - 1, subcategoryService.listAll().size());
-    }
-	
-	
-	
+		// mora biti jedan manje slog sada nego pre
+		assertEquals(size - 1, subcategoryService.listAll().size());
+	}
 
-    @Test
-    @Transactional
-    @Rollback(true)
-    public void testSaveSubcategory() throws Exception {
-        int size = subcategoryService.listAll().size(); // broj slogova pre ubacivanja novog
-        
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveSubcategory() throws Exception {
+		int size = subcategoryService.listAll().size(); // broj slogova pre ubacivanja novog
+
 		HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
-        HttpEntity<Object> httpEntity = new HttpEntity<Object>(new SubcategoryDTO("naziv", 10l), headers);
-        
-        
-        ResponseEntity<SubcategoryDTO> responseEntity =
-                restTemplate.exchange("http://localhost:" + port +"/api/subcategories/1", HttpMethod.POST, httpEntity,  SubcategoryDTO.class);
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new SubcategoryDTO("naziv", 10l), headers);
 
-        // provera odgovora servera
-        SubcategoryDTO category = responseEntity.getBody();
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertNotNull(category);
-        assertEquals("naziv", category.getName());
+		ResponseEntity<SubcategoryDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/subcategories/1", HttpMethod.POST, httpEntity, SubcategoryDTO.class);
 
-        List<Subcategory> categories = subcategoryService.listAll();
-        assertEquals(size + 1, categories.size()); // mora biti jedan vise slog sada nego pre
-        // poslednja kategorija u listi treba da bude nova kategorija koja je ubacena u testu
-        assertEquals("naziv", categories.get(categories.size()-1).getName());
+		// provera odgovora servera
+		SubcategoryDTO category = responseEntity.getBody();
+		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+		assertNotNull(category);
+		assertEquals("naziv", category.getName());
 
-        // uklanjamo dodatu kategoriju
-        subcategoryService.delete(category.getID());
-    }
+		List<Subcategory> categories = subcategoryService.listAll();
+		assertEquals(size + 1, categories.size()); // mora biti jedan vise slog sada nego pre
+		// poslednja kategorija u listi treba da bude nova kategorija koja je ubacena u
+		// testu
+		assertEquals("naziv", categories.get(categories.size() - 1).getName());
 
-    
-    
-    @Test
-    public void testGetAllSubcategories() {
+		// uklanjamo dodatu kategoriju
+		subcategoryService.delete(category.getID());
+	}
 
-    
+	@Test
+	public void testGetAllSubcategories() {
 
-    	HttpHeaders headers = new HttpHeaders();
+		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
 
@@ -135,7 +122,29 @@ public class SubcategoryControllerIntegrationTest {
 
 		Subcategory[] categories = responseEntity.getBody();
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(FIND_ALL_NUMBER_OF_ITEMS_SUB, categories.length);
-    }
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals(FIND_ALL_NUMBER_OF_ITEMS_SUB, categories.length);
+	}
+	
+	/*NEUSPESNO DODAVANJE*/
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveSubcategory_NameIsEmpty() throws Exception {
+		int size = subcategoryService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new SubcategoryDTO("", 11l), headers);
+
+		ResponseEntity<SubcategoryDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/subcategories/1", HttpMethod.POST, httpEntity, SubcategoryDTO.class);
+
+		// provera odgovora servera
+		SubcategoryDTO category = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		
+		List<Subcategory> categories = subcategoryService.listAll();
+		assertEquals(size, categories.size()); // mora isti broj kao i pre
+	}
 }

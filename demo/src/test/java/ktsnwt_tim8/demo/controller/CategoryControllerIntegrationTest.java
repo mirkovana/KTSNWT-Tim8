@@ -76,7 +76,7 @@ public class CategoryControllerIntegrationTest {
 		int size = categoryService.listAll().size();
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
 		// poziv REST servisa za brisanje
-		ResponseEntity<Void> responseEntity = restTemplate.exchange("http://localhost:" + port +"/api/categories/4",
+		ResponseEntity<Void> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/categories/4",
 				HttpMethod.DELETE, httpEntity, Void.class);
 
 		// provera odgovora servera
@@ -86,6 +86,7 @@ public class CategoryControllerIntegrationTest {
 		assertEquals(size - 1, categoryService.listAll().size());
 	}
 
+	/*USPESNO DODAVANJE*/
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -114,24 +115,43 @@ public class CategoryControllerIntegrationTest {
 		// uklanjamo dodatu kategoriju
 		categoryService.delete(category.getID());
 	}
-	
-	
-	
-	    @Test
-	    public void testGetAllCategories() {
 
-	    
+	@Test
+	public void testGetAllCategories() {
 
-	    	HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
-			HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
 
-			ResponseEntity<Category[]> responseEntity = restTemplate.exchange(
-					"http://localhost:" + port + "/api/categories", HttpMethod.GET, httpEntity, Category[].class);
+		ResponseEntity<Category[]> responseEntity = restTemplate
+				.exchange("http://localhost:" + port + "/api/categories", HttpMethod.GET, httpEntity, Category[].class);
 
-	        Category[] categories = responseEntity.getBody();
+		Category[] categories = responseEntity.getBody();
 
-	        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-	        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, categories.length);
-	    }
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals(FIND_ALL_NUMBER_OF_ITEMS, categories.length);
+	}
+
+	/* NEUSPESNO DODAVANJE */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveCategory_NameIsEmpty() throws Exception {
+		int size = categoryService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new CategoryDTO("", 11l), headers);
+
+		ResponseEntity<CategoryDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/categories", HttpMethod.POST, httpEntity, CategoryDTO.class);
+
+		// provera odgovora servera
+		CategoryDTO category = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		// assertNull(category);
+
+		List<Category> categories = categoryService.listAll();
+		assertEquals(size, categories.size()); // mora biti isti broj slogova kao i pre
+	}
 }

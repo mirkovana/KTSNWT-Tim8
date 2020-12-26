@@ -177,10 +177,10 @@ public class OfferControllerIntegrationTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(USER_EMAIL, USER_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
-		
+
 		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange(
-				"http://localhost:" + port + "/api/offers/subscribe/" + OfferImageConstants.NEW_OFFER_ID, HttpMethod.POST, 
-				httpEntity, OfferDTO.class);
+				"http://localhost:" + port + "/api/offers/subscribe/" + OfferImageConstants.NEW_OFFER_ID,
+				HttpMethod.POST, httpEntity, OfferDTO.class);
 
 		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
 		OfferDTO ret = responseEntity.getBody();
@@ -188,14 +188,14 @@ public class OfferControllerIntegrationTest {
 		int size = off.getUsers().size();
 
 		assertEquals(OfferImageConstants.TOTAL_SUBS + 1, size);
-		
-		//Beacuse of login, no user logged
+
+		// Beacuse of login, no user logged
 		Class.forName("org.h2.Driver");
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:testdb", "h2db", "root");
 		java.sql.Statement statement = connection.createStatement();
 		statement.execute("DELETE FROM USER_OFFER WHERE user_id = '2' and offer_id = '3'");
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -204,15 +204,14 @@ public class OfferControllerIntegrationTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(USER_EMAIL, USER_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
-		
+
 		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange(
-				"http://localhost:" + port + "/api/offers/subscribe/" + OfferImageConstants.OFFER_ID, HttpMethod.POST, 
+				"http://localhost:" + port + "/api/offers/subscribe/" + OfferImageConstants.OFFER_ID, HttpMethod.POST,
 				httpEntity, OfferDTO.class);
-		
+
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
-	
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -221,15 +220,14 @@ public class OfferControllerIntegrationTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(USER_EMAIL, USER_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
-		
+
 		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange(
-				"http://localhost:" + port + "/api/offers/subscribe/" + OfferImageConstants.BAD_OFFER_ID, HttpMethod.POST, 
-				httpEntity, OfferDTO.class);
-		
+				"http://localhost:" + port + "/api/offers/subscribe/" + OfferImageConstants.BAD_OFFER_ID,
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
-	
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -237,24 +235,24 @@ public class OfferControllerIntegrationTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(USER_EMAIL, USER_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
-		
+
 		ResponseEntity<Void> responseEntity = restTemplate.exchange(
-				"http://localhost:" + port + "/api/offers/unsubscribe/" + OfferImageConstants.OFFER_ID, HttpMethod.DELETE,
-				httpEntity, Void.class);
-		
+				"http://localhost:" + port + "/api/offers/unsubscribe/" + OfferImageConstants.OFFER_ID,
+				HttpMethod.DELETE, httpEntity, Void.class);
+
 		Offer off = offerService.get(OfferImageConstants.OFFER_ID);
 		int size = off.getUsers().size();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(OfferImageConstants.TOTAL_SUBS_OFFER_ID - 1, size);
-		
+
 		Class.forName("org.h2.Driver");
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:testdb", "h2db", "root");
 		java.sql.Statement statement = connection.createStatement();
 		statement.execute("INSERT INTO USER_OFFER (offer_id, user_id) values (1, 2)");
-		
+
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -262,15 +260,14 @@ public class OfferControllerIntegrationTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(USER_EMAIL, USER_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
-		
+
 		ResponseEntity<Void> responseEntity = restTemplate.exchange(
-				"http://localhost:" + port + "/api/offers/unsubscribe/" + OfferImageConstants.BAD_OFFER_ID, HttpMethod.DELETE,
-				httpEntity, Void.class);
-		
+				"http://localhost:" + port + "/api/offers/unsubscribe/" + OfferImageConstants.BAD_OFFER_ID,
+				HttpMethod.DELETE, httpEntity, Void.class);
+
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
-	
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -278,11 +275,55 @@ public class OfferControllerIntegrationTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(USER_EMAIL, USER_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
-		
+
 		ResponseEntity<Void> responseEntity = restTemplate.exchange(
-				"http://localhost:" + port + "/api/offers/unsubscribe/" + OfferImageConstants.NEW_OFFER_ID, HttpMethod.DELETE,
-				httpEntity, Void.class);
-		
+				"http://localhost:" + port + "/api/offers/unsubscribe/" + OfferImageConstants.NEW_OFFER_ID,
+				HttpMethod.DELETE, httpEntity, Void.class);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	/* NEUSPESNO DODAVANJE */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_DescriptionAndTitleAreEmpty() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, "", "", 0.0, 50, 50.0, 50.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	/*NEUSPESNA IZMENA */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_PlaceAndTitleAreEmpty() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, "", "opis", 0.0, 0, 40.0, 40.0, ""), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
 }
