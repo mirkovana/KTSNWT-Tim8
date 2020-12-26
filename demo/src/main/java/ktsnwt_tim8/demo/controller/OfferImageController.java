@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +53,7 @@ public class OfferImageController {
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{imageID}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<OfferImageDTO> deleteImage(@PathVariable Long imageID) {
+	public ResponseEntity<Void> deleteImage(@PathVariable Long imageID) {
 
 		try {
 			service.deleteImage(imageID);
@@ -60,7 +61,7 @@ public class OfferImageController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
@@ -83,13 +84,14 @@ public class OfferImageController {
 		return new ResponseEntity<>(ret, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{offerID}")
-	public ResponseEntity<Page<OfferImageDTO>> getAllOfferImages(@PathVariable Long offerID, Pageable page) {
+	@RequestMapping(method = RequestMethod.GET, value = "/{offerID}/{page}/{size}")
+	public ResponseEntity<List<OfferImageDTO>> getAllOfferImages(@PathVariable Long offerID, @PathVariable int page, @PathVariable int size) {
 
 		Page<OfferImage> images;
+		Pageable paging = PageRequest.of(page, size);
 
 		try {
-			images = service.getAllImages(offerID, page);
+			images = service.getAllImages(offerID, paging);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
@@ -101,8 +103,8 @@ public class OfferImageController {
 			imagesDTO.add(imgDTO);
 		}
 
-		Page<OfferImageDTO> ret = new PageImpl<OfferImageDTO>(imagesDTO, page, images.getTotalElements());
+		Page<OfferImageDTO> ret = new PageImpl<OfferImageDTO>(imagesDTO, paging, images.getTotalElements());
 
-		return new ResponseEntity<>(ret, HttpStatus.OK);
+		return new ResponseEntity<>(ret.toList(), HttpStatus.OK);
 	}
 }

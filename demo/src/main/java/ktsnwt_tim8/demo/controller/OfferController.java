@@ -195,7 +195,7 @@ public class OfferController {
 	/* SUBSCRIBING TO OFFER */
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping(value = "/subscribe/{idOffer}")
-	public ResponseEntity<UserDTO> subscribeUser(@PathVariable Long idOffer) throws Exception {
+	public ResponseEntity<OfferDTO> subscribeUser(@PathVariable Long idOffer) throws Exception {
 		Offer offer;
 		try {
 			offer = service.subscribe(idOffer);
@@ -203,15 +203,19 @@ public class OfferController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 
-		service.save(offer);
+//		service.save(offer);
+		OfferDTO ret = new OfferDTO(offer);
+//		
+//		Offer off = service.get(idOffer);
+//		System.out.println(off.getUsers().size());
 
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		return new ResponseEntity<>(ret, HttpStatus.CREATED);
 	}
 
 	/* CANCELING OFFER SUBSCRIPTION */
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@DeleteMapping(value = "/unsubscribe/{idOffer}")
-	public ResponseEntity<UserDTO> unsubscribeUser(@PathVariable Long idOffer) {
+	public ResponseEntity<Void> unsubscribeUser(@PathVariable Long idOffer) {
 		Offer offer;
 		try {
 			offer = service.deleteSubscriber(idOffer);

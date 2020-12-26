@@ -55,3 +55,13 @@ INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subc
 
 INSERT INTO SUBCATEGORY(name, category_id) values ('NAJNOVIJI',3);
 INSERT INTO CATEGORY(name) values ('NAJNOVIJA');
+
+INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica', 'src/main/resources/images/offerImage87516.jpg', 1);
+INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica1', 'src/main/resources/images/offerImage18524.jpg', 1);
+INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica2', 'src/main/resources/images/offerImage66669.jpg', 1);
+INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica3', 'src/main/resources/images/offerImage74698.jpg', 1);
+
+INSERT INTO USER_OFFER (offer_id, user_id) values (1, 2);
+INSERT INTO USER_OFFER (offer_id, user_id) values (2, 2);
+INSERT INTO USER_OFFER (offer_id, user_id) values (1, 3);
+INSERT INTO USER_OFFER (offer_id, user_id) values (3, 3);
