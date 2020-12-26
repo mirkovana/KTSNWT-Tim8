@@ -39,7 +39,7 @@ import ktsnwt_tim8.demo.service.PostService;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:test.properties")
 public class PostControllerIntegrationTest {
-	
+
 	@Autowired
 	private PostService postService;
 
@@ -60,12 +60,12 @@ public class PostControllerIntegrationTest {
 				new UserLoginDTO(username, password), UserTokenStateDTO.class);
 		return "Bearer " + responseEntity.getBody().getAccessToken();
 	}
-	
-	/*ISPISIVANJE PONUDA*/
-	 @Test
-	 public void testGetAllPosts() {
 
-	HttpHeaders headers = new HttpHeaders();
+	/* ISPISIVANJE PONUDA */
+	@Test
+	public void testGetAllPosts() {
+
+		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
 
@@ -74,99 +74,136 @@ public class PostControllerIntegrationTest {
 
 		PostDTO[] posts = responseEntity.getBody();
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, posts.length);
-	    }
-	 
-	 
-	 /*DODAVANJE*/
-	 @Test
-		@Transactional
-		@Rollback(true)
-		public void testSavePost() throws Exception {
-			int size = postService.listAll().size(); // broj slogova pre ubacivanja novog
-			Date datum = new Date();
-			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
-			HttpEntity<Object> httpEntity = new HttpEntity<Object>(new PostDTO(20l, "naslov", "opis" , datum), headers);
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals(FIND_ALL_NUMBER_OF_ITEMS, posts.length);
+	}
 
-			ResponseEntity<PostDTO> responseEntity = restTemplate.exchange(
-					"http://localhost:" + port + "/api/posts/1", HttpMethod.POST, httpEntity, PostDTO.class);
+	/* DODAVANJE */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSavePost() throws Exception {
+		int size = postService.listAll().size(); // broj slogova pre ubacivanja novog
+		Date datum = new Date();
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new PostDTO(20l, "naslov", "opis", datum), headers);
 
-			// provera odgovora servera
-			PostDTO post = responseEntity.getBody();
-			assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-			assertNotNull(post);
-			assertEquals("naslov", post.getTitle());
+		ResponseEntity<PostDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/posts/1",
+				HttpMethod.POST, httpEntity, PostDTO.class);
 
-			List<Post> posts= postService.listAll();
-			assertEquals(size + 1, posts.size()); // mora biti jedan vise slog sada nego pre
-			// poslednja kategorija u listi treba da bude nova kategorija koja je ubacena u
-			// testu
-			assertEquals("naslov", posts.get(posts.size() - 1).getTitle());
+		// provera odgovora servera
+		PostDTO post = responseEntity.getBody();
+		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+		assertNotNull(post);
+		assertEquals("naslov", post.getTitle());
 
-			// uklanjamo dodatu kategoriju
-			postService.delete(post.getID());
-		}
+		List<Post> posts = postService.listAll();
+		assertEquals(size + 1, posts.size()); // mora biti jedan vise slog sada nego pre
+		// poslednja kategorija u listi treba da bude nova kategorija koja je ubacena u
+		// testu
+		assertEquals("naslov", posts.get(posts.size() - 1).getTitle());
 
-	    /* BRISANJE */
-		@Test
-		@Transactional
-		@Rollback(true)
-		public void testDeletePost() throws Exception {
+		// uklanjamo dodatu kategoriju
+		postService.delete(post.getID());
+	}
 
-			Long id = 1L;
-			login(ADMIN_EMAIL, ADMIN_PASSWORD);
-			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+	/* BRISANJE */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeletePost() throws Exception {
 
-			int size = postService.listAll().size();
-			HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
-			// poziv REST servisa za brisanje
-			ResponseEntity<Void> responseEntity = restTemplate.exchange("http://localhost:" + port +"/api/posts/2",
-					HttpMethod.DELETE, httpEntity, Void.class);
+		Long id = 1L;
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
 
-			// provera odgovora servera
-			assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		int size = postService.listAll().size();
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		// poziv REST servisa za brisanje
+		ResponseEntity<Void> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/posts/2",
+				HttpMethod.DELETE, httpEntity, Void.class);
 
-			// mora biti jedan manje slog sada nego pre
-			assertEquals(size - 1, postService.listAll().size());
-		}
-		
-		
-		
-		 /*IZMENA*/
-		@Test
-	    @Transactional
-	    @Rollback(true)
-	    public void testUpdatePost() throws Exception {
-			Date datum = new Date();
+		// provera odgovora servera
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-			login(ADMIN_EMAIL, ADMIN_PASSWORD);
-			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
-			HttpEntity<Object> httpEntity = new HttpEntity<Object>(new PostDTO(ID_POST, "naslov", "opis" , datum),headers);
-			
-			
-			
-	        ResponseEntity<PostDTO> responseEntity = restTemplate.exchange("http://localhost:" + port +"/api/posts/1", HttpMethod.PUT,httpEntity, PostDTO.class);
+		// mora biti jedan manje slog sada nego pre
+		assertEquals(size - 1, postService.listAll().size());
+	}
 
-	        PostDTO post = responseEntity.getBody();
+	/* IZMENA */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdatePost() throws Exception {
+		Date datum = new Date();
 
-	        // provera odgovora servera
-	        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-	        assertNotNull(post);
-	        assertEquals("naslov", post.getTitle());
-	        
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new PostDTO(ID_POST, "naslov", "opis", datum), headers);
 
-	        // provera da li je izmenjen slog u bazi
-	        Post postdb= postService.get(1l);
-	        assertEquals(ID_POST, post.getID());
+		ResponseEntity<PostDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/posts/1",
+				HttpMethod.PUT, httpEntity, PostDTO.class);
 
+		PostDTO post = responseEntity.getBody();
 
-	        // vracanje podatka na staru vrednost
-	        postdb.setTitle(POST_TITLE_DB);
-	        postdb.setContent(POST_CONTENT_DB);
-            postService.save(postdb);
-	    }
+		// provera odgovora servera
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertNotNull(post);
+		assertEquals("naslov", post.getTitle());
+
+		// provera da li je izmenjen slog u bazi
+		Post postdb = postService.get(1l);
+		assertEquals(ID_POST, post.getID());
+
+		// vracanje podatka na staru vrednost
+		postdb.setTitle(POST_TITLE_DB);
+		postdb.setContent(POST_CONTENT_DB);
+		postService.save(postdb);
+	}
+
+	/* NEUSPESNO DODAVANJE */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSavePost_TitleIsEmpty() throws Exception {
+		int size = postService.listAll().size(); // broj slogova pre ubacivanja novog
+		Date datum = new Date();
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new PostDTO(21l, "", "opis", datum), headers);
+
+		ResponseEntity<PostDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/posts/1",
+				HttpMethod.POST, httpEntity, PostDTO.class);
+
+		// provera odgovora servera
+		PostDTO post = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Post> posts = postService.listAll();
+		assertEquals(size, posts.size()); // mora biti jednak broj kao i pre
+	}
+
+	/* NEUSPESNA IZMENA */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdatePost_ContentIsEmpty() throws Exception {
+		Date datum = new Date();
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new PostDTO(ID_POST, "naslov", "", datum), headers);
+
+		ResponseEntity<PostDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/posts/1",
+				HttpMethod.PUT, httpEntity, PostDTO.class);
+
+		PostDTO post = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
 }

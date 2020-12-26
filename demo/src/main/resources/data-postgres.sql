@@ -53,6 +53,9 @@ INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subc
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'Opis Kalemegdana', 40,40,0,'Kalemegdan',6, 'Beograd');
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'Opis spomenika neznanom junaku', 40,40,0,'Spomenik neznanom junaku',5, 'Beograd');
 
+
+
+
 INSERT INTO SUBCATEGORY(name, category_id) values ('NAJNOVIJI',3);
 
 INSERT INTO CATEGORY(name) values ('NAJNOVIJA');

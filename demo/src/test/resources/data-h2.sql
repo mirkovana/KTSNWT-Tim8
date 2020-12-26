@@ -59,6 +59,15 @@ INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subc
 INSERT INTO SUBCATEGORY(name, category_id) values ('NAJNOVIJI',3);
 INSERT INTO CATEGORY(name) values ('NAJNOVIJA');
 
+INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica', 'src/main/resources/images/offerImage87516.jpg', 1);
+INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica1', 'src/main/resources/images/offerImage18524.jpg', 1);
+INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica2', 'src/main/resources/images/offerImage66669.jpg', 1);
+INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica3', 'src/main/resources/images/offerImage74698.jpg', 1);
+
+INSERT INTO USER_OFFER (offer_id, user_id) values (1, 2);
+INSERT INTO USER_OFFER (offer_id, user_id) values (2, 2);
+INSERT INTO USER_OFFER (offer_id, user_id) values (1, 3);
+INSERT INTO USER_OFFER (offer_id, user_id) values (3, 3);
 
 INSERT INTO public.rating(id, rating, offer_id, user_id) VALUES (1L, 5, 1L, 2L); 	-- 12/3 za offer 1
 INSERT INTO public.rating(id, rating, offer_id, user_id) VALUES (2L, 5, 1L, 3L);
@@ -70,4 +79,5 @@ INSERT INTO public.rating(id, rating, offer_id, user_id) VALUES (4L, 4, 2L, 2L);
 INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (1L, '2020-5-1 12:00:00', null, 'Comment1', 1L, 2L);
 INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (2L, '2020-5-1 12:00:00', 'src/main/resources/images/commentpicture83800.jpg', 'Comment with picture 2', 2L, 2L);
 INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (3L, '2020-5-1 12:00:00', null, 'Comment with picture 2 from other user', 1L, 3L);
+
 

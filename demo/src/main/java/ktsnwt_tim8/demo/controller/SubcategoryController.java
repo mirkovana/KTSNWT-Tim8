@@ -48,7 +48,8 @@ public class SubcategoryController {
 		Category category = serviceCategory.get(idCategory);
 		Subcategory subcategory = new Subcategory();
 		if (subcategoryDTO.getName().isEmpty()) {
-			throw new Exception("Name of subcategory cannot be empty");
+			//throw new Exception("Name of subcategory cannot be empty");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		subcategory.setName(subcategoryDTO.getName());
