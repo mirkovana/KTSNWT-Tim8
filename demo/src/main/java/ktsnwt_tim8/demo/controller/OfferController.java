@@ -102,18 +102,21 @@ public class OfferController {
 			throws Exception {
 		Offer offer = new Offer();
 		if (offerDTO.getDescription().isEmpty()) {
-			throw new Exception("Description cannot be empty");
+			//throw new Exception("Description cannot be empty");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		offer.setDescription(offerDTO.getDescription());
 		offer.setLat(offerDTO.getLat());
 		offer.setLon(offerDTO.getLon());
 		if (offerDTO.getTitle().isEmpty()) {
-			throw new Exception("Title cannot be empty");
+			//throw new Exception("Title cannot be empty");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		offer.setTitle(offerDTO.getTitle());
 		
 		if (offerDTO.getPlace().isEmpty()) {
-			throw new Exception("Place cannot be empty");
+			//throw new Exception("Place cannot be empty");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		offer.setPlace(offerDTO.getPlace());
 		
@@ -133,13 +136,16 @@ public class OfferController {
 	public ResponseEntity<OfferDTO> updateOffer(@PathVariable Long idOffer, @Valid @RequestBody OfferDTO offerUpdated)
 			throws NotFoundException, Exception {
 		if (offerUpdated.getDescription().isEmpty()) {
-			throw new Exception("Description cannot be empty");
+			//throw new Exception("Description cannot be empty");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		if (offerUpdated.getTitle().isEmpty()) {
-			throw new Exception("Title cannot be empty");
+			//throw new Exception("Title cannot be empty");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		if (offerUpdated.getPlace().isEmpty()) {
-			throw new Exception("Place cannot be empty");
+			//throw new Exception("Place cannot be empty");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	    Offer offer = repository.getOne(idOffer);
 		offer.setDescription(offerUpdated.getDescription());

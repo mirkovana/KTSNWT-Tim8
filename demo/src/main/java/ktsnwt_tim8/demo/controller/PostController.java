@@ -86,7 +86,8 @@ public class PostController {
 		Post post = new Post();
 		 
 		if(postDTO.getContent().isEmpty()) {
-			throw new Exception("Content cannot be empty");
+			//throw new Exception("Content cannot be empty");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		post.setContent(postDTO.getContent());
 		post.setDate(date);
@@ -95,7 +96,8 @@ public class PostController {
 		
 		
 		if(postDTO.getTitle().isEmpty()) {
-			throw new Exception("Title cannot be empty");
+			//throw new Exception("Title cannot be empty");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		post.setTitle(postDTO.getTitle());
 		
@@ -136,11 +138,13 @@ public class PostController {
 		
 		Date date = new Date();
 		if(postUpdated.getContent().isEmpty()) {
-			throw new Exception("Content cannot be empty");
+			//throw new Exception("Content cannot be empty");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		if(postUpdated.getTitle().isEmpty()) {
-			throw new Exception("Title cannot be empty");
+			//throw new Exception("Title cannot be empty");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		Post post = repository.getOne(idPost);

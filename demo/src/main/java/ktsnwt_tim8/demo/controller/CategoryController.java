@@ -43,7 +43,8 @@ public class CategoryController {
 		Category category = new Category();
 
 		if (categoryDTO.getName().isEmpty()) {
-			throw new Exception("Name of category cannot be empty");
+			//throw new Exception("Name of category cannot be empty");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		category.setName(categoryDTO.getName());

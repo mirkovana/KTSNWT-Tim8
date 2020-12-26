@@ -55,22 +55,21 @@ public class UserControllerIntegrationTest {
 				new UserLoginDTO(username, password), UserTokenStateDTO.class);
 		return "Bearer " + responseEntity.getBody().getAccessToken();
 	}
-	
-	
-	
-	
+
+	/*USPESNO DODAVANJE*/
 	@Test
 	@Transactional
 	@Rollback(true)
 	public void testSaveUser() throws Exception {
 		int size = userService.listAll().size(); // broj slogova pre ubacivanja novog
-	 
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
-		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new UserDTO(10L, "username@nesto.com", "pass", "ime", "prez"), headers);
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new UserDTO(10L, "username@nesto.com", "pass", "ime", "prez"), headers);
 
-		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange(
-				"http://localhost:" + port + "/api/users", HttpMethod.POST, httpEntity, UserDTO.class);
+		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/auth/sign-up",
+				HttpMethod.POST, httpEntity, UserDTO.class);
 
 		// provera odgovora servera
 		UserDTO user = responseEntity.getBody();
@@ -78,7 +77,7 @@ public class UserControllerIntegrationTest {
 		assertNotNull(user);
 		assertEquals("username@nesto.com", user.getUsername());
 
-		List<User> users= userService.listAll();
+		List<User> users = userService.listAll();
 		assertEquals(size + 1, users.size()); // mora biti jedan vise slog sada nego pre
 		// poslednja kategorija u listi treba da bude nova kategorija koja je ubacena u
 		// testu
@@ -88,4 +87,27 @@ public class UserControllerIntegrationTest {
 		userService.delete(user.getID());
 	}
 	
+	/*NEUSPESNO DODAVANJE*/
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveUser_UsernameAndPasswordAreEmpty() throws Exception {
+		int size = userService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new UserDTO(11L, "sdfgh", "", "ime", "prez"), headers);
+
+		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/auth/sign-up",
+				HttpMethod.POST, httpEntity, UserDTO.class);
+
+		// provera odgovora servera
+		UserDTO user = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<User> users = userService.listAll();
+		assertEquals(size, users.size()); // mora biti jednak broj kao i pre
+	}
+
 }
