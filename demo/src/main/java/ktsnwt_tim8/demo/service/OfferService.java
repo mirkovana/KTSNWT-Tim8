@@ -112,43 +112,25 @@ public class OfferService {
 		String title = filterDTO.getTitle();
 		String place = filterDTO.getPlace();
 		List<Long> subcatIDs = filterDTO.getSubcatIDs();	// subcategory ids sent from frontend
-		List<Long> catIDs = filterDTO.getCatIDs();			// category ids sent from frontend
 		subcatIDs.remove(null);		// removing null values if there are any
-		catIDs.remove(null);	
 		
 		if (title == null) title = "";	// in the filtering functions, comparing with an empty string returns true 
 		if (place == null) place = "";	// which is what works in this case
 		
-		if (subcatIDs.size() == 0 && catIDs.size() == 0) {	 // filtering only by title and place
+		if (subcatIDs.size() == 0) {	 // filtering only by title and place
 			return repo.filterByTitleAndPlace(title, place, pageable);
 		}
 		
-		List<Subcategory> subs = getSubcategoriesFromCatIdsAndSubcatIds(subcatIDs, catIDs);
-		return repo.filterByTitlePlaceAndSubcategory(title, place, subs, pageable);
-	}
-	
-	
-	private ArrayList<Subcategory> getSubcategoriesFromCatIdsAndSubcatIds(List<Long> subcatIDs, List<Long> catIDs){
-		
 		HashMap<Long, Subcategory> subMap = new HashMap<Long, Subcategory>();	// map made to avoid duplicates
-		// each offer has a subcategory by which we can select it in jpa query
-		// so from categories gotten by their ids, we extract their subcategories
-		for (Long catID: catIDs) {	// cat ids send from front
-			Optional<Category> cat = catRepo.findById(catID);
-			if (cat.isPresent()) { // isPresent to check if a category with the given id exists
-				Set<Subcategory> subcats = cat.get().getSubcategories();
-				for (Subcategory s: subcats) {	// adding (id, subcat) to maps later to be user for filtering
-					subMap.put(s.getID(), s);
-				}
-			}
-		}
+		//getting subs from id
 		for (Long id: subcatIDs) {
 			Optional<Subcategory> subcat = subcatRepo.findById(id);
 			if (subcat.isPresent()) {
 				subMap.put(id, subcat.get());	// adding subcategories objects retrieved from repository by their id
 			}									// which was sent from front
 		}
-		return new ArrayList<Subcategory>(subMap.values());		// converting to list
+		ArrayList<Subcategory> subs = new ArrayList<Subcategory>(subMap.values());		// converting to list
+		return repo.filterByTitlePlaceAndSubcategory(title, place, subs, pageable);
 	}
 	
 	 

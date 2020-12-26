@@ -6,7 +6,6 @@ public class FilterDTO {
 
 	private String title;
 	private String place;
-	private List<Long> catIDs;
 	private List<Long> subcatIDs;
 	
 	public FilterDTO() {}
@@ -16,7 +15,6 @@ public class FilterDTO {
 		super();
 		this.title = title;
 		this.place = place;
-		this.catIDs = catIDs;
 		this.subcatIDs = subcatIDs;
 	}
 
@@ -33,12 +31,6 @@ public class FilterDTO {
 	}
 	public void setPlace(String place) {
 		this.place = place;
-	}
-	public List<Long> getCatIDs() {
-		return catIDs;
-	}
-	public void setCatIDs(List<Long> catIDs) {
-		this.catIDs = catIDs;
 	}
 	public List<Long> getSubcatIDs() {
 		return subcatIDs;
