@@ -133,7 +133,7 @@ public class RatingService {
 			
 			User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (u.getID() != r.getUser().getID()) {
-				throw new Exception("You can only update your own rating!");			
+				throw new Exception("You can only delete your own rating!");			
 			}
 			
 			Offer offer = r.getOffer();
