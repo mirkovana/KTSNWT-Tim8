@@ -3,11 +3,14 @@ INSERT INTO USERS (type, password, username, email, name, surname, enabled) VALU
 INSERT INTO authority (name) VALUES ('ROLE_ADMIN');
 INSERT INTO authority (name) VALUES ('ROLE_USER');
 INSERT INTO USERS (type, password, username, email, name, surname, enabled) VALUES ('ROLE_USER',  '$2y$10$qHYGGSJnVTs3vVHITJuSwOQyki4XoMO5FgKa.psVze6VKaIJnYi9K','kor2@nesto.com', 'kor2@nesto.com','Pera', 'Peric', true); --sifra je 1
+INSERT INTO USERS (type, password, username, email, name, surname, enabled) VALUES ('ROLE_USER',  '$2y$10$qHYGGSJnVTs3vVHITJuSwOQyki4XoMO5FgKa.psVze6VKaIJnYi9K','kor3@nesto.com', 'kor3@nesto.com','Pera', 'Peric', true); --sifra je 1
 
 
 insert into user_authority (user_id, authority_id) values (1, 1); -- admin has ROLE_ADMIN
 insert into user_authority (user_id, authority_id) values (2, 2); -- user has ROLE_GUEST
 insert into user_authority (user_id, authority_id) values (3, 2); -- user has ROLE_GUEST
+insert into user_authority (user_id, authority_id) values (4, 2); -- user has ROLE_GUEST
+
 
 
 INSERT INTO CATEGORY(name) values ('Institucija');
@@ -55,3 +58,11 @@ INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subc
 
 INSERT INTO SUBCATEGORY(name, category_id) values ('NAJNOVIJI',3);
 INSERT INTO CATEGORY(name) values ('NAJNOVIJA');
+
+
+INSERT INTO public.rating(id, rating, offer_id, user_id) VALUES (1L, 5, 1L, 2L); 	-- 12/3 za offer 1
+INSERT INTO public.rating(id, rating, offer_id, user_id) VALUES (2L, 5, 1L, 3L);
+INSERT INTO public.rating(id, rating, offer_id, user_id) VALUES (3L, 2, 1L, 4L);
+
+
+INSERT INTO public.rating(id, rating, offer_id, user_id) VALUES (4L, 4, 2L, 2L);    -- 1*4 za offer2 
