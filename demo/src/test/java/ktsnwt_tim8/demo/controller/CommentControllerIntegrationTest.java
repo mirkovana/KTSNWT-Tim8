@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +40,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import ktsnwt_tim8.demo.DemoApplication;
@@ -89,13 +91,112 @@ public class CommentControllerIntegrationTest {
 
 	//------------------------------ C R E A T E --------------------------------//
 
+	
+	
+	@Test
+	@Transactional
+	public void createCommentBadRequest() throws Exception {
 
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", "1"));
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		FileSystemResource fsr = new FileSystemResource("src/main/resources/images/beforeHouseWasDisco.jpg");
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+		body.add("imageFAIL", fsr); //-------------------!-------------------------//
+		body.add("text", "Text");
+		body.add("offerId", 1L);		
+
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/comments", HttpMethod.POST, request, CommentDTO.class);
+
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+	}
+
+
+	@Test
+	@Transactional
+	public void createCommentBadOfferId() throws Exception {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", "1"));
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		FileSystemResource fsr = new FileSystemResource("src/main/resources/images/beforeHouseWasDisco.jpg");
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+		body.add("image", fsr);
+		body.add("text", "Text");
+		body.add("offerId", Constants.BAD_ID);		//-------------------!-------------------------//
+
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/comments", HttpMethod.POST, request, CommentDTO.class);
+
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+	}
+
+	@Test
+	@Transactional
+	public void createCommentNoText() throws Exception {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", "1"));
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		FileSystemResource fsr = new FileSystemResource("src/main/resources/images/beforeHouseWasDisco.jpg");
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+		body.add("image", fsr); 
+		body.add("text", "");	//-------------------!-------------------------//
+		body.add("offerId", 1L);
+
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/comments", HttpMethod.POST, request, CommentDTO.class);
+
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+	}
 
 
 
 	@Test
 	@Transactional
-	public void createRatingSuccess() throws Exception {
+	public void createCommentForbidden() throws Exception {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("admin@nesto.com", "1"));  //-------------------!-------------------------//
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		FileSystemResource fsr = new FileSystemResource("src/main/resources/images/beforeHouseWasDisco.jpg");
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+		body.add("image", fsr); 
+		body.add("text", "Text");	
+		body.add("offerId", 1L);
+
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/comments", HttpMethod.POST, request, CommentDTO.class);
+
+		System.out.println(responseEntity.getStatusCode());
+		
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.FORBIDDEN);
+	}
+	
+
+	
+	
+	
+	@Test
+	@Transactional
+	public void createCommentSuccess() throws Exception {
 
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
 
@@ -132,6 +233,190 @@ public class CommentControllerIntegrationTest {
 
 	//------------------------------ U P D A T E --------------------------------//
 
+
+	@Test
+	@Transactional
+	public void updateCommentSuccess() throws Exception {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", "1"));
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		FileSystemResource fsr = new FileSystemResource("src/main/resources/images/beforeHouseWasDisco.jpg");
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+		body.add("image", fsr);
+		body.add("text", "Updated");
+		body.add("commentId", 1L);
+
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/comments", HttpMethod.PUT, request, CommentDTO.class);
+
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals("Updated", responseEntity.getBody().getText());
+
+	}
+
+	@Test
+	@Transactional
+	public void updateCommentSomeoneElses() throws JSONException{
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor2@nesto.com", "1"));
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		FileSystemResource fsr = new FileSystemResource("src/main/resources/images/beforeHouseWasDisco.jpg");
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+		body.add("image", fsr);
+		body.add("text", "Updated");
+		body.add("commentId", 1L);
+
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/comments", HttpMethod.PUT, request, CommentDTO.class);
+
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+
+	}
+
+	@Test
+	@Transactional
+	public void updateCommentEmptyText() throws JSONException{
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor2@nesto.com", "1"));
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		FileSystemResource fsr = new FileSystemResource("src/main/resources/images/beforeHouseWasDisco.jpg");
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+		body.add("image", fsr);
+		body.add("text", ""); 		//!
+		body.add("commentId", 1L);
+
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/comments", HttpMethod.PUT, request, CommentDTO.class);
+
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+
+	}
+
+	@Test
+	@Transactional
+	public void updateCommentBadID() throws JSONException{
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor2@nesto.com", "1"));
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		FileSystemResource fsr = new FileSystemResource("src/main/resources/images/beforeHouseWasDisco.jpg");
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+		body.add("image", fsr);
+		body.add("text", "Text"); 		
+		body.add("commentId", Constants.BAD_ID);
+
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/comments", HttpMethod.PUT, request, CommentDTO.class);
+
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+
+	}
+	
+	@Test
+	@Transactional
+	public void updateCommentBadRequest() throws Exception {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", "1"));
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		FileSystemResource fsr = new FileSystemResource("src/main/resources/images/beforeHouseWasDisco.jpg");
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+		body.add("imageFAIL", fsr); //-------------------!-------------------------//
+		body.add("text", "Text");
+		body.add("commentId", 1L);		
+
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/comments", HttpMethod.POST, request, CommentDTO.class);
+
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+	}
+
+
+
 	//------------------------------ D E L E T E --------------------------------//
+	
+	
+	public void deleteCommentSuccess() throws Exception {
+
+		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor4@nesto.com", "1"));
+		
+		HttpEntity<RatingDTO> requestEntity = new HttpEntity<>(null, headers);
+		
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/comments/3", HttpMethod.DELETE, requestEntity, CommentDTO.class);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		
+		Page<Comment> page = service.findAllByOfferID(1L, pageable);		
+		int newComms = page.getContent().get(0).getOffer().getComments().size();
+
+		assertEquals(newComms, 1);
+	}
+	
+	public void deleteCommentSomeoneElses() throws Exception {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor4@nesto.com", "1"));
+		
+		HttpEntity<RatingDTO> requestEntity = new HttpEntity<>(null, headers);
+		
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/comments/3", HttpMethod.DELETE, requestEntity, CommentDTO.class);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		
+	}
+	
+	public void deleteCommentBadId() throws Exception {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor4@nesto.com", "1"));
+		
+		HttpEntity<RatingDTO> requestEntity = new HttpEntity<>(null, headers);
+		
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/comments/" + Constants.BAD_ID, HttpMethod.DELETE, requestEntity, CommentDTO.class);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		
+	}
+	
+	public void deleteCommentBadRequest() throws Exception {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor4@nesto.com", "1"));
+		
+		HttpEntity<RatingDTO> requestEntity = new HttpEntity<>(null, headers);
+		
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/comments/a" + Constants.BAD_ID, HttpMethod.DELETE, requestEntity, CommentDTO.class);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		
+	}
 
 }
