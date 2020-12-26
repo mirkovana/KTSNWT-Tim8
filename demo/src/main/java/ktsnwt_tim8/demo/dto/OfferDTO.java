@@ -2,6 +2,8 @@ package ktsnwt_tim8.demo.dto;
 
 import javax.validation.constraints.NotBlank;
 
+import ktsnwt_tim8.demo.model.Offer;
+
 public class OfferDTO {
 	private Long ID;
 	
@@ -33,6 +35,17 @@ public class OfferDTO {
 		this.place = place;
 	}
 	
+	public OfferDTO(Offer offer) {
+		this.ID = offer.getID();
+		this.title = offer.getTitle();
+		this.description = offer.getDescription();
+		this.avgRating = offer.getAvgRating();
+		this.nmbOfRatings = offer.getNmbOfRatings();
+		this.lat = offer.getLat();
+		this.lon = offer.getLon();
+		this.place = offer.getPlace();
+	}
+
 	public Long getID() {
 		return ID;
 	}

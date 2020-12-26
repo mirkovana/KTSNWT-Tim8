@@ -5,9 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ktsnwt_tim8.demo.dto.OfferImageDTO;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.OfferImage;
+import ktsnwt_tim8.demo.model.RegisteredUser;
 import ktsnwt_tim8.demo.repository.OfferImageRepository;
 import ktsnwt_tim8.demo.repository.OfferRepository;
 
@@ -111,6 +114,14 @@ public class OfferImageService {
 				image.delete();
 			}
 			repo.deleteById(imageID);
+
+			List<OfferImage> images = repo.findAllByOffer(offerImage.get().getOffer());
+			for (Iterator<OfferImage> iterator = images.iterator(); iterator.hasNext();) {
+				OfferImage img = iterator.next();
+				if (img.getID().equals(imageID)) {
+					iterator.remove();
+				}
+			}
 
 		} else {
 			throw new Exception("Offer image with given ID does not exits.");
