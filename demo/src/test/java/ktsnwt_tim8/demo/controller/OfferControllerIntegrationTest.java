@@ -127,7 +127,7 @@ public class OfferControllerIntegrationTest {
 		int size = offerService.listAll().size();
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
 		// poziv REST servisa za brisanje
-		ResponseEntity<Void> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/2",
+		ResponseEntity<Void> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/6",
 				HttpMethod.DELETE, httpEntity, Void.class);
 
 		// provera odgovora servera
