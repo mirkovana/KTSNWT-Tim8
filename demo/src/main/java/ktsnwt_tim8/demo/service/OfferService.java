@@ -88,12 +88,21 @@ public class OfferService {
 				iterator.remove();
 			}
 		}
+		Set<Offer> subList = ((RegisteredUser) user).getSubscriptions();
+		for (Iterator<Offer> iterator = subList.iterator(); iterator.hasNext();) {
+			Offer off = iterator.next();
+			if (off.getID().equals(offer.getID())) {
+				iterator.remove();
+			}
+		}
+		
 		return offer;
 	}
 
 	/* SUBSRCIBES USER TO OFFER */
 	public Offer subscribe(Long id) throws Exception {
 		Offer offer = repo.findOneByID(id);
+		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (offer == null) {
 			throw new Exception("Offer with passed ID does not exist");
@@ -108,8 +117,9 @@ public class OfferService {
 	
 		((RegisteredUser) user).getSubscriptions().add(offer);
 		userRepo.save(user);
-		
-		return repo.save(offer);
+		repo.save(offer);
+		System.out.println(offer.getID());
+		return offer;
 	}
 
 	public Page<Offer> filter(FilterDTO filterDTO, Pageable pageable) {

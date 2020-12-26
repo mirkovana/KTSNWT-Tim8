@@ -23,12 +23,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javassist.NotFoundException;
-import ktsnwt_tim8.demo.dto.OfferDTO;
 import ktsnwt_tim8.demo.dto.PostDTO;
 import ktsnwt_tim8.demo.helper.PostMapper;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.Post;
+import ktsnwt_tim8.demo.model.RegisteredUser;
 import ktsnwt_tim8.demo.repository.PostRepository;
+import ktsnwt_tim8.demo.service.EmailService;
 import ktsnwt_tim8.demo.service.OfferService;
 import ktsnwt_tim8.demo.service.PostService;
 
@@ -43,6 +44,9 @@ public class PostController {
 
 	@Autowired
 	private OfferService offerService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	private static PostMapper mapper = new PostMapper();
 
@@ -96,6 +100,12 @@ public class PostController {
 		post.setTitle(postDTO.getTitle());
 		
 		post = service.save(post);
+		
+		for (RegisteredUser user : offer.getUsers()) {
+			emailService.sendEmailNotification(user.getEmail(), post);
+			System.out.println("USAO");
+		
+		}
 		return new ResponseEntity<>(new PostDTO(post), HttpStatus.CREATED);
 	}
 

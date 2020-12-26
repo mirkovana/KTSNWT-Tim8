@@ -44,6 +44,7 @@ public class EmailService {
 		message += "Vise o ovome pogledajte na : ..........";
 		msg.setText(message);
 		javaMailSender.send(msg);
+//		return msg;
 
 	}
 }
