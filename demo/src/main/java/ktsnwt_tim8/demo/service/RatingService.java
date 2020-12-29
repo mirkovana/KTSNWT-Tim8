@@ -159,6 +159,9 @@ public class RatingService {
 		
 	}
 
+	public void deleteRatingById(Long id) {
+		repo.deleteById(id);
+	}
 
 
 }

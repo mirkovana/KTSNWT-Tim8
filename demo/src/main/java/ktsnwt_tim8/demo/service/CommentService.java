@@ -186,4 +186,8 @@ public class CommentService {
 		throw new Exception("Comment with given id does not exits.");
 	}
 	
+	public void deleteCommentById(Long id) {
+		repo.deleteById(id);
+	}
+	
 }

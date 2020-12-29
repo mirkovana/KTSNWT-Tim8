@@ -2,7 +2,6 @@ package ktsnwt_tim8.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -26,16 +25,19 @@ import org.springframework.web.server.ResponseStatusException;
 import javassist.NotFoundException;
 import ktsnwt_tim8.demo.dto.FilterDTO;
 import ktsnwt_tim8.demo.dto.OfferDTO;
-import ktsnwt_tim8.demo.dto.UserDTO;
 import ktsnwt_tim8.demo.helper.OfferMapper;
+import ktsnwt_tim8.demo.model.Comment;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.OfferImage;
 import ktsnwt_tim8.demo.model.Post;
+import ktsnwt_tim8.demo.model.Rating;
 import ktsnwt_tim8.demo.model.Subcategory;
 import ktsnwt_tim8.demo.repository.OfferRepository;
+import ktsnwt_tim8.demo.service.CommentService;
 import ktsnwt_tim8.demo.service.OfferImageService;
 import ktsnwt_tim8.demo.service.OfferService;
 import ktsnwt_tim8.demo.service.PostService;
+import ktsnwt_tim8.demo.service.RatingService;
 import ktsnwt_tim8.demo.service.SubcategoryService;
 import ktsnwt_tim8.demo.service.UserService;
 
@@ -54,6 +56,12 @@ public class OfferController {
 
 	@Autowired
 	private OfferImageService serviceOfferImage;
+	
+	@Autowired
+	private CommentService serviceComment;
+	
+	@Autowired
+	private RatingService serviceRating;
 
 	@Autowired
 	private SubcategoryService serviceSubcategory;
@@ -188,6 +196,12 @@ public class OfferController {
 			} catch (Exception e) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
+		}
+		for (Comment com: offer.getComments()) {
+			serviceComment.deleteCommentById(com.getID());
+		}
+		for (Rating r: offer.getRatings()) {
+			serviceRating.deleteRatingById(r.getID());
 		}
 		try {
 		service.delete(idOffer);

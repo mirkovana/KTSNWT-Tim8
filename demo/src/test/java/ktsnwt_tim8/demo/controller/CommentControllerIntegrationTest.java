@@ -209,7 +209,7 @@ public class CommentControllerIntegrationTest {
 
 		body.add("image", fsr);
 		body.add("text", "New comment");
-		body.add("offerId", 1L);
+		body.add("offerId", 2L);
 
 		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
 
@@ -219,10 +219,10 @@ public class CommentControllerIntegrationTest {
 		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
 		assertEquals("New comment", responseEntity.getBody().getText());
 
-		Page<Comment> page = service.findAllByOfferID(1L, pageable);		
+		Page<Comment> page = service.findAllByOfferID(2L, pageable);		
 		int newComms = page.getContent().get(0).getOffer().getComments().size();
 
-		assertEquals(newComms, 3);
+		assertEquals(newComms, 2);
 
 		// restoring previous state
 		Long newId = responseEntity.getBody().getID();
