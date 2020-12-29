@@ -1,22 +1,17 @@
 package ktsnwt_tim8.demo.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,11 +32,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import ktsnwt_tim8.demo.DemoApplication;
 import ktsnwt_tim8.demo.constants.Constants;
@@ -49,8 +40,8 @@ import ktsnwt_tim8.demo.dto.CommentDTO;
 import ktsnwt_tim8.demo.dto.RatingDTO;
 import ktsnwt_tim8.demo.dto.UserLoginDTO;
 import ktsnwt_tim8.demo.dto.UserTokenStateDTO;
+import ktsnwt_tim8.demo.helper.RestResponsePage;
 import ktsnwt_tim8.demo.model.Comment;
-import ktsnwt_tim8.demo.model.Rating;
 import ktsnwt_tim8.demo.service.CommentService;
 
 @RunWith(SpringRunner.class)
@@ -89,6 +80,28 @@ public class CommentControllerIntegrationTest {
 
 	//------------------------------ G E T --------------------------------//
 
+
+	@Test
+	@Transactional
+	public void getCommentsFromOffer() throws Exception {
+
+		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
+		Page<Comment> page = service.findAllByOfferID(1L, pageable);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", "1"));
+				
+		ParameterizedTypeReference<RestResponsePage<CommentDTO>> responseType = new ParameterizedTypeReference<RestResponsePage<CommentDTO>>() {};
+		
+		ResponseEntity<RestResponsePage<CommentDTO>> result = restTemplate.exchange("http://localhost:" + port + "/api/comments/1?page=0&size=10", HttpMethod.GET, null, responseType);
+
+		List<CommentDTO> searchResult = result.getBody().getContent();
+		
+		assertEquals(page.getContent().size(), searchResult.size());
+
+	}
+	
+	
 	//------------------------------ C R E A T E --------------------------------//
 
 	
@@ -208,7 +221,7 @@ public class CommentControllerIntegrationTest {
 		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
 		body.add("image", fsr);
-		body.add("text", "New comment");
+		body.add("text", "New comment123");
 		body.add("offerId", 2L);
 
 		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
@@ -217,7 +230,7 @@ public class CommentControllerIntegrationTest {
 				"http://localhost:" + port + "/api/comments", HttpMethod.POST, request, CommentDTO.class);
 
 		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-		assertEquals("New comment", responseEntity.getBody().getText());
+		assertEquals("New comment123", responseEntity.getBody().getText());
 
 		Page<Comment> page = service.findAllByOfferID(2L, pageable);		
 		int newComms = page.getContent().get(0).getOffer().getComments().size();
@@ -227,8 +240,12 @@ public class CommentControllerIntegrationTest {
 		// restoring previous state
 		Long newId = responseEntity.getBody().getID();
 
+		
 		loginService("kor1@nesto.com", "1");
 		service.deleteComment(newId);
+		
+		Page<Comment> comm2 = service.findAllByOfferID(2L, pageable);
+		
 	}
 
 	//------------------------------ U P D A T E --------------------------------//
@@ -257,6 +274,11 @@ public class CommentControllerIntegrationTest {
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals("Updated", responseEntity.getBody().getText());
+		
+		// this comment did not have an image, so we update the comment again to remove the image
+		loginService("kor1@nesto.com", "1");
+		MultipartFile multipartFile = new MockMultipartFile("empty", new byte[0]);
+		service.updateComment(1L, new CommentDTO("Old"), multipartFile);
 
 	}
 
@@ -356,45 +378,58 @@ public class CommentControllerIntegrationTest {
 
 	//------------------------------ D E L E T E --------------------------------//
 	
-	
+	@Test
+	@Transactional
 	public void deleteCommentSuccess() throws Exception {
 
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", login("kor4@nesto.com", "1"));
+		headers.add("Authorization", login("kor3@nesto.com", "1"));
 		
 		HttpEntity<RatingDTO> requestEntity = new HttpEntity<>(null, headers);
 		
 		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
-				"http://localhost:" + port + "/api/comments/3", HttpMethod.DELETE, requestEntity, CommentDTO.class);
+				"http://localhost:" + port + "/api/comments/5", HttpMethod.DELETE, requestEntity, CommentDTO.class);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		
-		Page<Comment> page = service.findAllByOfferID(1L, pageable);		
-		int newComms = page.getContent().get(0).getOffer().getComments().size();
+		Page<Comment> page = service.findAllByOfferID(4L, pageable);		
+		int newComms = page.getContent().size();
 
-		assertEquals(newComms, 1);
+		assertEquals(newComms, 0);
+		
+		loginService("kor3@nesto.com", "1");
+		MultipartFile multipartFile = new MockMultipartFile("empty", new byte[0]);
+		service.create(4L, new CommentDTO("Text"), multipartFile);
+		// treba dodati komentar
+		
 	}
 	
+
+	@Test
+	@Transactional
 	public void deleteCommentSomeoneElses() throws Exception {
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", login("kor4@nesto.com", "1"));
+		headers.add("Authorization", login("kor3@nesto.com", "1"));
 		
 		HttpEntity<RatingDTO> requestEntity = new HttpEntity<>(null, headers);
 		
 		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
-				"http://localhost:" + port + "/api/comments/3", HttpMethod.DELETE, requestEntity, CommentDTO.class);
+				"http://localhost:" + port + "/api/comments/1", HttpMethod.DELETE, requestEntity, CommentDTO.class);
 
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 		
 	}
 	
+
+	@Test
+	@Transactional
 	public void deleteCommentBadId() throws Exception {
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", login("kor4@nesto.com", "1"));
+		headers.add("Authorization", login("kor3@nesto.com", "1"));
 		
 		HttpEntity<RatingDTO> requestEntity = new HttpEntity<>(null, headers);
 		
@@ -405,10 +440,13 @@ public class CommentControllerIntegrationTest {
 		
 	}
 	
+
+	@Test
+	@Transactional
 	public void deleteCommentBadRequest() throws Exception {
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", login("kor4@nesto.com", "1"));
+		headers.add("Authorization", login("kor3@nesto.com", "1"));
 		
 		HttpEntity<RatingDTO> requestEntity = new HttpEntity<>(null, headers);
 		

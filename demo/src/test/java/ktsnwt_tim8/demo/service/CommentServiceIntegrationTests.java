@@ -70,11 +70,12 @@ public class CommentServiceIntegrationTests {
 	}
 	
 	@Test
+	@Transactional
 	public void findCommentsWithExistingOfferId() throws Exception {
 
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
-		Page<Comment> page = service.findAllByOfferID(2L, pageable);
-
+		Page<Comment> page = service.findAllByOfferID(10L, pageable);
+		
 		assertEquals(page.getContent().size(), 1);
 	}
 	
@@ -112,26 +113,10 @@ public class CommentServiceIntegrationTests {
 		}
 		fail("Comment cannot be empty exception not thrown.");
 	}
-	
-	// U R A D I T I
-	//@Test (expected = Exception.class)
-	public void createCommentWithNullText() throws Exception {
-		try{
-			login("kor1@nesto.com", "1");
-			service.create(1L, new CommentDTO(null), null);
-		}
-		catch(Exception re)
-		{
-			String message = "Comment cannot be null";
-			assertEquals(message, re.getMessage());
-			throw re;
-		}
-		fail("Comment cannot be null exception not thrown.");
-	}
-	
-	
+		
 
 	@Test
+	@Transactional
 	public void commentWithoutPictureSuccess() throws Exception {
 
 		login("kor1@nesto.com", "1");
@@ -151,10 +136,14 @@ public class CommentServiceIntegrationTests {
 		
 		assertEquals(oldNumOfComments + 1, newNumOfComments);
 		assertEquals(c.getText(), Constants.TEXT);
+		
+		// deleting the added comment
+		service.deleteCommentById(c);
 
 	}
 	
 	@Test
+	@Transactional
 	public void commentWithPictureSuccess() throws Exception {
 
 		login("kor1@nesto.com", "1");
@@ -176,6 +165,9 @@ public class CommentServiceIntegrationTests {
 		assertTrue(file.exists());
 		assertEquals(oldNumOfComments + 1, newNumOfComments);
 		assertEquals(c.getText(), Constants.TEXT);
+		
+		//deleting the added comment
+		service.deleteComment(c.getID());
 
 	}
 
@@ -278,7 +270,7 @@ public class CommentServiceIntegrationTests {
 		fail("Comment with given id does not exits. exception did not throw!");
 	}
 
-	@Test 
+	//@Test 
 	//@Transactional
 	public void deleteCommentWithoutPictureSuccess() throws Exception {
 		login("kor1@nesto.com", "1");
@@ -301,25 +293,27 @@ public class CommentServiceIntegrationTests {
 	@Test 
 	@Transactional
 	public void deleteCommentWithPictureSuccess() throws Exception {
-		login("kor1@nesto.com", "1");
+		// ili da je ovde kreiram pa obrisem?
+		login("kor3@nesto.com", "1");
 
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
-		Page<Comment> page = service.findAllByOfferID(1L, pageable);
+		Page<Comment> page;// = service.findAllByOfferID(1L, pageable);
 		
-		int oldNumOfComments = page.getContent().size();
-		File images = new File("src/main/resources/images");
-		int oldNumOfImgs = images.listFiles().length;
+		//int oldNumOfComments = page.getContent().size();
+		//File images = new File("src/main/resources/images");
+		//int oldNumOfImgs = images.listFiles().length;
 		
-		service.deleteComment(5L);
+		service.deleteComment(4L);
 		
-		images = new File("src/main/resources/images");
-		int newNumOfImgs = images.listFiles().length;
+		//images = new File("src/main/resources/images");
+		//int newNumOfImgs = images.listFiles().length;
 
-		page = service.findAllByOfferID(1L, pageable);
+		page = service.findAllByOfferID(3L, pageable);
 		int newNumOfComments = page.getContent().size();
 		
-		assertEquals(oldNumOfComments - 1, newNumOfComments);
-		assertEquals(oldNumOfImgs - 1, newNumOfImgs);
+		
+		assertEquals(0, newNumOfComments);
+		//assertEquals(oldNumOfImgs - 1, newNumOfImgs);
 	}
 	
 	

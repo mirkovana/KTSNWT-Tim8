@@ -198,7 +198,7 @@ public class OfferController {
 			}
 		}
 		for (Comment com: offer.getComments()) {
-			serviceComment.deleteCommentById(com.getID());
+			serviceComment.deleteCommentById(com);
 		}
 		for (Rating r: offer.getRatings()) {
 			serviceRating.deleteRatingById(r.getID());

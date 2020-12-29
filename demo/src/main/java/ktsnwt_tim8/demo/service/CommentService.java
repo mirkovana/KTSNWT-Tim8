@@ -186,8 +186,14 @@ public class CommentService {
 		throw new Exception("Comment with given id does not exits.");
 	}
 	
-	public void deleteCommentById(Long id) {
-		repo.deleteById(id);
+	public void deleteCommentById(Comment c) {
+		String fileName = c.getImagePath();
+		// if there was an image in the comment, with the deletion of the comment, the image is also deleted
+		if (fileName != null) {
+			File image = new File(fileName);
+			image.delete();
+		}
+		repo.deleteById(c.getID());
 	}
 	
 }

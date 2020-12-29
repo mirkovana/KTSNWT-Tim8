@@ -29,15 +29,17 @@ import ktsnwt_tim8.demo.service.UserServiceIntegrationTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({ OfferServiceIntegrationTest.class, OfferImageServiceIntegrationTest.class,
-		PostServiceIntegrationTest.class, OfferServiceUnitTest.class, UserServiceIntegrationTest.class,
-		OfferImageControllerIntegrationTest.class, OfferRepositoryIntegrationTest.class,
-		PostRepositoryIntegrationTest.class, UserRepositoryIntegrationTest.class,
-		CategoryControllerIntegrationTest.class, OfferControllerIntegrationTest.class,
-		PostControllerIntegrationTest.class, SubcategoryControllerIntegrationTest.class,
-		UserControllerIntegrationTest.class, OfferImageRepositoryIntegrationTest.class,
-		RatingRepositoryIntegrationTest.class, CommentRepositoryIntegrationTest.class,
-		RatingServiceIntegrationTests.class, RatingControllerIntegrationTest.class,
-		CommentServiceIntegrationTests.class, CommentControllerIntegrationTest.class })
+	PostServiceIntegrationTest.class, OfferServiceUnitTest.class, UserServiceIntegrationTest.class,
+	OfferImageControllerIntegrationTest.class, OfferRepositoryIntegrationTest.class,
+	PostRepositoryIntegrationTest.class, UserRepositoryIntegrationTest.class,
+	CategoryControllerIntegrationTest.class, OfferControllerIntegrationTest.class,
+	PostControllerIntegrationTest.class, SubcategoryControllerIntegrationTest.class,
+	UserControllerIntegrationTest.class, OfferImageRepositoryIntegrationTest.class,
+	RatingRepositoryIntegrationTest.class, CommentRepositoryIntegrationTest.class,
+	RatingServiceIntegrationTests.class, RatingControllerIntegrationTest.class,
+	CommentServiceIntegrationTests.class,
+	CommentControllerIntegrationTest.class})
+	//CommentServiceIntegrationTests.class})
 @TestPropertySource("classpath:test.properties")
 public class SuiteAll {
 
