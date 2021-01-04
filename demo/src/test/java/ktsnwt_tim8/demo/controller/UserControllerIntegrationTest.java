@@ -1,7 +1,10 @@
 package ktsnwt_tim8.demo.controller;
 
 import static ktsnwt_tim8.demo.constants.UserConstants.ADMIN_EMAIL;
+import static ktsnwt_tim8.demo.constants.UserConstants.USER_EMAIL;
+import static ktsnwt_tim8.demo.constants.UserConstants.USER_PASSWORD;
 import static ktsnwt_tim8.demo.constants.UserConstants.ADMIN_PASSWORD;
+import static ktsnwt_tim8.demo.constants.UserConstants.FIND_ALL_NUMBER_OF_ITEMS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -24,9 +28,13 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import ktsnwt_tim8.demo.constants.OfferImageConstants;
+import ktsnwt_tim8.demo.dto.OfferDTO;
+import ktsnwt_tim8.demo.dto.OfferImageDTO;
 import ktsnwt_tim8.demo.dto.UserDTO;
 import ktsnwt_tim8.demo.dto.UserLoginDTO;
 import ktsnwt_tim8.demo.dto.UserTokenStateDTO;
+import ktsnwt_tim8.demo.helper.RestResponsePage;
 import ktsnwt_tim8.demo.model.User;
 import ktsnwt_tim8.demo.service.UserService;
 
@@ -56,7 +64,7 @@ public class UserControllerIntegrationTest {
 		return "Bearer " + responseEntity.getBody().getAccessToken();
 	}
 
-	/*USPESNO DODAVANJE*/
+	/* USPESNO DODAVANJE */
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -86,8 +94,8 @@ public class UserControllerIntegrationTest {
 		// uklanjamo dodatu kategoriju
 		userService.delete(user.getID());
 	}
-	
-	/*NEUSPESNO DODAVANJE*/
+
+	/* NEUSPESNO DODAVANJE */
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -96,8 +104,7 @@ public class UserControllerIntegrationTest {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
-		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
-				new UserDTO(11L, "sdfgh", "", "ime", "prez"), headers);
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new UserDTO(11L, "sdfgh", "", "ime", "prez"), headers);
 
 		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/auth/sign-up",
 				HttpMethod.POST, httpEntity, UserDTO.class);
@@ -108,6 +115,24 @@ public class UserControllerIntegrationTest {
 
 		List<User> users = userService.listAll();
 		assertEquals(size, users.size()); // mora biti jednak broj kao i pre
+	}
+
+	@Test
+	public void getUserSubscriptions() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(USER_EMAIL, USER_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+
+		ParameterizedTypeReference<RestResponsePage<OfferDTO>> responseType = new ParameterizedTypeReference<RestResponsePage<OfferDTO>>() {
+		};
+
+		ResponseEntity<RestResponsePage<OfferDTO>> response = restTemplate.exchange("/api/users/getSubscriptions/0/10",
+				HttpMethod.GET, httpEntity, responseType);
+
+		List<OfferDTO> images = response.getBody().getContent();
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertEquals(FIND_ALL_NUMBER_OF_ITEMS, images.size());
+		
 	}
 
 }

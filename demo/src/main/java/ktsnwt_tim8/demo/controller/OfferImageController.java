@@ -85,7 +85,7 @@ public class OfferImageController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{offerID}/{page}/{size}")
-	public ResponseEntity<List<OfferImageDTO>> getAllOfferImages(@PathVariable Long offerID, @PathVariable int page, @PathVariable int size) {
+	public ResponseEntity<Page<OfferImageDTO>> getAllOfferImages(@PathVariable Long offerID, @PathVariable int page, @PathVariable int size) {
 
 		Page<OfferImage> images;
 		Pageable paging = PageRequest.of(page, size);
@@ -105,6 +105,6 @@ public class OfferImageController {
 
 		Page<OfferImageDTO> ret = new PageImpl<OfferImageDTO>(imagesDTO, paging, images.getTotalElements());
 
-		return new ResponseEntity<>(ret.toList(), HttpStatus.OK);
+		return new ResponseEntity<>(ret, HttpStatus.OK);
 	}
 }

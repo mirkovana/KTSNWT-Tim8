@@ -20,6 +20,7 @@ import ktsnwt_tim8.demo.repository.PostRepositoryIntegrationTest;
 import ktsnwt_tim8.demo.repository.RatingRepositoryIntegrationTest;
 import ktsnwt_tim8.demo.repository.UserRepositoryIntegrationTest;
 import ktsnwt_tim8.demo.service.CommentServiceIntegrationTests;
+import ktsnwt_tim8.demo.service.EmailServiceIntegrationTest;
 import ktsnwt_tim8.demo.service.OfferImageServiceIntegrationTest;
 import ktsnwt_tim8.demo.service.OfferServiceIntegrationTest;
 import ktsnwt_tim8.demo.service.OfferServiceUnitTest;
@@ -38,7 +39,7 @@ import ktsnwt_tim8.demo.service.UserServiceIntegrationTest;
 	RatingRepositoryIntegrationTest.class, CommentRepositoryIntegrationTest.class,
 	RatingServiceIntegrationTests.class, RatingControllerIntegrationTest.class,
 	CommentServiceIntegrationTests.class,
-	CommentControllerIntegrationTest.class})
+	CommentControllerIntegrationTest.class, EmailServiceIntegrationTest.class})
 	//CommentServiceIntegrationTests.class})
 @TestPropertySource("classpath:test.properties")
 public class SuiteAll {
