@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,48 +34,47 @@ public class UserController {
 	@Autowired
 	private UserService service;
 
-	/* REGISTRACIJA KORISNIKA*/
+	/* REGISTRACIJA KORISNIKA */
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<UserDTO> saveSubcategory(@RequestBody UserDTO usersDTO) throws Exception {
 
 		RegisteredUser user = new RegisteredUser();
-	
+
 		user.setName(usersDTO.getName());
 
-		if(usersDTO.getPassword().isEmpty()) {
+		if (usersDTO.getPassword().isEmpty()) {
 			throw new Exception("Password cannot be empty");
 		}
 		user.setPassword(usersDTO.getPassword());
 		user.setSurname(usersDTO.getSurname());
 
-		if(usersDTO.getUsername().isEmpty()) {
+		if (usersDTO.getUsername().isEmpty()) {
 			throw new Exception("Username cannot be empty");
 		}
 		user.setUsername(usersDTO.getUsername());
-		
+
 		user.setEmail(usersDTO.getUsername());
 		user = (RegisteredUser) service.save(user);
 		return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);
 	}
-	
-	
+
 	@PreAuthorize("hasRole('ROLE_USER')")
-	@GetMapping(value = "/getSubscriptions")
-	public ResponseEntity<Page<OfferDTO>> getUserSubscriptions(Pageable page){//
+	@GetMapping(value = "/getSubscriptions/{page}/{size}")
+	public ResponseEntity<Page<OfferDTO>> getUserSubscriptions(@PathVariable int page, @PathVariable int size) {//
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
-		Set<Offer> subscriptions = ((RegisteredUser)user).getSubscriptions();
+
+		Set<Offer> subscriptions = ((RegisteredUser) user).getSubscriptions();
 		List<OfferDTO> subs = new ArrayList<OfferDTO>();
-		
+
 		for (Offer offer : subscriptions) {
 			System.out.println(offer.getID());
-			OfferDTO off = new OfferDTO(offer.getID(), offer.getTitle(), offer.getDescription(), offer.getAvgRating(), offer.getNmbOfRatings(), offer.getLat(), offer.getLon(), offer.getPlace());
+			OfferDTO off = new OfferDTO(offer.getID(), offer.getTitle(), offer.getDescription(), offer.getAvgRating(),
+					offer.getNmbOfRatings(), offer.getLat(), offer.getLon(), offer.getPlace());
 			subs.add(off);
 		}
-		
-		int start = (int) page.getOffset();
-		int end = (start + page.getPageSize()) > subs.size() ? subs.size() : (start + page.getPageSize());
-		Page<OfferDTO> pages = new PageImpl<OfferDTO>(subs.subList(start, end), page, subs.size());
+		Pageable paging = PageRequest.of(page, size);
+
+		Page<OfferDTO> pages = new PageImpl<OfferDTO>(subs, paging, subs.size());
 		return new ResponseEntity<>(pages, HttpStatus.OK);
 	}
 

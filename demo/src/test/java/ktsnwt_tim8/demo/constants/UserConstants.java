@@ -12,4 +12,6 @@ public class UserConstants {
 	 
 	 public static final String ADMIN_EMAIL = "admin@nesto.com";
 	 public static final String ADMIN_PASSWORD = "1";
+	 
+	 public static final int FIND_ALL_NUMBER_OF_ITEMS = 2;
 }

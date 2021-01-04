@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,9 +37,11 @@ import org.springframework.util.MultiValueMap;
 
 import ktsnwt_tim8.demo.DemoApplication;
 import ktsnwt_tim8.demo.constants.OfferImageConstants;
+import ktsnwt_tim8.demo.dto.CommentDTO;
 import ktsnwt_tim8.demo.dto.OfferImageDTO;
 import ktsnwt_tim8.demo.dto.UserLoginDTO;
 import ktsnwt_tim8.demo.dto.UserTokenStateDTO;
+import ktsnwt_tim8.demo.helper.RestResponsePage;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.model.OfferImage;
 import ktsnwt_tim8.demo.service.OfferImageService;
@@ -129,12 +132,15 @@ public class OfferImageControllerIntegrationTest {
 
 	@Test
 	public void testGetAllOfferImages() {
-		ResponseEntity<OfferImageDTO[]> response = restTemplate.exchange("/api/Offer-images/1/0/10", HttpMethod.GET,
-				null, OfferImageDTO[].class);
+		
+		ParameterizedTypeReference<RestResponsePage<OfferImageDTO>> responseType = new ParameterizedTypeReference<RestResponsePage<OfferImageDTO>>() {};
+		
+		ResponseEntity<RestResponsePage<OfferImageDTO>> response = restTemplate.exchange("/api/Offer-images/1/0/10", HttpMethod.GET,
+				null, responseType);
 
-		OfferImageDTO[] images = response.getBody();
+		List<OfferImageDTO> images = response.getBody().getContent();
 		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals(OfferImageConstants.FIND_ALL_NUMBER_OF_ITEMS, images.length);
+		assertEquals(OfferImageConstants.FIND_ALL_NUMBER_OF_ITEMS, images.size());
 
 	}
 
