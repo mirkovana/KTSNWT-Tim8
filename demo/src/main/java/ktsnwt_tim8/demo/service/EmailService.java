@@ -36,6 +36,8 @@ public class EmailService {
 
 	@Async
 	public void sendEmailNotification(String email, Post post) {
+		System.out.println("Slanje emaila...");
+
 		SimpleMailMessage msg = new SimpleMailMessage();
 		msg.setTo(email);
 		msg.setSubject("New post on " + post.getTitle());
@@ -44,7 +46,9 @@ public class EmailService {
 		message += "Vise o ovome pogledajte na : ..........";
 		msg.setText(message);
 		javaMailSender.send(msg);
-//		return msg;
-
+		msg.setFrom("no-reply@memorynotfound.com");
+		System.out.println("Email poslat!");
 	}
+	
+	
 }
