@@ -1,0 +1,9 @@
+<h3>OVDE BI TREBAO NEKI SEARCH BOX</h3>
+<div class="offers">
+    <app-map-info *ngFor="let offer of offers" [offer]="offer" class="page">
+        <script>
+            import * as L from 'leaflet';
+            var marker = L.marker([51.5, -0.09]).addTo(mymap);
+        </script>
+    </app-map-info>
+</div>
