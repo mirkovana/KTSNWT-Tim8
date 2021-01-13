@@ -1,5 +1,6 @@
-import { AfterContentInit, Component } from '@angular/core';
+import { AfterContentInit, Component, Input } from '@angular/core';
 import * as L from 'leaflet';
+import { Offer } from 'src/app/models/Offer';
 
 @Component({
   selector: 'app-map',
@@ -9,11 +10,14 @@ import * as L from 'leaflet';
 export class MapComponent implements AfterContentInit {
   private map: any;
 
+  @Input() offers: Offer[] = []; 
+
   constructor() { }
 
   //Da bi bili sigurni da je DOM kreiran i da mozemo da referenciramo komponentu
   ngAfterContentInit(): void {
     this.initMap();
+
   }
 
   private initMap(): void {

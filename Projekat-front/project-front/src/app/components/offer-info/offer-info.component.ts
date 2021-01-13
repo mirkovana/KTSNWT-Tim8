@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Offer } from '../../models/Offer';
 import { OfferInfoService } from '../../services/offer-info.service'
 
@@ -8,12 +8,11 @@ import { OfferInfoService } from '../../services/offer-info.service'
   styleUrls: ['./offer-info.component.scss']
 })
 export class OfferInfoComponent implements OnInit {
-  offers: Offer[];
-
+  @Input() page;
+  
   constructor(private service: OfferInfoService) {}
 
   ngOnInit(): void {
-    this.offers = this.service.getOffers();
   }
 
 }
