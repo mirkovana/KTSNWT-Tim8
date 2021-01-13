@@ -1,21 +1,6 @@
-import { AfterContentInit, Component } from '@angular/core';
+import { AfterContentInit, Component, Input } from '@angular/core';
 import * as L from 'leaflet';
-import { MapService } from '../../services/map.service';
-
-const iconRetinaUrl = 'assets/marker-icon-2x.png';
-const iconUrl = 'assets/marker-icon.png';
-const shadowUrl = 'assets/marker-shadow.png';
-const iconDefault = L.icon({
-  iconRetinaUrl,
-  iconUrl,
-  shadowUrl,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28],
-  shadowSize: [41, 41]
-});
-L.Marker.prototype.options.icon = iconDefault;
+import { Offer } from 'src/app/models/Offer';
 
 @Component({
   selector: 'app-map',
@@ -26,13 +11,13 @@ export class MapComponent implements AfterContentInit {
   private map;
   private on: boolean;
 
-  constructor(private mapService: MapService) { }
+  @Input() offers: Offer[] = []; 
+
+  constructor() { }
 
   //Da bi bili sigurni da je DOM kreiran i da mozemo da referenciramo komponentu
   ngAfterContentInit(): void {
     this.initMap();
-    this.mapService.pinMarkers(this.map);
-    this.on = true;
   }
 
   private initMap(): void {
@@ -47,18 +32,18 @@ export class MapComponent implements AfterContentInit {
 
   }
 
-  public dodaj(): void {
-    if (!this.on) {
-      this.mapService.pinMarkers(this.map);
-      this.on = true;
-    }
-  }
+  // public dodaj(): void {
+  //   if (!this.on) {
+  //     this.mapService.pinMarkers(this.map);
+  //     this.on = true;
+  //   }
+  // }
 
-  public delete(): void {
-    if (this.on) {
-      this.mapService.deleteMarkers(this.map);
-      this.on = false;
-    }
-  }
+  // public delete(): void {
+  //   if (this.on) {
+  //     this.mapService.deleteMarkers(this.map);
+  //     this.on = false;
+  //   }
+  // }
 
 }

@@ -8,6 +8,9 @@ import { MapComponent } from './components/map/map.component';
 import { MapInfoComponent } from './components/map-info/map-info.component';
 import { OfferInfoComponent } from './components/offer-info/offer-info.component';
 import { from } from 'rxjs';
+import { MainOffersViewComponent } from './main-offers-view/main-offers-view.component';
+import { FilterComponent } from './filter/filter.component';
+import { OfferTableItemComponent } from './offer-table-item/offer-table-item.component';
 
 
 
@@ -17,7 +20,10 @@ import { from } from 'rxjs';
     AppComponent,
     MapComponent,
     MapInfoComponent,
-    OfferInfoComponent
+    OfferInfoComponent,
+    MainOffersViewComponent,
+    FilterComponent,
+    OfferTableItemComponent
   ],
   imports: [
     BrowserModule,
