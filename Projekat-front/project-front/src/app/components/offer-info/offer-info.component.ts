@@ -13,7 +13,11 @@ export class OfferInfoComponent implements OnInit {
   constructor(private service: OfferInfoService) {}
 
   ngOnInit(): void {
-    this.offers = this.service.getOffers();
+    //this.offers = this.service.getOffers();
+    this.service.getOffers().subscribe(data => {
+      this.offers = data["content"];
+      console.log(this.offers);
+    });
   }
 
 }
