@@ -13,11 +13,13 @@ insert into user_authority (user_id, authority_id) values (3, 2); -- user has RO
 INSERT INTO CATEGORY(name) values ('Institucija');
 INSERT INTO SUBCATEGORY(name, category_id) values ('Muzej',1);
 INSERT INTO SUBCATEGORY(name, category_id) values ('Pozoriste',1);
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'ovo je neki opis', 40,40,0,'Srpsko narodno pozoriste',2, 'Novi Sad');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'Opis madjarskog pozorista', 40,40,0,'Madjarsko pozoriste',2, 'Novi Sad');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4.9,'ovo jesadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi esadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheri', 21.897222, 42.554167, 400,'Srpsko narodno pozoriste',2, 'Vranje');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4.6,'Opis sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi esadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e pozorista', 19.844722, 45.255, 1200,'Madjarsko pozoriste',2, 'Novi Sad');
 
 
 INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica', 'src/main/resources/images/offerImage58624.jpg', 1);
+INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica', 'src/main/resources/images/petrovaradin.jpg', 1);
+INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica', 'src/main/resources/images/snp.jpg', 1);
 INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
 INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
 INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
@@ -40,18 +42,18 @@ INSERT INTO CATEGORY(name) values ('Kulturno dobro');
 INSERT INTO SUBCATEGORY(name, category_id) values ('Spomenik',3);
 INSERT INTO SUBCATEGORY(name, category_id) values ('Znamenitost',3);
 
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'Opis Exit festivala', 40,40,0,'Exit festival',3, 'Novi Sad');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'Opis nekog niskog festivala', 40,40,0,'Neki niski festival',3, 'Nis');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'ovo je neki opis', 40,40,0,'Srpsko narodno pozoriste',2, 'Novi Sad');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'ovo je neki opis', 40,40,0,'Srpsko narodno pozoriste',2, 'Novi Sad');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'ovo je neki opis', 40,40,0,'Srpsko narodno pozoriste',2, 'Novi Sad');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'ovo je neki opis', 40,40,0,'Srpsko narodno pozoriste',2, 'Novi Sad');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'ovo je neki opis', 40,40,0,'Srpsko narodno pozoriste',2, 'Novi Sad');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'ovo je neki opis', 40,40,0,'Srpsko narodno pozoriste',2, 'Novi Sad');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'Opis Petrovaradina', 40,40,0,'Petrovaradin',2, 'Novi Sad');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'Opis Muzeja Vojvodine', 40,40,0,'Muzej Vojvodine',1, 'Novi Sad');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'Opis Kalemegdana', 40,40,0,'Kalemegdan',6, 'Beograd');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'Opis spomenika neznanom junaku', 40,40,0,'Spomenik neznanom junaku',5, 'Beograd');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (2.3,'Opis Exit festivala sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi esadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e ', 21.895841, 43.320833, 230,'Exit festival',3, 'Nis');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (1.3,'Opis nekog niskog festivalasadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e', 20.45938, 44.81578, 130,'Beograd',3, 'Beograd');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4.5,'ovo je neki opis sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e', 19.84102, 43.85581, 200,'Uzice',2, 'Uzice');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4.2,'ovo je neki opis sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e', 20.683333, 43.716667, 3500,'Kraljevo',2, 'Kraljevo');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4.5,'ovo je neki sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e', 21.176166, 44.609166, 320,'Pozarevacko',2, 'Pozarevac');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (2.3,'ovo je neki sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e',  21.2595, 43.9796, 133,'pozoriste jagodina',2, 'Jagodina');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (3.4,'ovo je neki opsadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi esadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi eis', 20.2922, 42.66, 135,'Pecka patrijarsija ',2, 'Pec');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (2.7,'ovo je sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi esadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e opis', 20.86644, 42.89028, 400, 'Kosovska Mitrovica pozoriste',2, 'Kosovska Mitrovica');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4.6,'Opis sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi esadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi esa', 19.66368, 46.1001, 50,'Subotica',2, 'Subotica');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (3.9,'Opis sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi esadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e Vojvodine', 20.74042, 42.21582, 220,'Prizren',1, 'Prizren');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (2.7,'Opis sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi esadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e', 20.4612, 45.82572, 245,'Kikinda',6, 'Kikinda');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4.6,'Opis spomenika sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e junaku', 20.390551, 45.382233, 2300,'Spomenik neznanom junaku',5, 'Zrenjanin');
 
 
 

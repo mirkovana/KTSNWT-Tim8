@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from "rxjs/operators" 
-import { Offer, Page } from '../models/Offer';
 import { Observable } from 'rxjs';
+import { OfferImagePage } from '../models/OfferImage';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OfferInfoService {
+export class OfferImageService {
 
   constructor(
     private http: HttpClient
@@ -15,11 +14,7 @@ export class OfferInfoService {
   ) {}
 
 
-  getOffers() {
-    return this.http.get<Page>("http://localhost:8080/api/offers");//.pipe(map(res => {
-    //  return res;
-    //}));
+  getOfferImages(id:number): Observable<OfferImagePage> {
+    return this.http.get<OfferImagePage>("http://localhost:8080/api/Offer-images/"+id+"/0/20")
   }
-
-  
 }

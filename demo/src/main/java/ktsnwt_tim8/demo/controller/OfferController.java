@@ -79,9 +79,9 @@ public class OfferController {
 	 * service.findAllPageable(page); }
 	 */
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping
-	public ResponseEntity<List<OfferDTO>> getAllOffers(Pageable pageable) {
+	public ResponseEntity<Page<OfferDTO>> getAllOffers(Pageable pageable) {
 		Page<Offer> offers = service.findAllPageable(pageable);
 		List<OfferDTO> offersDTO = new ArrayList<OfferDTO>();
 
@@ -91,10 +91,10 @@ public class OfferController {
 
 		Page<OfferDTO> pageOffersDTO = new PageImpl<>(offersDTO, offers.getPageable(), offers.getTotalElements());
 		List<OfferDTO> lista = new ArrayList<OfferDTO>();
-		for(OfferDTO o : pageOffersDTO) {
-			lista.add(o);
-		}
-		return new ResponseEntity<>(lista, HttpStatus.OK);
+//		for(OfferDTO o : pageOffersDTO) {
+//			lista.add(o);
+//		}
+		return new ResponseEntity<>(pageOffersDTO, HttpStatus.OK);
 	}
 
 	/* ISPISIVANJE SVIH PONUDA */

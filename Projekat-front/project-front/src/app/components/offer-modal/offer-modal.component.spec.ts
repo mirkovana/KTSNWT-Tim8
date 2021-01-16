@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MapInfoComponent } from './map-info.component';
+import { OfferModalComponent } from './offer-modal.component';
 
-describe('MapInfoComponent', () => {
-  let component: MapInfoComponent;
-  let fixture: ComponentFixture<MapInfoComponent>;
+describe('OfferModalComponent', () => {
+  let component: OfferModalComponent;
+  let fixture: ComponentFixture<OfferModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MapInfoComponent ]
+      declarations: [ OfferModalComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MapInfoComponent);
+    fixture = TestBed.createComponent(OfferModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

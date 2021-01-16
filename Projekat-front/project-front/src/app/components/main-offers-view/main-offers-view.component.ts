@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Offer, Page } from '../models/Offer';
-import { OfferInfoService } from '../services/offer-info.service';
+import { Offer, Page } from '../../models/Offer';
+import { OfferInfoService } from '../../services/offer-info.service';
 
 @Component({
   selector: 'app-main-offers-view',
@@ -21,5 +21,7 @@ export class MainOffersViewComponent implements OnInit {
       this.offersPage = data;
   });    
   }
+
+  
   
 }
