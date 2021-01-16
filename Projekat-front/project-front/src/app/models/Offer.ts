@@ -8,6 +8,10 @@ export class Offer {
     lat: number;
     place: string;
 
+    public toString():string{
+        return "ID: " + this.id +", " + "title: " + this.title;
+    }
+
 }
 
 // page of offers, izmijeniti
@@ -21,4 +25,6 @@ export class Page {
         this.pageSize = pageSize;
         this.content = offers;
     }
+
+    
 }

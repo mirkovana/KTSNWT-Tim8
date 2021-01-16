@@ -1,26 +1,64 @@
-import { AfterContentInit, Component, Input } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as L from 'leaflet';
-import { Offer } from 'src/app/models/Offer';
+import { Offer, Page } from 'src/app/models/Offer';
+import { MapService } from '../../services/map.service';
+import { OfferModalComponent } from '../offer-modal/offer-modal.component';
+
+const iconRetinaUrl = 'assets/marker-icon-2x.png';
+const iconUrl = 'assets/marker-icon.png';
+const shadowUrl = 'assets/marker-shadow.png';
+const iconDefault = L.icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+L.Marker.prototype.options.icon = iconDefault;
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements AfterContentInit {
+
+
+export class MapComponent implements OnChanges, AfterContentInit, OnInit {
+
+  @Input() offers: Page;
+  uslov: boolean = false; // uslov za dodavanja i uklanjanje markera sa mape
+  offerInfo: Offer = new Offer(); //slanje offera modal-u
+
+  alloffers: Offer[]; // napravljena lista od offers: Page
+
+  markers: L.Marker[] = new Array;
+
   private map;
-  private on: boolean;
+  private on: boolean; // uslov za dodavanje ili brisanje
 
-  @Input() offers: Offer[] = []; 
+  // @ViewChild('content') content: OfferModalComponent;
 
-  constructor() { }
+  constructor(private mapService: MapService, private modalService: NgbModal, private cd: ChangeDetectorRef) { }
+  ngOnInit(): void {
+    this.uslov = false;
+  }
 
   //Da bi bili sigurni da je DOM kreiran i da mozemo da referenciramo komponentu
+  ngOnChanges(): void {
+    this.pinMarkers(this.map, this.offers);
+    this.on = true;
+  }
+
   ngAfterContentInit(): void {
     this.initMap();
   }
 
   private initMap(): void {
+
     this.map = L.map('map').setView([44.014167, 20.911667], 7);
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -32,18 +70,50 @@ export class MapComponent implements AfterContentInit {
 
   }
 
-  // public dodaj(): void {
-  //   if (!this.on) {
-  //     this.mapService.pinMarkers(this.map);
-  //     this.on = true;
-  //   }
-  // }
+  public dodaj(): void {
 
-  // public delete(): void {
-  //   if (this.on) {
-  //     this.mapService.deleteMarkers(this.map);
-  //     this.on = false;
-  //   }
-  // }
+    if (!this.on) {
+      this.pinMarkers(this.map, this.offers);
+      this.on = true;
+    }
 
+  }
+
+  public delete(): void {
+    if (this.on) {
+      this.deleteMarkers(this.map);
+      this.on = false;
+    }
+  }
+
+  pinMarkers(map: L.Map, data: Page): void { //dodavanje markera
+    this.alloffers = data["content"];
+
+    for (const o of this.alloffers) {
+      const lat = o.lat;
+      const lon = o.lon;
+      // let off = new L.customID(o.id, o.title, o.description, o.avgRating, o.nmbOfRatings, o.lat, o.lon, o.place); //o.id, o.title, o.description, o.avgRating, o.nmbOfRatings, o.lat, o.lon, o.place
+      const marker = L.marker([lon, lat], { customID: o, title: o.title }).addTo(map).on('click', this.onClick);
+      // const popup = L.popup().setLatLng([lon, lat]).setContent(o.title).addTo(map);
+      this.markers.push(marker);
+    }
+  }
+
+
+  onClick = (e) => { //otvaranje modala
+    this.uslov = true;
+    this.offerInfo = e.sourceTarget.options.customID;
+    this.cd.detectChanges();
+    // console.log(e.sourceTarget.options.customID);
+    this.uslov = false;
+  }
+
+  deleteMarkers(map: L.Map): void {  // uklanjanje svih markera
+    // console.log(this.markers.length);
+    for (const marker of this.markers) {
+      map.removeLayer(marker);
+      this.markers = []
+    }
+
+  }
 }
