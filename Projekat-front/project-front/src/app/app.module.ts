@@ -21,7 +21,8 @@ import { MatCarouselModule } from '@ngmodule/material-carousel';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import {ReactiveFormsModule,FormsModule} from '@angular/forms';
-import { ValidateEmailComponent } from './components/validate-email/validate-email.component'
+import { ValidateEmailComponent } from './components/validate-email/validate-email.component';
+import { LoginComponent } from './components/login/login.component'
 
 
 
@@ -37,6 +38,7 @@ import { ValidateEmailComponent } from './components/validate-email/validate-ema
     RegistrationComponent,
     NavigationComponent,
     ValidateEmailComponent,
+    LoginComponent,
 
 
    
