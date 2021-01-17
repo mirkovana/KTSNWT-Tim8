@@ -18,7 +18,10 @@ import {DialogModule} from 'primeng/dialog';
 import {ButtonModule} from 'primeng/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
-
+import { RegistrationComponent } from './components/registration/registration.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import {ReactiveFormsModule,FormsModule} from '@angular/forms';
+import { ValidateEmailComponent } from './components/validate-email/validate-email.component'
 
 
 
@@ -31,6 +34,10 @@ import { MatCarouselModule } from '@ngmodule/material-carousel';
     OfferTableItemComponent,
     MapComponent,
     OfferModalComponent,
+    RegistrationComponent,
+    NavigationComponent,
+    ValidateEmailComponent,
+
 
    
 
@@ -44,7 +51,8 @@ import { MatCarouselModule } from '@ngmodule/material-carousel';
     DialogModule,
     ButtonModule,
     BrowserAnimationsModule,
-    MatCarouselModule
+    MatCarouselModule,
+    ReactiveFormsModule
     
   ],
   providers: [],

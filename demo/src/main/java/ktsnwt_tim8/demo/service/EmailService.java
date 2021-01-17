@@ -19,14 +19,17 @@ public class EmailService {
 		System.out.println("Slanje emaila...");
 
 		SimpleMailMessage email = new SimpleMailMessage();
-		email.setText("Potvrdite vas email za aktivaciju profila");
+		String tekstMaila = "Da biste aktivirali profil posetite link, na kome cete uneti token za aktivaciju profila: "; 
+		//email.setText("Potvrdite vas email za aktivaciju profila");
+		
 		email.setTo(recipient);
 		System.out.println(recipient + " rrrrrrrrrrrrrrrrrrrrrrr");
 
 		email.setSubject(subject);
 		System.out.println("subj" + subject);
 
-		email.setText("http://localhost:8080/#" + url);
+		email.setText(tekstMaila + "http://localhost:4200/validateEmail" + "  TOKEN: " + url);
+		
 		System.out.println(url);
 
 		javaMailSender.send(email); // ovde pukne
