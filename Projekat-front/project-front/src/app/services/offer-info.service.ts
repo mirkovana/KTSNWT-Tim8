@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map } from "rxjs/operators"
 import { Offer, Page } from '../models/Offer';
 import { Observable } from 'rxjs';
-import { Rating } from '../models/Rating';
+// import { Rating } from '../models/Rating';
 import { EventEmitter } from 'events';
 import { PageEvent } from '@angular/material/paginator';
 import { auth_token}  from '../models/app.constants'
@@ -29,25 +29,25 @@ export class OfferInfoService {
     return this.http.get<Page>("http://localhost:8080/api/users/getSubscriptions/"+page+"/"+size, { headers: new HttpHeaders().append('Authorization', `Bearer ${auth_token}`) });
   }
 
-  sendRating(id: number, rating: number) {
-    this.http.post<any>('http://localhost:8080/api/ratings/' + id, { rating: rating }, { headers: new HttpHeaders().append('Authorization', `Bearer ${auth_token}`) }
-    ).subscribe(data => {
-      console.log(data);
-    }
-    );
-  }
+  // sendRating(id: number, rating: number) {
+  //   this.http.post<any>('http://localhost:8080/api/ratings/' + id, { rating: rating }, { headers: new HttpHeaders().append('Authorization', `Bearer ${auth_token}`) }
+  //   ).subscribe(data => {
+  //     console.log(data);
+  //   }
+  //   );
+  // }
 
-  getUsersRating(id:number):Observable<Rating> {
-    return this.http.get<Rating>("http://localhost:8080/api/ratings/getRating/" + id, { headers: new HttpHeaders().append('Authorization', `Bearer ${auth_token}`) });
-  }
+  // getUsersRating(id:number):Observable<Rating> {
+  //   return this.http.get<Rating>("http://localhost:8080/api/ratings/getRating/" + id, { headers: new HttpHeaders().append('Authorization', `Bearer ${auth_token}`) });
+  // }
 
-  updateRating(id: number, rating: number) {
-    this.http.put<any>('http://localhost:8080/api/ratings/' + id, { rating: rating }, { headers: new HttpHeaders().append('Authorization', `Bearer ${auth_token}`) }
-    ).subscribe(data => {
-      console.log(data);
-    }
-    );
-  }
+  // updateRating(id: number, rating: number) {
+  //   this.http.put<any>('http://localhost:8080/api/ratings/' + id, { rating: rating }, { headers: new HttpHeaders().append('Authorization', `Bearer ${auth_token}`) }
+  //   ).subscribe(data => {
+  //     console.log(data);
+  //   }
+  //   );
+  // }
 
 
 }

@@ -9,9 +9,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 })
 export class ToastComponent implements OnInit {
 
-  @Input() succ: string;
-  @Input() color: string;
-  @Input() cond: boolean;
+  @Input() succ: string; //Tekst poruke
+  @Input() color: string; // boja definisana u style.scss (red-snackbar/geen-snackbar)
+  @Input() cond: boolean; // uslov za prikazivanje
   ngOnInit(): void {
   }
 
@@ -30,7 +30,6 @@ export class ToastComponent implements OnInit {
       horizontalPosition: 'right',
       panelClass: [className]
     });
-    // this.succ = null;
   }
 }
 

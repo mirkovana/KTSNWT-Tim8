@@ -9,7 +9,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { IImage } from 'ng-simple-slideshow';
 import { MatCarousel, MatCarouselComponent } from '@ngmodule/material-carousel';
 import { OfferInfoService } from 'src/app/services/offer-info.service';
-import { Rating } from 'src/app/models/Rating';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { EventEmitter } from 'events';
 

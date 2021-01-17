@@ -1,0 +1,26 @@
+<form [formGroup]="uploadForm" (ngSubmit)="submit()">
+    <!-- Select File -->
+    <input type="file" #fileInput accept="image/*" (change)="showPreview($event)" class="file-input" />
+
+    <!-- Assign Image Alt -->
+    <!-- <input class="form-control" placeholder="Enter name" type="text"> -->
+
+    <!-- <button type="submit" class="btn btn-outline-secondary">Submit</button> -->
+    <div class="input-group mb-3">
+        <p-button (click)="fileInput.click()" matTooltip=" Upload image ">Add picture</p-button>
+        <input type="text" class="form-control" formControlName="description" placeholder="Enter image description" aria-describedby="basic-addon2" required [pattern]="descPattern">
+        <!-- //value={{fileInput.value.slice(12)}} -->
+        <div class="input-group-append">
+            <p-button matTooltip=" Upload image " (click)="submit()"> Submit</p-button>
+        </div>
+    </div>
+    <p class="error">{{error}} {{error1}} </p>
+    <p class="error" *ngIf="uploadForm.get('description').errors?.pattern">Invalid image description (only numbers and letters are allowed, 20 characters max)!</p>
+
+    <!-- Image Preview -->
+    <div class="imagePreview" *ngIf="imageURL && imageURL !== ''">
+        <img [src]="imageURL" [alt]="uploadForm.value.name" class="image">
+    </div>
+
+
+</form>

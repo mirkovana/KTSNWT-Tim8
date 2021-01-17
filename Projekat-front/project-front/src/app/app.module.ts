@@ -26,10 +26,14 @@ import { ToastComponent } from './components/toast/toast.component';
 import { MatFormFieldModule  } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ValidateEmailComponent } from './components/validate-email/validate-email.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { EditOfferComponent } from './components/edit-offer/edit-offer.component';
+import { MatIconModule } from '@angular/material/icon';
+
 
 
 @NgModule({
@@ -47,8 +51,8 @@ import { RegistrationComponent } from './components/registration/registration.co
     RegistrationComponent,
     NavigationComponent,
     ValidateEmailComponent,
-
-
+    FileUploadComponent,
+    EditOfferComponent
 
   ],
   imports: [
@@ -66,7 +70,9 @@ import { RegistrationComponent } from './components/registration/registration.co
     MatFormFieldModule,
     MatSnackBarModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule,
+    FormsModule 
     
   ],
   providers: [],
