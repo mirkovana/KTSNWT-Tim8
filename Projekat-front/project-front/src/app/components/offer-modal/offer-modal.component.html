@@ -1,9 +1,10 @@
 <p-dialog header={{informacije.title}} [(visible)]="displayModal" [style]="{width: '50vw'}" [baseZIndex]="10000">
 
+    <p-button label="Edit" class="editBtn"></p-button>
     <!-- ///////////////////////////////////////////////////////// -->
     <!-- <h1 style="text-align:center;">Angular 9 Material Carousel Slider</h1> -->
 
-    <mat-carousel timings="250ms ease-in" [autoplay]="true" [interval]=2000 color="accent" maxWidth="auto" [proportion]=35 [slides]=offerImages.content.length [loop]="true" [hideArrows]="false" [hideIndicators]="false" [useKeyboard]="true" [useMouseWheel]="false"
+    <mat-carousel timings="750ms ease-in" [autoplay]="true" [interval]=3000 color="accent" maxWidth="auto" [proportion]=35 [slides]=offerImages.content.length [loop]="true" [hideArrows]="false" [hideIndicators]="false" [useKeyboard]="true" [useMouseWheel]="false"
         orientation="ltr">
         <mat-carousel-slide #matCarouselSlide *ngFor="let image of offerImages.content; let i = index" [image]="image.imageBase64" overlayColor="#00000040" [hideOverlay]="false"></mat-carousel-slide>
     </mat-carousel>
@@ -15,20 +16,27 @@
     </div>
     <div class="ratSub">
         <div class="border rating">
-            <p> <img src="assets/img/star1.png"><b>{{informacije.avgRating}}/10, voted: {{informacije.nmbOfRatings}} people</b></p>
-            <p> <b>Rate: </b>
-                <ngb-rating [max]="5" [(rate)]="starRating" [readonly]="false" (click)="rate(informacije.id)"></ngb-rating>
-            </p>
-        </div>
-        <div class="subDiv">
-            <p-button label="Subscribe"></p-button>
+            <div class="starsRating"> <img src="assets/img/star1.png"><b>{{informacije.avgRating| number:'1.1-1'}}/10, voted: {{informacije.nmbOfRatings}}
+                    people</b></div>
+
+            <p-button label="Subscribe" class="subBtn" (click)="subscribe(informacije)"></p-button>
+            <app-toast [succ]="subSuccess" [color]="toastColor" [cond]="uslov"></app-toast>
+            <!--  -->
         </div>
     </div>
-    <br>
+
+    <!-- <br>
     <p><b>Place</b>: {{informacije.place}}</p>
-    <!-- *ngIf="offerImages.pageSize > 0" -->
+    <div class="posts">
+        <h1>P O S T S</h1>
+    </div>
+
+    <div class="comments">
+        <h1> C O M M E N T S</h1>
+    </div> -->
 
     <ng-template pTemplate="footer">
         <p-button icon="pi pi-check" (click)="displayModal=false" label="Ok" styleClass="p-button-text"></p-button>
     </ng-template>
+
 </p-dialog>

@@ -2,7 +2,6 @@ import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit,
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as L from 'leaflet';
 import { Offer, Page } from 'src/app/models/Offer';
-import { MapService } from '../../services/map.service';
 import { OfferModalComponent } from '../offer-modal/offer-modal.component';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -42,7 +41,7 @@ export class MapComponent implements OnChanges, AfterContentInit, OnInit {
 
   // @ViewChild('content') content: OfferModalComponent;
 
-  constructor(private mapService: MapService, private modalService: NgbModal, private cd: ChangeDetectorRef) { }
+  constructor( private modalService: NgbModal, private cd: ChangeDetectorRef) { }
   ngOnInit(): void {
     this.uslov = false;
   }

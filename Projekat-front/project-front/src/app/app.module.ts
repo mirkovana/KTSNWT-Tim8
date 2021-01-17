@@ -11,13 +11,22 @@ import { MainOffersViewComponent } from './components/main-offers-view/main-offe
 import { FilterComponent } from './filter/filter.component';
 import { OfferTableItemComponent } from './components/offer-table-item/offer-table-item.component';
 import { OfferModalComponent } from './components/offer-modal/offer-modal.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
-import {MenuItem} from 'primeng/api'; 
+import {MenuItem, SharedModule} from 'primeng/api'; 
 import {DialogModule} from 'primeng/dialog';
 import {ButtonModule} from 'primeng/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
+import { MainSubscriptionsViewComponent } from './components/main-subscriptions-view/main-subscriptions-view.component';
+import { SubscriptionTableComponent } from './components/subscription-table/subscription-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ToastComponent } from './components/toast/toast.component';
+import { MatFormFieldModule  } from '@angular/material/form-field';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatInputModule } from '@angular/material/input';
+
 
 
 
@@ -31,8 +40,10 @@ import { MatCarouselModule } from '@ngmodule/material-carousel';
     OfferTableItemComponent,
     MapComponent,
     OfferModalComponent,
+    MainSubscriptionsViewComponent,
+    SubscriptionTableComponent,
+    ToastComponent,
 
-   
 
   ],
   imports: [
@@ -44,7 +55,12 @@ import { MatCarouselModule } from '@ngmodule/material-carousel';
     DialogModule,
     ButtonModule,
     BrowserAnimationsModule,
-    MatCarouselModule
+    MatCarouselModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatSnackBarModule,
+    MatInputModule
     
   ],
   providers: [],

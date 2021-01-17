@@ -1,0 +1,18 @@
+table {
+    width: 75%;
+}
+
+.title {
+    text-align: center;
+    font-size: 50px;
+    margin: 20px;
+}
+
+.header {
+    font-size: 15px;
+}
+
+::ng-deep .mat-paginator-container {
+    justify-content: unset;
+    align-items: center;
+}

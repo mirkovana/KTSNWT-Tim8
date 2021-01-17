@@ -12,5 +12,23 @@ body {
     // background-image: url('assets/img/pozadina.jpg');
     // background-color: blanchedalmond;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.red-snackbar {
+    background-color: rgb(153, 50, 50);
+    color: lightgoldenrodyellow;
+}
+
+.green-snackbar {
+    background-color: rgb(29, 102, 29);
+    color: lightgreen;
+}
