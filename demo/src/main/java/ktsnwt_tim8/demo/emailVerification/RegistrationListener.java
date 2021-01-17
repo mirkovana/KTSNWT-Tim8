@@ -37,7 +37,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
 			String recipient = user.getEmail();
 			String subject = "Potvrda registracije";
-			String url = event.getAppUrl() + "/validateEmail/" + token;
+			String url = event.getAppUrl() +  token;
 
 			emailService.sendNotificaitionAsync(url, recipient, subject);
 

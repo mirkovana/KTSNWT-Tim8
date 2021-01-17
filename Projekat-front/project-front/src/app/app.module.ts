@@ -26,9 +26,10 @@ import { ToastComponent } from './components/toast/toast.component';
 import { MatFormFieldModule  } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
-
-
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { ValidateEmailComponent } from './components/validate-email/validate-email.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { RegistrationComponent } from './components/registration/registration.component';
 
 
 @NgModule({
@@ -43,6 +44,10 @@ import { MatInputModule } from '@angular/material/input';
     MainSubscriptionsViewComponent,
     SubscriptionTableComponent,
     ToastComponent,
+    RegistrationComponent,
+    NavigationComponent,
+    ValidateEmailComponent,
+
 
 
   ],
@@ -60,7 +65,8 @@ import { MatInputModule } from '@angular/material/input';
     MatPaginatorModule,
     MatFormFieldModule,
     MatSnackBarModule,
-    MatInputModule
+    MatInputModule,
+    ReactiveFormsModule
     
   ],
   providers: [],
