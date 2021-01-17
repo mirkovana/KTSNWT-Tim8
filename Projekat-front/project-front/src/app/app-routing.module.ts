@@ -4,6 +4,7 @@ import { MainOffersViewComponent } from './components/main-offers-view/main-offe
 import { MapComponent } from './components/map/map.component';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {ValidateEmailComponent} from './components/validate-email/validate-email.component';
+import {LoginComponent} from './components/login/login.component';
 
 const routes: Routes = [ 
   { path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -12,7 +13,8 @@ const routes: Routes = [
 {
   path: 'registration', component: RegistrationComponent
 },
-{path: 'validateEmail', component: ValidateEmailComponent}
+{path: 'validateEmail', component: ValidateEmailComponent},
+{path: 'login', component: LoginComponent}
 ];
 
 @NgModule({
