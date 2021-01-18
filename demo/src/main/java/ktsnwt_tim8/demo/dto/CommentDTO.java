@@ -14,13 +14,25 @@ public class CommentDTO {
 
 	private String imageBase64;
 	
+	private String username;
+	
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public CommentDTO() {}
 	
-	public CommentDTO(Long ID, String text, Date date, String imageBase64) {
+	public CommentDTO(Long ID, String text, Date date, String imageBase64, String username) {
 		this.ID = ID;
 		this.text = text;
 		this.date = date;
 		this.imageBase64 = imageBase64;
+		this.username = username;
 	}
 
 	public CommentDTO(String text) {

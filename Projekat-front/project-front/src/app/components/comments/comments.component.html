@@ -1,0 +1,30 @@
+<h2>Comments</h2>
+<app-comment-edit (newComment)="onNewComment()" editing=false></app-comment-edit>
+
+<hr>
+
+<div class="row" *ngIf="dataReady">
+    <div  class="comment" *ngFor = "let comment of content.content">
+        <app-comment *ngIf="!comment.editing" [comment]="comment"
+        (commentDeleted)="onCommentDeleted()" (clickedEdit)="onClickedEdit($event)"></app-comment>  
+        
+        <app-comment-edit *ngIf="comment.editing" (commentDeleted)="onCommentDeleted()"
+        (dogadjaj)="radiNesto()"
+        (commentEdited)="onCommentEdited($event)"
+        (commentNew)="newComment($event)"
+        (commentCreated)="onCommentCreated($event)"
+        [comment]="comment" editing=true [canEdit]="comment.canEdit"></app-comment-edit>        
+
+        <hr>
+    </div>
+    
+    <mat-paginator *ngIf = "paginatorDetails.length != 0" style="
+    display: flex;
+    justify-content: center" 
+    [length] = "paginatorDetails.length"
+    [pageSize]="paginatorDetails.pageSize"
+    [pageSizeOptions]="[5, 10, 25]"
+    (page)="onClick($event)"
+    >
+    </mat-paginator>
+</div>

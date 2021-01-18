@@ -33,6 +33,11 @@ import { OffersComponent } from './components/offers/offers.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatDividerModule} from '@angular/material/divider';
 import { OfferItemComponent } from './components/offer-item/offer-item.component';
+import { OfferComponent } from './components/offer/offer.component';
+import { CommentsComponent } from './components/comments/comments.component';
+import { CommentComponent } from './components/comment/comment.component';
+import { CommentEditComponent } from './components/comment-edit/comment-edit.component';
+import {MatCardModule} from '@angular/material/card';
 
 
 @NgModule({
@@ -49,7 +54,11 @@ import { OfferItemComponent } from './components/offer-item/offer-item.component
     LoginComponent,
     FilterComponent,
     OffersComponent,
-    OfferItemComponent
+    OfferItemComponent,
+    OfferComponent,
+    CommentsComponent,
+    CommentComponent,
+    CommentEditComponent
 
 
    
@@ -76,7 +85,8 @@ import { OfferItemComponent } from './components/offer-item/offer-item.component
     MatInputModule,
     MatButtonModule,
     MatPaginatorModule,
-    MatDividerModule
+    MatDividerModule,
+    MatCardModule
     
   ],
   providers: [],
