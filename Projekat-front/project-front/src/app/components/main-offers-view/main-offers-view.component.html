@@ -4,8 +4,11 @@
     
     <div>
         
-        <app-filter></app-filter>
-        <app-offer-info [page]="offersPage"></app-offer-info>
+        <app-filter (filterClick)="filterClicked($event)"></app-filter>
+        
+        <!--<app-offers-table (pageChanged)="onPageChange($event)" [page] = "page" [paginatorDetails]="info"></app-offers-table>-->
+        
+        <!--<app-offer-info [page]="offersPage"></app-offer-info>-->
 
     </div>
     <div>

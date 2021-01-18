@@ -10,9 +10,12 @@ public class SubcategoryDTO {
 
 	private Long ID;
 
+	private Long catID;
+	
 	public SubcategoryDTO() {
 
 	}
+	
 
 	public SubcategoryDTO(@NotBlank(message = "Name cannot be empty.") String name, Long iD) {
 
@@ -20,6 +23,14 @@ public class SubcategoryDTO {
 		this.ID = iD;
 	}
 
+	
+	public SubcategoryDTO(String name, Long iD, Long catId) {
+		this.name = name;
+		this.ID = iD;
+		this.catID = catId;
+	}
+
+	
 	public SubcategoryDTO(Subcategory subcategory) {
 		this.name = subcategory.getName();
 		this.ID=subcategory.getID();
@@ -41,4 +52,17 @@ public class SubcategoryDTO {
 		ID = iD;
 	}
 
+
+	public Long getCatID() {
+		return catID;
+	}
+
+
+	public void setCatID(Long catID) {
+		this.catID = catID;
+	}
+	
+	
+
 }
+

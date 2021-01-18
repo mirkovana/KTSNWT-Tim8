@@ -1,5 +1,6 @@
 package ktsnwt_tim8.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -33,10 +34,13 @@ public class SubcategoryController {
 
 	/* ISPISIVANJE SVIH POD KATEGORIJA */
 	@GetMapping
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<List<Subcategory>>getAllSubcategories() {
+	public ResponseEntity<List<SubcategoryDTO>>getAllSubcategories() {
 		List<Subcategory> listSubcategories = service.listAll();
-		return new ResponseEntity<>(listSubcategories, HttpStatus.OK);
+		List<SubcategoryDTO> listDTO = new ArrayList<SubcategoryDTO>();
+		for (Subcategory s: listSubcategories) {
+			listDTO.add(new SubcategoryDTO(s.getName(), s.getID(), s.getCategory().getID()));
+		}
+		return new ResponseEntity<>(listDTO, HttpStatus.OK);
 	}
 
 	/* DODAVANJE NOVE POD KATEGORIJE */
