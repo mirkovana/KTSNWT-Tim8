@@ -1,0 +1,23 @@
+.image {
+    width: 400px;
+    height: 400px;
+}
+
+.file-input {
+    display: none;
+}
+
+.btn {
+    background: #2196F3!important;
+    color: #ffffff;
+    border: 1px solid #2196F3 !important;
+    // padding: 0.5rem 1rem;
+    font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.error {
+    color: red;
+    font-size: 20px;
+}

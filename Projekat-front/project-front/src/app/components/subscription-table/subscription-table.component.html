@@ -1,0 +1,37 @@
+<p class="title">Subscriptions</p>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef class="header"> <b>No.</b> </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef class="header"><b> Title</b> </th>
+            <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef class="header"> <b>Description</b> </th>
+            <td mat-cell *matCellDef="let element"> {{element.description| slice:0:100}}... </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef class="header"><b>Unsubscribe</b> </th>
+            <td mat-cell *matCellDef="let element">
+                <p-button (click)="unsub(element)">Unsubscribe</p-button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="pages"></mat-paginator>
+    <app-toast [succ]="subSuccess" [color]="toastColor" [cond]="uslov"></app-toast>
+</div>

@@ -1,8 +1,8 @@
 import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as L from 'leaflet';
-import { Offer, Page} from 'src/app/models/Offer';
-import { MapService } from '../../services/map.service';
+import { Offer, Page } from 'src/app/models/Offer';
+// import { MapService } from '../../services/map.service';
 import { OfferModalComponent } from '../offer-modal/offer-modal.component';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -42,7 +42,7 @@ export class MapComponent implements OnChanges, AfterContentInit, OnInit {
 
   // @ViewChild('content') content: OfferModalComponent;
 
-  constructor(private mapService: MapService, private modalService: NgbModal, private cd: ChangeDetectorRef) { }
+  constructor( private modalService: NgbModal, private cd: ChangeDetectorRef) { }
   ngOnInit(): void {
     this.uslov = false;
   }
@@ -90,6 +90,7 @@ export class MapComponent implements OnChanges, AfterContentInit, OnInit {
   }
 
   pinMarkers(map: L.Map, data: Page): void { //dodavanje markera
+    this.deleteMarkers(map);
     this.alloffers = data["content"];
 
     for (const o of this.alloffers) {

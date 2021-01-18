@@ -1,25 +1,6 @@
-// .dark-modal .modal-content {
-//     background-color: #292b2c;
-//     color: white;
-// }
-// .dark-modal .close {
-//     color: white;
-// }
-// .light-blue-backdrop {
-//     background-color: #5cb3fd;
-// }
-// :host ::ng-deep .p-button {
-//     margin: 0 .5rem 0 0;
-//     min-width: 10rem;
-// }
 p {
     margin: 5px;
     // text-align: center;
-}
-
-.rating {
-    // display: inline-flex;
-    align-items: center;
 }
 
 .desc {
@@ -39,8 +20,9 @@ p {
 }
 
 img {
-    width: 20px;
-    height: 20px;
+    padding-right: 3px;
+    width: 21px;
+    height: 21px;
 }
 
 .title {
@@ -48,7 +30,8 @@ img {
 }
 
 .border {
-    width: fit-content;
+    // width: fit-content;
+    width: 100%;
     border-radius: 20px;
     background: antiquewhite;
     padding: 5px;
@@ -58,14 +41,50 @@ img {
 
 ngb-rating {
     color: #FFC107;
-    font-size: 30px;
+    font-size: 39px;
+    margin-bottom: 5%;
 }
 
 .ratSub {
-    // display: flow-root;
-    background-color: #FFC107;
+    overflow: hidden;
 }
 
-.subDiv {
+.posts {
+    width: auto;
+    height: 300px;
+    background-color: aquamarine;
+}
+
+.comments {
+    width: auto;
+    height: 300px;
+    background-color: bisque;
+}
+
+.starsRating {
+    float: left;
+    padding: inherit;
+}
+
+.starText {
+    margin: 5px;
+}
+
+.subBtn {
+    margin-right: 5px;
+}
+
+.editBtn {
     float: right;
+    margin: 3px;
+}
+
+::ng-deep .carousel-indicators {
+    margin: auto;
+    margin-left: 0%;
+    margin-right: 0%;
+}
+
+.ng-star-inserted {
+    margin: auto;
 }
