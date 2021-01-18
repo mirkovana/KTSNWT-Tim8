@@ -86,6 +86,7 @@ export class MapComponent implements OnChanges, AfterContentInit, OnInit {
   }
 
   pinMarkers(map: L.Map, data: Page): void { //dodavanje markera
+    this.deleteMarkers(map);
     this.alloffers = data["content"];
 
     for (const o of this.alloffers) {
