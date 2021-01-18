@@ -8,7 +8,6 @@ import { MapComponent } from './components/map/map.component';
 import { OfferInfoComponent } from './components/offer-info/offer-info.component';
 import { from } from 'rxjs';
 import { MainOffersViewComponent } from './components/main-offers-view/main-offers-view.component';
-import { FilterComponent } from './filter/filter.component';
 import { OfferTableItemComponent } from './components/offer-table-item/offer-table-item.component';
 import { OfferModalComponent } from './components/offer-modal/offer-modal.component';
 import { NgbModule, NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
@@ -34,6 +33,21 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
 import { EditOfferComponent } from './components/edit-offer/edit-offer.component';
 import { MatIconModule } from '@angular/material/icon';
 
+import { LoginComponent } from './components/login/login.component';
+import { FilterComponent } from './components/filter/filter.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common'; 
+import { MatButtonModule } from '@angular/material/button';
+import { OffersComponent } from './components/offers/offers.component';
+import {MatDividerModule} from '@angular/material/divider';
+import { OfferItemComponent } from './components/offer-item/offer-item.component';
+import { OfferComponent } from './components/offer/offer.component';
+import { CommentsComponent } from './components/comments/comments.component';
+import { CommentComponent } from './components/comment/comment.component';
+import { CommentEditComponent } from './components/comment-edit/comment-edit.component';
+import {MatCardModule} from '@angular/material/card';
+import { RatingComponent } from './components/rating/rating.component';
 
 
 @NgModule({
@@ -41,7 +55,6 @@ import { MatIconModule } from '@angular/material/icon';
     AppComponent,
     OfferInfoComponent,
     MainOffersViewComponent,
-    FilterComponent,
     OfferTableItemComponent,
     MapComponent,
     OfferModalComponent,
@@ -52,7 +65,19 @@ import { MatIconModule } from '@angular/material/icon';
     NavigationComponent,
     ValidateEmailComponent,
     FileUploadComponent,
-    EditOfferComponent
+    EditOfferComponent,
+    LoginComponent,
+    FilterComponent,
+    OffersComponent,
+    OfferItemComponent,
+    OfferComponent,
+    CommentsComponent,
+    CommentComponent,
+    CommentEditComponent,
+    RatingComponent
+
+
+   
 
   ],
   imports: [
@@ -72,7 +97,12 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     ReactiveFormsModule,
     MatIconModule,
-    FormsModule 
+    FormsModule, 
+    MatCheckboxModule,
+    CommonModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatCardModule
     
   ],
   providers: [],

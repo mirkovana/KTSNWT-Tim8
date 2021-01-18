@@ -1,5 +1,6 @@
 package ktsnwt_tim8.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -29,10 +30,13 @@ public class CategoryController {
 
 	/* ISPISIVANJE SVIH KATEGORIJA */
 	@GetMapping
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<List<Category>> getAllCategories() {
+	public ResponseEntity<List<CategoryDTO>> getAllCategories() {
 		List<Category> listCategories = service.listAll();
-		return new ResponseEntity<>(listCategories, HttpStatus.OK);
+		List<CategoryDTO> listDTO = new ArrayList<CategoryDTO>();
+		for (Category c: listCategories) {
+			listDTO.add(new CategoryDTO(c.getName(), c.getID()));
+		}
+		return new ResponseEntity<>(listDTO, HttpStatus.OK);
 	}
 
 	/* DODAVANJE NOVE KATEGORIJE */

@@ -6,6 +6,8 @@ import { MainSubscriptionsViewComponent } from './components/main-subscriptions-
 import { MapComponent } from './components/map/map.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ValidateEmailComponent } from './components/validate-email/validate-email.component';
+import { LoginComponent } from './components/login/login.component';
+import { OfferComponent } from './components/offer/offer.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -13,8 +15,12 @@ const routes: Routes = [
   { path: 'subscriptions', component: MainSubscriptionsViewComponent },
   { path: 'registration', component: RegistrationComponent },
   { path: 'validateEmail', component: ValidateEmailComponent },
-  { path: 'edit-offer', component: EditOfferComponent}
+  { path: 'edit-offer', component: EditOfferComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'offer', component: OfferComponent } // ovde treba da ide id jer ce se na osnovu njega dobaviti offer
 ];//component: MapComponent
+
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

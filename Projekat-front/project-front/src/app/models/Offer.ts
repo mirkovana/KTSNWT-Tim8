@@ -16,6 +16,34 @@ export class Offer {
 
 // page of offers, izmijeniti
 export class Page {
+    content: Offer[];
+    totalElements: number;
+    totalPages: number;
+
+    constructor(content, totalEl, totalP){
+        this.content = content;
+        this.totalElements = totalEl;
+        this.totalPages = totalP;
+    }
+
+      
+}
+
+export class PageGen {
+    content: any;
+    totalElements: number;
+    totalPages: number;
+
+    constructor(content, totalEl, totalP){
+        this.content = content;
+        this.totalElements = totalEl;
+        this.totalPages = totalP;
+    }
+
+      
+}
+
+/*export class Page {
     pageNumber;
     pageSize;
     content: Offer[];
@@ -27,4 +55,4 @@ export class Page {
     }
 
     
-}
+}*/

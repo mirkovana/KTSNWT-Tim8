@@ -1,4 +1,4 @@
-<div class="page">
+<!-- <div class="page">
 
 
     <div>
@@ -10,6 +10,34 @@
     <div>
         <app-map [offers]="offersPage"></app-map>
     </div>
-    <!-- <app-offer-modal></app-offer-modal> -->
+     <app-offer-modal></app-offer-modal>
 
+</div> -->
+<!--<app-navigation></app-navigation>
+
+   
+    
+    <div class="wrapper">
+        
+        <app-filter (filterClick)="filterClicked($event)"></app-filter>
+        <app-offers (pageChanged)="onPageChange($event)" [page] = "offersPage" [paginatorDetails]="info"></app-offers>
+    </div>
+        <app-map [offers]="offersPage"></app-map> -->
+
+<app-navigation></app-navigation>
+<div class="page">
+
+
+    <div>
+
+        <app-filter (filterClick)="filterClicked($event)"></app-filter>
+        <!--<app-offer-info [page]="offersPage"></app-offer-info>-->
+        <app-offers (pageChanged)="onPageChange($event)" [page]="offersPage" [paginatorDetails]="info"></app-offers>
+
+
+    </div>
+    <div>
+        <app-map [offers]="offersPage"></app-map>
+    </div>
+    <!-- <app-offer-modal></app-offer-modal> -->
 </div>

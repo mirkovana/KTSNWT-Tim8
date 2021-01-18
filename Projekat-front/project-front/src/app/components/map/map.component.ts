@@ -2,6 +2,7 @@ import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit,
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as L from 'leaflet';
 import { Offer, Page } from 'src/app/models/Offer';
+// import { MapService } from '../../services/map.service';
 import { OfferModalComponent } from '../offer-modal/offer-modal.component';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -48,8 +49,11 @@ export class MapComponent implements OnChanges, AfterContentInit, OnInit {
 
   //Da bi bili sigurni da je DOM kreiran i da mozemo da referenciramo komponentu
   ngOnChanges(): void {
-    this.pinMarkers(this.map, this.offers);
-    this.on = true;
+    
+    if (this.offers && this.map){
+      this.pinMarkers(this.map, this.offers);
+      this.on = true;
+    }
   }
 
   ngAfterContentInit(): void {

@@ -39,6 +39,15 @@ public class RatingService {
 		throw new Exception("Offer with the given ID does not exist.");
 	}
 
+	public Rating findUsersRating(Long offerId) throws Exception {
+		User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Offer o = offerRepo.findOneByID(offerId);
+		if (o == null) {
+			throw new Exception("Bad request!");
+		}
+		Rating r = repo.findOneByUserAndOffer(u, o);
+		return r;
+	}
 
 	public Rating create(Long offerId, RatingDTO ratingDTO) throws Exception {
 		
