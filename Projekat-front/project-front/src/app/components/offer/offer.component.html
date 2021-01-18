@@ -1,4 +1,34 @@
-<p>offer works!</p>
+<app-navigation></app-navigation>
+<div class='offerInfo'>
+   <!--<h1>{{ offer.title }}</h1>-->
+   <!--<p>{{ offer.description }}</p>-->
+   
+   <form [formGroup]="editForm" >
+      <h1>
+         <textarea class="naslov" *ngIf="broj===1" rows="3" formControlName="text" name="title">{{ offer.title }}</textarea>
+         <textarea class="naslov" *ngIf="broj===2 || !loggedIn" readonly="true" rows="3" formControlName="text" >{{ offer.title }}</textarea>
+         <div class="actions">
+            <button *ngIf="broj===1" mat-icon-button color="primary" matTooltip="Save" onclick="submit()">
+               <mat-icon>check</mat-icon>
+            </button>
+         </div>
+      </h1>
+      <hr>
+      <mat-card class="example-card new">
+         <mat-card-content>
+            <textarea *ngIf="broj===1" rows="3" formControlName="text" name="description">{{ offer.description }}</textarea>
+            <textarea *ngIf="broj===2 || !loggedIn" readonly="true" rows="3" formControlName="text" >{{ offer.description }}</textarea>
+         </mat-card-content>
+         <div class="actions">
+            <button *ngIf="broj===1" mat-icon-button color="primary" matTooltip="Save" type="button">
+               <mat-icon>check</mat-icon>
+            </button>
+         </div>
+      </mat-card>
+   </form>
 
+   <hr>
+
+</div>
 <app-rating></app-rating>
 <app-comments></app-comments>
