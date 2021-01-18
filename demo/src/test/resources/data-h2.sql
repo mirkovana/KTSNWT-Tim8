@@ -85,5 +85,7 @@ INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES
 INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (4L, '2020-5-1 12:00:00', null, 'Comment without picture 3', 3L, 4L);
 INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (5L, '2020-5-1 12:00:00', null, 'Comment without picture 3', 4L, 4L);
 INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (6L, '2020-5-1 12:00:00', null, 'Comment without picture 3', 10L, 4L);
+INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (7L, '2020-5-1 12:00:00', null, 'Comment without picture 7', 7L, 3L);
+INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (8L, '2020-5-1 12:00:00', null, 'Comment without picture 8', 7L, 4L);
 
 

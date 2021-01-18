@@ -74,9 +74,9 @@ public class CommentServiceIntegrationTests {
 	public void findCommentsWithExistingOfferId() throws Exception {
 
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
-		Page<Comment> page = service.findAllByOfferID(10L, pageable);
+		Page<Comment> page = service.findAllByOfferID(7L, pageable);
 		
-		assertEquals(page.getContent().size(), 1);
+		assertEquals(page.getContent().size(), 2);
 	}
 	
 	
@@ -304,16 +304,16 @@ public class CommentServiceIntegrationTests {
 	@Test 
 	//@Transactional
 	public void deleteCommentWithoutPictureSuccess() throws Exception {
-		login("kor1@nesto.com", "1");
+		login("kor3@nesto.com", "1");
 
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
-		Page<Comment> page = service.findAllByOfferID(1L, pageable);
+		Page<Comment> page = service.findAllByOfferID(10L, pageable);
 		
 		int oldNumOfComments = page.getContent().size();
 		
-		service.deleteComment(1L);
+		service.deleteComment(6L);
 
-		page = service.findAllByOfferID(1L, pageable);
+		page = service.findAllByOfferID(10L, pageable);
 		int newNumOfComments = page.getContent().size();
 		
 		assertEquals(oldNumOfComments - 1, newNumOfComments);
