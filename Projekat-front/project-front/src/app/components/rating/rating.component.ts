@@ -16,7 +16,7 @@ export class RatingComponent implements OnInit {
   rated = false;
   updating = false;
   ratingId = 0;
-
+  
   constructor(private ratingService: RatingService, private _snackBar: MatSnackBar) { }
 
   openSnackBar(message) {
@@ -40,28 +40,9 @@ export class RatingComponent implements OnInit {
     }
   }
 
-  rate(id: number) {
-    console.log("RATING: " + this.starRating);
-    console.log("ID: " + id);
-    /*if(this.oldRating == 0 && this.starRating != 0){
-      this.offerService.sendRating(id, this.starRating);
-      this.oldRating = this.starRating;
-    }
-    else{
-      if(this.oldRating != this.starRating){
-        this.offerService.updateRating(id, this.starRating);
-        this.oldRating = this.starRating;
-      }
-    }*/
-    // this.starRating = 0;
-  }
-
   saveUpdate(){
-    console.log(this.saveUpdate + " " + this.starRating)
     // namjestim nove vrijednosti, update = false
     this.ratingService.updateRating(this.ratingId, this.starRating).subscribe(data => {
-      console.log("poslat put zahtjev")
-      console.log(data)
       this.updating = false;
       this.openSnackBar("Rating updated.")
      
@@ -69,29 +50,19 @@ export class RatingComponent implements OnInit {
   }
 
   deleteRating(){
-    console.log(this.ratingId + " rejting id ")
-    // stavim da nije rated i sta rating na 0
     this.ratingService.deleteRating(this.ratingId).subscribe(()=>{
     this.rated = false;
-    this.starRating = 0;
-    console.log("obrisanoo")})
+    this.starRating = 0;})
     this.openSnackBar("Rating deleted.")
   }
 
   rateOffer(){
-    console.log(this.starRating + " novoooo")
     this.ratingService.createRating(this.offerId, this.starRating).subscribe(data=>
       {
-        console.log("kreirano");
-        console.log("rating");
-        console.log(data)
         this.rated = true;
         this.ratingId = data['id']
         this.openSnackBar("Rating created.")
       })
-    // provjeriti jel 0
-    // u sub da namjestim da je rated i da postavim sve opet
-
   }
 
 }
