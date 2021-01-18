@@ -42,6 +42,7 @@ export class MainOffersViewComponent implements OnInit {
   }
 
   filterClicked(filter: FilterParameters){     // literally clicked search
+    console.log(filter + " clicked ")
     this.offerService.filterOffers2(filter, this.info).subscribe(data => {
       console.log(data)
       this.currentlyFiltered = filter;

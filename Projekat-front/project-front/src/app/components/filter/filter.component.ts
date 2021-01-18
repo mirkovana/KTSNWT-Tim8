@@ -8,6 +8,7 @@ import { FormGroup, FormControl, FormArray, Validators, NgForm } from '@angular/
 import { ɵINTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS } from '@angular/platform-browser-dynamic';
 import { forkJoin } from 'rxjs';
 import { FilterParameters } from 'src/app/models/Filter';
+import { PaginatorPageable } from 'src/app/models/PaginatorPageable';
 
 
 @Component({
@@ -102,9 +103,7 @@ export class FilterComponent implements OnInit {
     let location = form.form.value.location ? form.form.value.location : "";
     console.log(form.form.value.text + " a lokacija " + form.form.value.location)
     //this.filterClick.emit({"name": text, "place": location, "subcats":array2, "page": 0, "size": 5})
-    this.filterClick.emit({"name": text, "place": location, "subcats":array2})
-    
-    //this.offersService.filterOffers("", "", array2, 0, 0);
+    this.filterClick.emit({"name": text, "place": location, "subcats":array2})  
   }
 
 }
