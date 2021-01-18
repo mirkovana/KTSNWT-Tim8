@@ -1,0 +1,15 @@
+<div class="item header">
+    <div class='content logo'>
+        <p class="title"> <b>{{ offer.title }} </b></p>
+
+        <p>Location: {{ offer.place}}</p>
+        
+        <div class="starsRating"> <!--<mat-icon class="star">star</mat-icon> -->
+        Rating: {{offer.avgRating| number:'1.1-1'}} <img class="star" src="assets/img/star.png"> ({{offer.nmbOfRatings}} votes)</div>
+
+        <p>Labels: </p>
+    </div>
+    <div class="imageDIV navigation">
+        <img src="https://image.freepik.com/free-vector/cute-avocado-cartoon-hand-drawn-style_42349-476.jpg" alt="" class="image">
+    </div>
+</div>

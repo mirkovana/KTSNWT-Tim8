@@ -1,18 +1,31 @@
-<app-navigation></app-navigation>
-<div class="page">
+<!--<app-navigation></app-navigation>
+
    
     
-    <div>
+    <div class="wrapper">
         
         <app-filter (filterClick)="filterClicked($event)"></app-filter>
-        
-        <!--<app-offers-table (pageChanged)="onPageChange($event)" [page] = "page" [paginatorDetails]="info"></app-offers-table>-->
-        
-        <!--<app-offer-info [page]="offersPage"></app-offer-info>-->
+        <app-offers (pageChanged)="onPageChange($event)" [page] = "offersPage" [paginatorDetails]="info"></app-offers>
+    </div>
+        <app-map [offers]="offersPage"></app-map> -->
 
-    </div>
-    <div>
-         <app-map [offers]="offersPage"></app-map>
-    </div>
-    <!-- <app-offer-modal></app-offer-modal> -->
-</div>
+        <app-navigation></app-navigation>
+        <div class="page">
+           
+            
+            <div>
+                
+                <app-filter></app-filter>
+                <!--<app-offer-info [page]="offersPage"></app-offer-info>-->
+                <app-offers (pageChanged)="onPageChange($event)" [page] = "offersPage" [paginatorDetails]="info"></app-offers>
+  
+        
+            </div>
+            <div>
+                 <app-map [offers]="offersPage"></app-map>
+            </div>
+            <!-- <app-offer-modal></app-offer-modal> -->
+        </div>
+         
+    
+    

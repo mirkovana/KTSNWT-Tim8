@@ -1,0 +1,22 @@
+<div class="wrapper offers">
+    <div *ngIf = "page.content">
+        <div *ngFor = "let offer of page.content">
+            <app-offer-item [offer]="offer" class="page"></app-offer-item>
+        <mat-divider class="divider" role="separator"></mat-divider>
+       
+        </div>
+        
+    </div>
+    <mat-paginator *ngIf = "paginatorDetails.length != 0" style="
+        display: flex;
+        justify-content: left" 
+        [length] = "paginatorDetails.length"
+        [pageSize]="paginatorDetails.pageSize"
+        [pageSizeOptions]="[5, 10, 25]"
+        (page)="onClick($event)"
+        >
+    </mat-paginator>
+    </div>
+    
+    
+      

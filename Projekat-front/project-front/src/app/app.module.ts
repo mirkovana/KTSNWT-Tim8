@@ -29,6 +29,10 @@ import { CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { OffersComponent } from './components/offers/offers.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatDividerModule} from '@angular/material/divider';
+import { OfferItemComponent } from './components/offer-item/offer-item.component';
 
 
 @NgModule({
@@ -43,7 +47,9 @@ import { MatButtonModule } from '@angular/material/button';
     NavigationComponent,
     ValidateEmailComponent,
     LoginComponent,
-    FilterComponent
+    FilterComponent,
+    OffersComponent,
+    OfferItemComponent
 
 
    
@@ -68,7 +74,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatFormFieldModule,
     CommonModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatPaginatorModule,
+    MatDividerModule
     
   ],
   providers: [],
