@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { OfferService } from '../../services/offer.service';
+import {Offer} from '../../models/Offer';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-offer',
@@ -7,9 +10,35 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OfferComponent implements OnInit {
 
-  constructor() { }
+  loggedIn = localStorage.getItem('username');
+  broj:number;
+  offer:Offer;
+  editForm: FormGroup;
+
+  constructor(public fb: FormBuilder, private offerService: OfferService) { 
+  }
 
   ngOnInit(): void {
+    //u htmlu sa !loggedIn je sve ono sto se prikazuje kad korisnik nije ulogovan uopste  
+  if(this.loggedIn){
+    console.log("ulogovan je neko");
+    if(this.loggedIn==="admin@nesto.com"){this.broj=1;} //kad je ulogovan admin
+    else{this.broj=2;} //kad je ulogovan korisnik koji nije admin
+  } 
+
+    this.offerService.getOfferById().subscribe(res => {this.offer=res;});
+
+    this.editForm = this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required]
+  });
+  }
+
+  get f() { return this.editForm.controls; }
+
+  submit() {
+    console.log("blblblbl");
+    console.log(this.editForm.value);
   }
 
 }

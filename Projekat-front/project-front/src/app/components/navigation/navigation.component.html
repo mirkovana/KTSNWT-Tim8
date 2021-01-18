@@ -3,11 +3,12 @@
         <a routerLink="/" class="logo">APP</a>
         <nav>
             <ul>
-                <li><a href="#" routerLink="/registration">Registration</a></li>
+                <li *ngIf="!loggedIn"><a href="#" routerLink="/registration">Registration</a></li>
 
-                <li><a href="#" routerLink="/login">Login</a></li>
+                <li *ngIf="!loggedIn"><a href="#" routerLink="/login">Login</a></li>
                 <li><a href="#" routerLink="/edit-offer">Edit offer</a></li>
                 <li><a href="#" routerLink="/subscriptions">Subs</a></li>
+                <li *ngIf="loggedIn"><a href="#" (click)="logout()">Logout</a></li>
             </ul>
         </nav>
     </div>
