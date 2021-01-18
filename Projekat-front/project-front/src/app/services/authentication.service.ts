@@ -28,7 +28,7 @@ login(username: string, password: string) {
             // login successful if there's a jwt token in the response
             if (userTokenState.accessToken) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('token', JSON.stringify(userTokenState.accessToken));
+                localStorage.setItem('token', userTokenState.accessToken);
                 localStorage.setItem('username', username);
                 //const jwt: JwtHelperService = new JwtHelperService();
                 //console.log("jwt prosao");
@@ -40,6 +40,10 @@ login(username: string, password: string) {
                 //console.log("ROLAAAA: " + role);
                 //localStorage.setItem('role', info.role[0].authority);
                 //this.currentUserSubject.next(user);
+                console.log(userTokenState.accessToken)
+            }
+            else{
+              console.log("nema tokena")
             }
 
             return userTokenState.accessToken;

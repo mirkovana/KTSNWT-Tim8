@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 // import { Rating } from '../models/Rating';
 import { EventEmitter } from 'events';
 import { PageEvent } from '@angular/material/paginator';
-import { auth_token}  from '../models/app.constants'
+// import { auth_token}  from '../models/app.constants'
 import { FilterParameters } from '../models/Filter';
 import { PaginatorPageable } from '../models/PaginatorPageable';
 
@@ -14,7 +14,9 @@ import { PaginatorPageable } from '../models/PaginatorPageable';
   providedIn: 'root'
 })
 export class OfferInfoService {
- 
+  
+  
+  auth_token = localStorage.getItem('token');
 
   constructor(
     private http: HttpClient) {}
@@ -25,7 +27,7 @@ export class OfferInfoService {
   }
 
   getSubscriptions(page, size){
-    return this.http.get<Page>("http://localhost:8080/api/users/getSubscriptions/"+page+"/"+size, { headers: new HttpHeaders().append('Authorization', `Bearer ${auth_token}`) });
+    return this.http.get<Page>("http://localhost:8080/api/users/getSubscriptions/"+page+"/"+size, { headers: new HttpHeaders().append('Authorization', `Bearer ${this.auth_token}`) });
   }
 
   getOffersPage(pageable: PaginatorPageable){
