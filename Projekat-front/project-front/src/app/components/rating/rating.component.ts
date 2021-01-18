@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RatingService } from 'src/app/services/rating.service';
 
 @Component({
@@ -16,7 +17,14 @@ export class RatingComponent implements OnInit {
   updating = false;
   ratingId = 0;
 
-  constructor(private ratingService: RatingService) { }
+  constructor(private ratingService: RatingService, private _snackBar: MatSnackBar) { }
+
+  openSnackBar(message) {
+    this._snackBar.open(message, "Close", {
+      duration: 2000,
+      panelClass: ['blue-snackbar']
+    });
+  }
 
   ngOnInit(): void {
     if (this.loggedIn){
@@ -55,6 +63,7 @@ export class RatingComponent implements OnInit {
       console.log("poslat put zahtjev")
       console.log(data)
       this.updating = false;
+      this.openSnackBar("Rating updated.")
      
     })
   }
@@ -66,6 +75,7 @@ export class RatingComponent implements OnInit {
     this.rated = false;
     this.starRating = 0;
     console.log("obrisanoo")})
+    this.openSnackBar("Rating deleted.")
   }
 
   rateOffer(){
@@ -77,7 +87,7 @@ export class RatingComponent implements OnInit {
         console.log(data)
         this.rated = true;
         this.ratingId = data['id']
-        
+        this.openSnackBar("Rating created.")
       })
     // provjeriti jel 0
     // u sub da namjestim da je rated i da postavim sve opet

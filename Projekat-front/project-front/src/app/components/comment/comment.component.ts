@@ -14,7 +14,8 @@ export class CommentComponent implements OnInit {
 
 
   @Input() comment: Comment = null;
-  
+  @Output() done = new EventEmitter<string>();
+
   //@Input() canEdit = false;
   editing = false;
   @Output() clickedEdit = new EventEmitter();
@@ -31,6 +32,7 @@ export class CommentComponent implements OnInit {
     
       this.commentService.deleteComment(this.comment.id).subscribe(() => {
         this.commentDeleted.emit();
+        this.done.emit("Comment deleted.")
       })
 
   

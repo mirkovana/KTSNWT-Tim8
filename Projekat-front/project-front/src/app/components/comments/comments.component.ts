@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Params } from '@angular/router';
 import { PageGen } from 'src/app/models/Offer';
@@ -29,7 +30,15 @@ export class CommentsComponent implements OnInit {
   dict = {}
 
   constructor(private service: CommentService, private sanitizer: DomSanitizer,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute, private _snackBar: MatSnackBar) { }
+
+
+    openSnackBar(message) {
+      this._snackBar.open(message, "Close", {
+        duration: 2000,
+        panelClass: ['blue-snackbar']
+      });
+    }
 
   ngOnInit(): void {
       // aj nek je dobijem iz urla
