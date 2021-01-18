@@ -1,0 +1,39 @@
+
+<div *ngIf="!loggedIn">
+
+    <div class="rating-container">
+        <p>Log in or sign up to leave your rating</p>
+        <ngb-rating [max]="5" [(rate)]="starRating" [readonly]="false" class="stars">
+        </ngb-rating> 
+        
+    </div>
+   
+
+</div>
+
+<div *ngIf="loggedIn">
+    <div *ngIf="rated">
+        <p>Your rating</p>
+        <ngb-rating [max]="5" [(rate)]="starRating" [readonly]="!updating" class="stars">
+        </ngb-rating> 
+        <div *ngIf="!updating">
+            <button mat-raised-button color="primary" type="button" (click)="updating=true">Promijeni rating</button>
+            <button mat-raised-button (click)="deleteRating()" color="warn">Delete</button>
+        </div>
+        <div *ngIf="updating">
+            <button mat-raised-button color="primary"  (click)="saveUpdate()">Save update</button>
+        </div>
+    </div>
+    <div *ngIf="!rated">
+        <p>Rate offer</p>
+        <ngb-rating [max]="5" [(rate)]="starRating" [readonly]="false" class="stars">
+        </ngb-rating> 
+        <button mat-raised-button color="primary"  (click)="rateOffer()">Rate</button>
+    </div>
+
+    <div *ngIf="updating">
+
+    </div>
+
+</div>
+

@@ -8,7 +8,6 @@ import { MapComponent } from './components/map/map.component';
 import { OfferInfoComponent } from './components/offer-info/offer-info.component';
 import { from } from 'rxjs';
 import { MainOffersViewComponent } from './components/main-offers-view/main-offers-view.component';
-import { FilterComponent } from './filter/filter.component';
 import { OfferTableItemComponent } from './components/offer-table-item/offer-table-item.component';
 import { OfferModalComponent } from './components/offer-modal/offer-modal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -22,8 +21,24 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { NavigationComponent } from './components/navigation/navigation.component';
 import {ReactiveFormsModule,FormsModule} from '@angular/forms';
 import { ValidateEmailComponent } from './components/validate-email/validate-email.component';
-import { LoginComponent } from './components/login/login.component'
-
+import { LoginComponent } from './components/login/login.component';
+import { FilterComponent } from './components/filter/filter.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common'; 
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { OffersComponent } from './components/offers/offers.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatDividerModule} from '@angular/material/divider';
+import { OfferItemComponent } from './components/offer-item/offer-item.component';
+import { OfferComponent } from './components/offer/offer.component';
+import { CommentsComponent } from './components/comments/comments.component';
+import { CommentComponent } from './components/comment/comment.component';
+import { CommentEditComponent } from './components/comment-edit/comment-edit.component';
+import {MatCardModule} from '@angular/material/card';
+import { RatingComponent } from './components/rating/rating.component';
 
 
 @NgModule({
@@ -31,7 +46,6 @@ import { LoginComponent } from './components/login/login.component'
     AppComponent,
     OfferInfoComponent,
     MainOffersViewComponent,
-    FilterComponent,
     OfferTableItemComponent,
     MapComponent,
     OfferModalComponent,
@@ -39,6 +53,14 @@ import { LoginComponent } from './components/login/login.component'
     NavigationComponent,
     ValidateEmailComponent,
     LoginComponent,
+    FilterComponent,
+    OffersComponent,
+    OfferItemComponent,
+    OfferComponent,
+    CommentsComponent,
+    CommentComponent,
+    CommentEditComponent,
+    RatingComponent
 
 
    
@@ -54,7 +76,19 @@ import { LoginComponent } from './components/login/login.component'
     ButtonModule,
     BrowserAnimationsModule,
     MatCarouselModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatFormFieldModule,
+    CommonModule,
+    MatInputModule,
+    MatButtonModule,
+    MatPaginatorModule,
+    MatDividerModule,
+    MatCardModule
     
   ],
   providers: [],

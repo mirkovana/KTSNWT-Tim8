@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,7 +45,7 @@ public class CommentController {
 		List<CommentDTO> commentsDTO = new ArrayList<CommentDTO>();
 		
 		for (Comment c: comments) {
-			CommentDTO cDTO = new CommentDTO(c.getID(), c.getText(), c.getDate(), Helper.fromFileToBase64(c.getImagePath()));	
+			CommentDTO cDTO = new CommentDTO(c.getID(), c.getText(), c.getDate(), Helper.fromFileToBase64(c.getImagePath()), c.getUser().getUsername());	
 			commentsDTO.add(cDTO);
 		}
 		
@@ -68,13 +69,13 @@ public class CommentController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 		
-		CommentDTO cDTO = new CommentDTO(c.getID(), c.getText(), c.getDate(), Helper.fromFileToBase64(c.getImagePath()));	
+		CommentDTO cDTO = new CommentDTO(c.getID(), c.getText(), c.getDate(), Helper.fromFileToBase64(c.getImagePath()), c.getUser().getUsername());	
 		
         return new ResponseEntity<>(cDTO, HttpStatus.CREATED);
 	}
 	
 	
-	
+	@CrossOrigin
 	@RequestMapping(method=RequestMethod.PUT)
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<CommentDTO> updateComment(@RequestParam("commentId") Long commentId, @RequestParam("text") String comm,
@@ -89,13 +90,13 @@ public class CommentController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 		
-		CommentDTO cDTO = new CommentDTO(c.getID(), c.getText(), c.getDate(), Helper.fromFileToBase64(c.getImagePath()));	
+		CommentDTO cDTO = new CommentDTO(c.getID(), c.getText(), c.getDate(), Helper.fromFileToBase64(c.getImagePath()), c.getUser().getUsername());	
 		
         return new ResponseEntity<>(cDTO, HttpStatus.OK);
 	}
 
 	
-	
+	@CrossOrigin
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value="/{commentId}", method=RequestMethod.DELETE)	
 	public ResponseEntity<CommentDTO> deleteComment(@PathVariable Long commentId){

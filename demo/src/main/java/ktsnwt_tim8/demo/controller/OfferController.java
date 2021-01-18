@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -247,9 +248,9 @@ public class OfferController {
 	}
 	
 	@GetMapping(value = "/filter")
-	public ResponseEntity<Page<OfferDTO>> filter(@RequestBody FilterDTO filterDTO, Pageable pageable) {
+	public ResponseEntity<Page<OfferDTO>> filter(@RequestParam String name, @RequestParam(required = false) String place, @RequestParam(required = false) List<Long> subcategories,Pageable pageable) {
 		
-		Page<Offer> offers = service.filter(filterDTO, pageable);
+		Page<Offer> offers = service.filter(name, place, subcategories, pageable);
 		
 		List<OfferDTO> offersDTO = new ArrayList<OfferDTO>();
 

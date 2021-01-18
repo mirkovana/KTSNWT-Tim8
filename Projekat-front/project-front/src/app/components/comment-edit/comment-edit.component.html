@@ -1,0 +1,44 @@
+<div >
+    <form [formGroup]="uploadForm" (ngSubmit)="submit()" #f="ngForm">
+    <mat-card class="example-card new">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title *ngIf="username">{{username}}</mat-card-title>
+          <mat-card-title *ngIf="!username">Guest102418</mat-card-title>
+          <mat-card-subtitle *ngIf="comment.date">{{comment.date | date:'medium'}} </mat-card-subtitle>
+          <mat-card-subtitle *ngIf="!comment.date">Subtitle...</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <textarea rows="3" formControlName="text" placeholder="Leave your comment here..."></textarea>
+        <div class="imagePreview" *ngIf="imageURL && imageURL !== ''">
+                <img [src]="imageURL" [alt]="uploadForm.value.name" height="300px">
+              </div>
+          </mat-card-content>
+        
+        <div *ngIf="comment.slika" class="image-holder">
+          
+          <img class="comment-image"  mat-card-image 
+        [src]="comment.slika"
+        >
+          </div>
+          
+          <input class="file-input" #fileInput type="file" accept="image/*" (change)="showPreview($event)" />
+      
+
+        
+            <div class="actions">
+             <button mat-icon-button color="primary" matTooltip="Upload image" type="button" (click)="fileInput.click()">
+                <mat-icon>add_photo_alternate</mat-icon>
+              </button>
+              <button *ngIf="uploadForm.value.file" mat-icon-button color="primary" matTooltip="Remove image" type="button" (click)="removeImage()">
+                <mat-icon>remove</mat-icon>
+              </button>
+          <button mat-icon-button color="primary" matTooltip="Save" type="submit">
+            <mat-icon>check</mat-icon>
+          </button>
+          </div>
+        
+      </mat-card>
+    </form>
+  </div>
+  

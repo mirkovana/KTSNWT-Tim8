@@ -40,7 +40,7 @@ public class CommentService {
 		Optional<Offer> offer = offerRepo.findById(id);
 		
 		if (offer.isPresent()) {
-			return repo.findAllByOfferID(id, page);
+			return repo.findAllByOfferIDOrderByDateDesc(id, page);
 		}
 		throw new Exception("Offer with the given ID does not exist.");
 	}

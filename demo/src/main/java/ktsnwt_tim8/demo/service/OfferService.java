@@ -121,19 +121,21 @@ public class OfferService {
 		return offer;
 	}
 
-	public Page<Offer> filter(FilterDTO filterDTO, Pageable pageable) {
-
-		String title = filterDTO.getTitle();
-		String place = filterDTO.getPlace();
-
-		List<Long> subcatIDs = filterDTO.getSubcatIDs();	// subcategory ids sent from frontend
-		subcatIDs.remove(null);		// removing null values if there are any
+	public Page<Offer> filter(String title, String place, List<Long> subcatIDs, Pageable pageable) {
 		
 		if (title == null) title = "";	// in the filtering functions, comparing with an empty string returns true 
 		if (place == null) place = "";	// which is what works in this case
 		
+		if (subcatIDs == null) {
+			return repo.filterByTitleAndPlace(title, place, pageable);
+		}
+		
+		subcatIDs.remove(null);		// removing null values if there are any
+		
+		
 		if (subcatIDs.size() == 0) {	 // filtering only by title and place
 			return repo.filterByTitleAndPlace(title, place, pageable);
+			
 		}
 		
 		HashMap<Long, Subcategory> subMap = new HashMap<Long, Subcategory>();	// map made to avoid duplicates
@@ -147,6 +149,12 @@ public class OfferService {
 		}
 
 		ArrayList<Subcategory> subs = new ArrayList<Subcategory>(subMap.values());		// converting to list
+		
+		if (subs.size() == 0) {	 // filtering only by title and place
+			return repo.filterByTitleAndPlace(title, place, pageable);
+			
+		}
+		
 		return repo.filterByTitlePlaceAndSubcategory(title, place, subs, pageable);
 
 	}
