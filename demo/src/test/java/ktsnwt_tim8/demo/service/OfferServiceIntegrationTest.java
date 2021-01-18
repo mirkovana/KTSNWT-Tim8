@@ -5,6 +5,9 @@ import static ktsnwt_tim8.demo.constants.OfferConstants.PAGEABLE_PAGE;
 import static ktsnwt_tim8.demo.constants.OfferConstants.PAGEABLE_SIZE;
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import ktsnwt_tim8.demo.constants.OfferConstants;
 import ktsnwt_tim8.demo.model.Offer;
+import ktsnwt_tim8.demo.model.Subcategory;
 
 
 @RunWith(SpringRunner.class)
@@ -95,6 +99,55 @@ public class OfferServiceIntegrationTest {
 		login();
 		Offer offer = offerService.deleteSubscriber(OfferConstants.NEW_OFFER_ID);
 	}
+	
+	@Test
+	public void filter1() {
+		List<Long> list = new ArrayList<Long>();
+		list.add(3L);
+		
+		Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<Offer> filtered = this.offerService.filter("", "", list, pageable);
+		assertEquals(2, filtered.getContent().size());
+	}
+	
+	@Test
+	public void filter2() {
+		List<Long> list = new ArrayList<Long>();
+		list.add(3L);
+		String name = null;
+		String location = "NIS";
+		Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<Offer> found =this.offerService.filter(name, location, list, pageable);
+		assertEquals(1, found.getNumberOfElements());
+	}
+
+	@Test
+	public void filter3() {
+		List<Long> list = new ArrayList<Long>();
+		list.add(3L);
+		list.add(5L);
+		list.add(6L);
+		String title = "";
+		String location = "beOg";
+		Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<Offer> found = this.offerService.filter(title, location, list, pageable);
+		assertEquals(2, found.getNumberOfElements());
+	}
+
+	@Test
+	public void filter4() {
+		Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<Offer> found = this.offerService.filter("", "beograd", null, pageable);
+		assertEquals(2, found.getNumberOfElements());
+	}
+	
+	@Test
+	public void filter5() {
+		Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<Offer> found = this.offerService.filter("kalemegda", null, null, pageable);
+		assertEquals(1, found.getNumberOfElements());
+	}
+
 
 	public void login() {
 		Authentication authentication = authenticationManager
