@@ -2,7 +2,8 @@
 <div *ngIf="!loggedIn">
 
     <div class="rating-container">
-        <p>Log in or sign up to leave your rating</p>
+        <p><a [routerLink]="['/login']">Log in</a> or <a [routerLink]="['/registration']" >sign up</a>
+            to leave your rating</p>
         <ngb-rating [max]="5" [(rate)]="starRating" [readonly]="false" class="stars">
         </ngb-rating> 
         

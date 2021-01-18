@@ -17,7 +17,7 @@ export class CommentsComponent implements OnInit {
 
   //username="kor1@nesto.com"
 
-  offerId = 1;   // dobijen iz urla, ili da primi kao input()
+  offerId = 2;   // dobijen iz urla, ili da primi kao input()
 
   content: PageGen = null;   // da stavim tamo da je content any?
   
@@ -45,7 +45,7 @@ export class CommentsComponent implements OnInit {
       // mozda da se posalje iz parent komponente?
       this.route.params.subscribe((params: Params) => {
         this.offerId = +params['id'];
-        this.offerId = 1; // ovo promijeniti kasnije kad se budu stvarno dobavljali komentari
+        this.offerId = 5; // ovo promijeniti kasnije kad se budu stvarno dobavljali komentari
        });
       this.service.getCommentsFromOffer(this.offerId, this.paginatorDetails.pageSize, 0).subscribe(data=> {
           this.setupComments(data)

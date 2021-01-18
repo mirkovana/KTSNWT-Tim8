@@ -38,9 +38,14 @@
               <button *ngIf="uploadForm.value.file" mat-icon-button color="primary" matTooltip="Remove image" type="button" (click)="removeImage()">
                 <mat-icon>remove</mat-icon>
               </button>
-          <button mat-icon-button color="primary" matTooltip="Save" type="submit" [disabled]="!uploadForm.valid">
+          <button *ngIf="username" mat-icon-button color="primary" matTooltip="Save" type="submit" [disabled]="!uploadForm.valid">
             <mat-icon>check</mat-icon>
           </button>
+          <a [routerLink]="['/login']">
+          <button *ngIf="!username" mat-button color="primary" matTooltip="Save" type="button">
+            Log in to post
+          </button>
+          </a>
           </div>
         
       </mat-card>

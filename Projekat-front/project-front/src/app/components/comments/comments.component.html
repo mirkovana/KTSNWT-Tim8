@@ -20,8 +20,10 @@
 
         <hr>
     </div>
-    
-    <mat-paginator *ngIf = "paginatorDetails.length != 0" style="
+    <div *ngIf="!content.content.length">
+        <p>No comments to display.</p>
+    </div>
+    <mat-paginator style="
     display: flex;
     justify-content: center" 
     [length] = "paginatorDetails.length"
