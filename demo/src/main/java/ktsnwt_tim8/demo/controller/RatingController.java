@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +54,21 @@ public class RatingController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_USER')")
+	@RequestMapping(value="/rated/{offerId}", method=RequestMethod.GET)
+	public ResponseEntity<RatingDTO> getRatingFromUser(@PathVariable Long offerId){
+		Rating r;
+		try{
+			r = ratingService.findUsersRating(offerId);
+		}
+		catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+		RatingDTO rDTO = (r == null) ? null : mapper.toDto(r);
+		return new ResponseEntity<>(rDTO, HttpStatus.OK);
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value="/{offerId}", method=RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<RatingDTO> addRating(@PathVariable Long offerId, @RequestBody RatingDTO ratingDTO){
 			
@@ -67,6 +83,7 @@ public class RatingController {
         return new ResponseEntity<>(mapper.toDto(r), HttpStatus.CREATED);
 	}
 	
+	@CrossOrigin
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value="/{ratingId}", method=RequestMethod.PUT, consumes = "application/json")
 	public ResponseEntity<RatingDTO> updateRating(@PathVariable Long ratingId, @RequestBody RatingDTO ratingDTO){
@@ -82,6 +99,7 @@ public class RatingController {
         return new ResponseEntity<>(mapper.toDto(r), HttpStatus.OK);
 	}
 	
+	@CrossOrigin
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value="/{ratingId}", method=RequestMethod.DELETE)	
 	public ResponseEntity<RatingDTO> deleteRating(@PathVariable Long ratingId){

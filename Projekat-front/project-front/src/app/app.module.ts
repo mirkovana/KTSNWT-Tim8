@@ -38,6 +38,7 @@ import { CommentsComponent } from './components/comments/comments.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { CommentEditComponent } from './components/comment-edit/comment-edit.component';
 import {MatCardModule} from '@angular/material/card';
+import { RatingComponent } from './components/rating/rating.component';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import {MatCardModule} from '@angular/material/card';
     OfferComponent,
     CommentsComponent,
     CommentComponent,
-    CommentEditComponent
+    CommentEditComponent,
+    RatingComponent
 
 
    

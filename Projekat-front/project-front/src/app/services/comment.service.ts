@@ -11,8 +11,8 @@ export class CommentService{
 
     url: string = "http://localhost:8080/api/comments/";
 
-    bear = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImtvcjFAbmVzdG8uY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjEwOTM4MjcxLCJleHAiOjE2MTA5NDAwNzF9.iJRWq1V7dIh3qKTjUMmzvpmFP5sn1OlJPOEZDbd-FMkEg-f8zEFAd23cLCarAadZIUMdK9ef9FWCCO8WXtSvgg";
-
+    bear  = localStorage.getItem("token");
+    
     headers: HttpHeaders = new HttpHeaders({"Authorization": "Bearer " + this.bear})
 
     getCommentsFromOffer(id: number, size, page){

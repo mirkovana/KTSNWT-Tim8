@@ -61,3 +61,33 @@ INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subc
 INSERT INTO SUBCATEGORY(name, category_id) values ('NAJNOVIJI',3);
 
 INSERT INTO CATEGORY(name) values ('NAJNOVIJA');
+
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', 'src/main/resources/images/petrovaradin.jpg', 'Comment text 1', 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Some other text', 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Just sampling', 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', 'src/main/resources/images/commentpicture76081.jpg', 'Great', 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 2', 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 3', 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 4', 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 5', 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 6', 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Great service!', 1, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 7', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 8', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 9', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 10', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 11', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Beautiful', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 13', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 14', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 115', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 16', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 17', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 18', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 19', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 120', 2, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 17', 3, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 18', 4, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 19', 4, 2);
+INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 120', 4, 2);
+
