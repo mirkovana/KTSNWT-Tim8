@@ -48,6 +48,8 @@ import { CommentComponent } from './components/comment/comment.component';
 import { CommentEditComponent } from './components/comment-edit/comment-edit.component';
 import {MatCardModule} from '@angular/material/card';
 import { RatingComponent } from './components/rating/rating.component';
+import { AddOfferComponent } from './components/add-offer/add-offer.component';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -74,7 +76,8 @@ import { RatingComponent } from './components/rating/rating.component';
     CommentsComponent,
     CommentComponent,
     CommentEditComponent,
-    RatingComponent
+    RatingComponent,
+    AddOfferComponent
 
 
    
@@ -102,7 +105,8 @@ import { RatingComponent } from './components/rating/rating.component';
     CommonModule,
     MatButtonModule,
     MatDividerModule,
-    MatCardModule
+    MatCardModule,
+    MatSelectModule
     
   ],
   providers: [],

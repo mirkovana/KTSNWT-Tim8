@@ -149,6 +149,7 @@ public class OfferController {
 	}
 
 	/* IZMENA PONUDE */
+	@CrossOrigin
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value = "/{idOffer}", consumes = "application/json")
 	public ResponseEntity<OfferDTO> updateOffer(@PathVariable Long idOffer, @Valid @RequestBody OfferDTO offerUpdated)
@@ -186,6 +187,7 @@ public class OfferController {
 	}
 
 	/* BRISANJE PONUDE */
+	@CrossOrigin
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(value = "/{idOffer}")
 	public ResponseEntity<Void>  deleteOffer(@PathVariable Long idOffer) {

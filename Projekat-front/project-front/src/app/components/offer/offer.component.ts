@@ -26,6 +26,7 @@ export class OfferComponent implements OnInit {
     else{this.broj=2;} //kad je ulogovan korisnik koji nije admin
   } 
 
+  //POKUSAJ EDITA POCETAK
     this.offerService.getOfferById().subscribe(res => {this.offer=res;});
 
     this.editForm = this.fb.group({
@@ -39,6 +40,12 @@ export class OfferComponent implements OnInit {
   submit() {
     console.log("blblblbl");
     console.log(this.editForm.value);
+  }
+  //POKUSAJ EDITA KRAJ
+
+  deleteOffer(){
+    this.offerService.deleteOffer(JSON.parse(localStorage.getItem('offerId')));
+    window.location.replace("http://localhost:4200/home");
   }
 
 }
