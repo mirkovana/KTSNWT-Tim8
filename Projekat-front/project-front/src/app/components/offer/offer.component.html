@@ -2,7 +2,9 @@
 <div class='offerInfo'>
    <!--<h1>{{ offer.title }}</h1>-->
    <!--<p>{{ offer.description }}</p>-->
-   
+   <div >
+      <button mat-raised-button color="primary" matTooltip="Delete offer" style="float: right;" (click)="deleteOffer()">Delete</button>
+  </div>
    <form [formGroup]="editForm" >
       <h1>
          <textarea class="naslov" *ngIf="broj===1" rows="3" formControlName="text" name="title">{{ offer.title }}</textarea>

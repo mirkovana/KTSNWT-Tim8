@@ -1,8 +1,9 @@
 <header>
-    <div class="container">
+    <div class="container"> 
         <a routerLink="/" class="logo">APP</a>
         <nav>
             <ul>
+                <li *ngIf="broj===1"><a href="#" routerLink="/addOffer">Add offer</a></li>
                 <li *ngIf="!loggedIn"><a href="#" routerLink="/registration">Registration</a></li>
 
                 <li *ngIf="!loggedIn"><a href="#" routerLink="/login">Login</a></li>
