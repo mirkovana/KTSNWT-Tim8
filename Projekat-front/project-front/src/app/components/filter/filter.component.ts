@@ -31,6 +31,7 @@ export class FilterComponent implements OnInit {
   editMode = false;
   
   @Output() filterClick = new EventEmitter<FilterParameters>();
+  @Output() filterCleared = new EventEmitter();
 
   allCompleteArray: boolean[] = [];
 
@@ -88,6 +89,11 @@ export class FilterComponent implements OnInit {
       return;
     }
     this.categories[i].subcats.forEach(t => (t.completed = completed));
+  }
+
+  clearFilter(){
+    this.filterForm.reset();
+    this.filterCleared.emit();
   }
 
   onSubmit(form: NgForm) {

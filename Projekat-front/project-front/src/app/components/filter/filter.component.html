@@ -19,8 +19,12 @@
             <mat-icon>expand_less</mat-icon>
           </button>
   
-          <button class="icon-btn" mat-icon-button class='icon' type="submit" color="accent">
+          <button class="icon-btn" mat-icon-button class='icon' type="submit" color="accent" matTooltip="Filter!">
             <mat-icon>search</mat-icon>
+          </button>
+          <button matTooltip="Edit comment" class="icon-btn" mat-icon-button class='icon' type="button" matTooltip="Clear filter"
+          (click)="clearFilter()" color="accent">
+            <mat-icon>clear</mat-icon>
           </button>
   
         </div>

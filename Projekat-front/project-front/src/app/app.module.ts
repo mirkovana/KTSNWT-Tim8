@@ -48,6 +48,7 @@ import { CommentComponent } from './components/comment/comment.component';
 import { CommentEditComponent } from './components/comment-edit/comment-edit.component';
 import {MatCardModule} from '@angular/material/card';
 import { RatingComponent } from './components/rating/rating.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -102,7 +103,8 @@ import { RatingComponent } from './components/rating/rating.component';
     CommonModule,
     MatButtonModule,
     MatDividerModule,
-    MatCardModule
+    MatCardModule,
+    MatTooltipModule
     
   ],
   providers: [],

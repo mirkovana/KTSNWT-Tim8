@@ -29,7 +29,7 @@
 
     <div>
 
-        <app-filter (filterClick)="filterClicked($event)"></app-filter>
+        <app-filter (filterClick)="filterClicked($event)" (filterCleared)="clearFilter()"></app-filter>
         <!--<app-offer-info [page]="offersPage"></app-offer-info>-->
         <app-offers (pageChanged)="onPageChange($event)" [page]="offersPage" [paginatorDetails]="info"></app-offers>
 
