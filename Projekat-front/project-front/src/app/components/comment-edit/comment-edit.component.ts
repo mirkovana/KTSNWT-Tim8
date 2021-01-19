@@ -139,21 +139,10 @@ export class CommentEditComponent implements OnInit {
   // Submit Form - create or update
   submit() { 
     console.log(this.uploadForm.valid + " is valid?")
-    //console.log(this.uploadForm)
-    //console.log(this.uploadForm.get('text'));
-    console.log("asdlkjasdlkjadslkjdaslkj")
-    console.log(this.uploadForm.get('text').valid);
-    console.log("da vidimo jel text null iiiiiiiiii")
-    console.log(this.uploadForm.controls['text'].value)
-    console.log(this.uploadForm.controls['text'].value == null);
-    console.log("iznad aj da vidimoooo")
-    console.log(this.uploadForm.touched + " a dole je evaluacija izraza")
-    console.log(this.uploadForm.controls['text'].value == null)
-    //console.log((this.uploadForm.get('text').errors || this.uploadForm.controls['text'].value == null) 
-    //&& this.uploadForm.touched)
+
     let file = new Blob();
     if (this.uploadForm.value.file == null){
-      console.log("pa valjda nije ovde")
+      
       if (this.comment.slika){
         file = this.b64toBlob(this.comment.slika);
       }
