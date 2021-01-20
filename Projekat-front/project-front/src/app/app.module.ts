@@ -108,7 +108,7 @@ import {MatSelectModule} from '@angular/material/select';
     MatButtonModule,
     MatDividerModule,
     MatCardModule,
-    MatTooltipModule
+    MatTooltipModule,
     MatSelectModule
     
   ],
