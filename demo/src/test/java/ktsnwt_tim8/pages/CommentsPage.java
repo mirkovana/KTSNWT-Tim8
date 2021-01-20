@@ -23,7 +23,7 @@ public class CommentsPage {
 	WebElement paginatorPages;
 	// slika
 	
-    WebElement newCommentPost;
+    WebElement submitButton;
 	
     @FindBy(css = "app-comment")
 	List<WebElement> comments;
@@ -50,7 +50,7 @@ public class CommentsPage {
     	
     	// slika
     	
-        this.newCommentPost = edits.get(0).findElement(By.cssSelector("button[type='submit']"));
+        this.submitButton = edits.get(0).findElement(By.cssSelector("button[type='submit']"));
     	
     }
     
@@ -84,12 +84,12 @@ public class CommentsPage {
 		this.newCommentTextInput = newCommentTextInput;
 	}
 
-	public WebElement getNewCommentPost() {
-		return newCommentPost;
+	public WebElement getSubmitButton() {
+		return submitButton;
 	}
 
-	public void setNewCommentPost(WebElement newCommentPost) {
-		this.newCommentPost = newCommentPost;
+	public void setSubmitButton(WebElement newCommentPost) {
+		this.submitButton = newCommentPost;
 	}
 
 	public void setAnchor1(WebElement anchor1) {
@@ -124,5 +124,41 @@ public class CommentsPage {
 		this.firstComment = firstComment;
 	}
     
-    
+	public String getFirstCommentUsername() {
+		return this.getComments().get(0).findElement(By.cssSelector(".mat-card-title")).getText();
+	}
+	
+	public boolean submitButtonEnabled() {
+		return true;
+	}
+
+	public boolean messageErrorDisplayed() {
+		
+		try {
+			this.getNewCommentForm().findElement(By.cssSelector("span.text-danger"));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
+	}
+	
+	public List<WebElement> getEditButtons() {
+		List<WebElement> els = this.driver.findElements(By.cssSelector("button.mat-icon-button"));
+		for (WebElement el: els) {
+			System.out.println(el.getTagName());
+		}
+		return els;
+		//return this.firstComment.findElement(By.cssSelector("button[matTooltip='Edit comment']"));
+	}
+	
+	public WebElement getEditButton() {
+		return getComments().get(0).findElements(By.cssSelector("button")).get(0);
+	}
+	
+	public WebElement getDeleteButton() {
+		//return this.firstComment.findElement(By.cssSelector("button"));
+		return getComments().get(0).findElements(By.cssSelector("button")).get(1);
+			
+	}
 }

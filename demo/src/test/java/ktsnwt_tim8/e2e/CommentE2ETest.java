@@ -2,11 +2,16 @@ package ktsnwt_tim8.e2e;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
@@ -37,7 +42,7 @@ public class CommentE2ETest {
         loginPage.getPassword().sendKeys("1");;
         loginPage.getLoginBtn().click();
         //this.driver.wait(5000);
-        justWait(5000);
+        justWait(3000);
         
         mainOffersPage = PageFactory.initElements(driver, MainOffersPage.class);
         //mainOffersPage.ensureIsDisplayedA1();
@@ -55,19 +60,78 @@ public class CommentE2ETest {
     }
 
     
-    @Test
+    //@Test
     public void createComment() throws InterruptedException {
     	
     	int oldComments = commentsPage.getNumOfElements();
     	String newCommentText = "New comment text.";
     	commentsPage.getNewCommentTextInput().sendKeys(newCommentText);
-    	commentsPage.getNewCommentPost().click();
-    	justWait(6000);
+    	commentsPage.getSubmitButton().click();
+    	justWait(3000);
     	int newComments = commentsPage.getNumOfElements();
     	// checking if number of all comments changed
     	assertEquals(oldComments + 1, newComments);
     	// checking if the text of the first comment equals to the text of new comment
     	assertEquals(commentsPage.getFirstCommentText(), newCommentText);
+    	// check if the first comment username is equals to logged-in username
+    	assertEquals("kor1@nesto.com", commentsPage.getFirstCommentUsername());
+    	
+    }
+    
+    //@Test
+    public void createCommentEmptyText() throws InterruptedException {
+    	
+    	String newCommentText = "s";
+    	commentsPage.getNewCommentTextInput().sendKeys(newCommentText);
+    	// to ensure input field was 'dirtied'
+    	commentsPage.getNewCommentTextInput().sendKeys(Keys.BACK_SPACE);
+    	justWait(1000);
+    	assertEquals(commentsPage.getSubmitButton().isEnabled(), false);
+    	assertEquals(commentsPage.messageErrorDisplayed(), true);
+    	justWait(1000);	
+    	
+    }
+    
+    //@Test
+    public void editComment() throws InterruptedException {
+    	prepCreateComment("C");
+    	justWait(2000);
+    	//commentsPage.getEditButtons();
+    	//commentsPage.getEditButton().click();
+    	//justWait(4000);
+    	for (WebElement e: commentsPage.getComments()) {
+    		System.out.println(e.getText() + "tekst   a tag name je " + e.getTagName());
+    	}
+    	for (WebElement w: commentsPage.getComments().get(0).findElements(By.cssSelector("button"))) {
+    		//System.out.println(w.getText() + " tekst prvog?");
+    		//w.click();
+    		//break;
+    	}
+    	//commentsPage.getEditButton().click();
+    	//System.out.println(commentsPage.getEditButton().getText());
+    	commentsPage.getDeleteButton().click();
+    	justWait(10000);
+    }
+    
+    @Test
+    public void deleteComment() throws InterruptedException {
+    	prepCreateComment("Comment for deletion!");
+    	justWait(2000);    
+    	int oldComments = commentsPage.getNumOfElements();
+    	commentsPage.getDeleteButton().click();    	
+    	justWait(2000);
+    	int newComments = commentsPage.getNumOfElements();
+    	// checking if number of all comments changed
+    	assertEquals(oldComments - 1, newComments); 
+    	// checking if the text of the first comment equals to the text of new comment
+    	assertNotEquals(commentsPage.getFirstCommentText(), "Comment for deletion!");
+     }
+    
+    
+    private void prepCreateComment(String text) throws InterruptedException {
+    	commentsPage.getNewCommentTextInput().sendKeys(text);
+    	commentsPage.getSubmitButton().click();
+    	justWait(2000);
     }
     
     @After
