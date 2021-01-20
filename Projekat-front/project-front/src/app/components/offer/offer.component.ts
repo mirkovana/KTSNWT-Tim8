@@ -1,8 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { OfferService } from '../../services/offer.service';
-import {Offer} from '../../models/Offer';
+import {Page} from '../../models/Post';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PaginatorPageable } from 'src/app/models/PaginatorPageable';
+import { PostService } from 'src/app/services/post.service';
+
+
 
 @Component({
   selector: 'app-offer',
@@ -11,6 +15,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class OfferComponent implements OnInit {
 
+  offersPage: Page = new Page(0, 0, []);
+
+  info = new PaginatorPageable(5000, 0, 10, 0);
   offer = {
     title: '',
     description: ''
@@ -26,9 +33,9 @@ export class OfferComponent implements OnInit {
   editOfferForm: FormGroup;
   submitted = false;
 
-  constructor(public formBuilder: FormBuilder, private offerService: OfferService, private snackbar: MatSnackBar) { 
+  constructor(public formBuilder: FormBuilder, private offerService: OfferService, private snackbar: MatSnackBar, private postService: PostService) { 
   }
-
+ 
   ngOnInit(): void {
     //u htmlu sa !loggedIn je sve ono sto se prikazuje kad korisnik nije ulogovan uopste  
     if(this.loggedIn){
@@ -37,6 +44,12 @@ export class OfferComponent implements OnInit {
       else{this.broj=2;} //kad je ulogovan korisnik koji nije admin
     } 
 
+    this.postService.getPostsPage(this.info).subscribe(data => {
+      this.offersPage = data;
+      this.info.length = this.offersPage.totalElements;
+      //console.log(this.offersPage);
+      //this.dataReady = true;
+    });
     //POKUSAJ EDITA POCETAK
     this.offerService.getOfferById().subscribe(res => {this.offer=res;});
   }
@@ -46,8 +59,7 @@ export class OfferComponent implements OnInit {
   }
 
   saveChanges() {
-    console.log("PRITISNUTO DUGME EDIT");
-    this.offerService.updateOffer(this.offer);
+     this.offerService.updateOffer(this.offer);
   }
 
   deleteOffer(){
@@ -55,4 +67,20 @@ export class OfferComponent implements OnInit {
     window.location.replace("http://localhost:4200/home");
   }
 
+
+  onPageChange(event){
+    this.info = event;
+    console.log("currentyl filtered")
+   
+      this.postService.getPostsPage(this.info).subscribe(data =>{
+        this.offersPage = data;
+      })
+    }
+  
+
 }
+
+
+
+
+

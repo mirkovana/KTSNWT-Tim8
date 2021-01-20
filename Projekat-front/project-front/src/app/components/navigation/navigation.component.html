@@ -3,6 +3,8 @@
         <a routerLink="/home" class="logo">HOME</a>
         <nav>
             <ul>
+                <li *ngIf="broj===1"><a href="#"  >Add category</a></li> <!-- treba dodati jos metode za ovo -->
+                <li *ngIf="broj===1"><a href="#"  >Add subcategory</a></li>  <!-- treba dodati jos metode za ovo -->
                 <li *ngIf="broj===1"><a href="#" routerLink="/addOffer">Add offer</a></li>
                 <li *ngIf="!loggedIn"><a href="#" routerLink="/registration">Registration</a></li>
 

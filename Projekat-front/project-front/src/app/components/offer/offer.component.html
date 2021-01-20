@@ -2,8 +2,14 @@
 <div class='offerInfo'>
    <!--<h1>{{ offer.title }}</h1>-->
    <!--<p>{{ offer.description }}</p>-->
-   <div >
-      <button *ngIf="broj===1" mat-raised-button color="primary" matTooltip="Delete offer" style="float: right;" (click)="deleteOffer()">Delete</button>
+   <div style="float: right;">
+      <button   *ngIf="broj===1" mat-raised-button color="primary"   matTooltip="Add new post"  (click)="saveChanges()" >Add post</button> 
+
+         &nbsp;
+       <button   *ngIf="broj===1" mat-raised-button color="primary" id="save-event-changes"  matTooltip="Saves changes on offer" [disabled]="!saveChangesEnabled()" (click)="saveChanges()" >Edit offer</button> 
+
+         &nbsp;
+         <button  *ngIf="broj===1" mat-raised-button color="primary" matTooltip="Delete offer"  (click)="deleteOffer()">Delete offer</button>
   </div>
   <div class="info">
    <mat-form-field>
@@ -19,12 +25,14 @@
    </mat-form-field>
   </div>
 
-  <div class="buttons">
-   <button *ngIf="broj===1" mat-raised-button color="primary" id="save-event-changes" [disabled]="!saveChangesEnabled()" (click)="saveChanges()">Edit</button>
- </div>
+  <!-- <div class="buttons">
+ </div> -->
   
-   <hr>
+ 
 
 </div>
+<hr>
+<app-posts (pageChanged)="onPageChange($event)" [page]="offersPage" [paginatorDetails]="info"></app-posts>
 <app-rating></app-rating>
+
 <app-comments></app-comments>
