@@ -48,6 +48,7 @@ import { CommentComponent } from './components/comment/comment.component';
 import { CommentEditComponent } from './components/comment-edit/comment-edit.component';
 import {MatCardModule} from '@angular/material/card';
 import { RatingComponent } from './components/rating/rating.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AddOfferComponent } from './components/add-offer/add-offer.component';
 import {MatSelectModule} from '@angular/material/select';
 
@@ -107,6 +108,7 @@ import {MatSelectModule} from '@angular/material/select';
     MatButtonModule,
     MatDividerModule,
     MatCardModule,
+    MatTooltipModule
     MatSelectModule
     
   ],

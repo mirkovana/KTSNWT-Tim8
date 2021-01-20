@@ -16,7 +16,7 @@ insert into user_authority (user_id, authority_id) values (4, 2); -- user has RO
 INSERT INTO CATEGORY(name) values ('Institucija');
 INSERT INTO SUBCATEGORY(name, category_id) values ('Muzej',1);
 INSERT INTO SUBCATEGORY(name, category_id) values ('Pozoriste',1);
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (12,'ovo je neki opis', 40,40,3,'Srpsko narodno pozoriste',2, 'Novi Sad');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4,'ovo je neki opis', 40,40,3,'Srpsko narodno pozoriste',2, 'Novi Sad');
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4,'Opis madjarskog pozorista', 40,40,1,'Madjarsko pozoriste',2, 'Novi Sad');
 
 
@@ -45,7 +45,7 @@ INSERT INTO SUBCATEGORY(name, category_id) values ('Znamenitost',3);
 
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'Opis Exit festivala', 40,40,0,'Exit festival',3, 'Novi Sad');
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'Opis nekog niskog festivala', 40,40,0,'Neki niski festival',3, 'Nis');
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'ovo je neki opis', 40,40,0,'Srpsko narodno pozoriste',2, 'Novi Sad');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4,'ovo je neki opis', 40,40,2,'Srpsko narodno pozoriste',2, 'Novi Sad');
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'ovo je neki opis', 40,40,0,'Srpsko narodno pozoriste',2, 'Novi Sad');
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'ovo je neki opis', 40,40,0,'Srpsko narodno pozoriste',2, 'Novi Sad');
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (0,'ovo je neki opis', 40,40,0,'Srpsko narodno pozoriste',2, 'Novi Sad');
@@ -76,11 +76,16 @@ INSERT INTO public.rating(id, rating, offer_id, user_id) VALUES (3L, 2, 1L, 4L);
 
 INSERT INTO public.rating(id, rating, offer_id, user_id) VALUES (4L, 4, 2L, 2L);    -- 1*4 za offer2 
 
+INSERT INTO public.rating(id, rating, offer_id, user_id) values (5L, 3, 5L, 2L);
+INSERT INTO public.rating(id, rating, offer_id, user_id) values (6L, 5, 5L, 3L);
+
 INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (1L, '2020-5-1 12:00:00', null, 'Comment1', 1L, 2L);
 INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (2L, '2020-5-1 12:00:00', 'src/main/resources/images/commentpicture83800.jpg', 'Comment with picture 2', 2L, 2L);
 INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (3L, '2020-5-1 12:00:00', null, 'Comment without picture 2', 1L, 3L);
 INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (4L, '2020-5-1 12:00:00', null, 'Comment without picture 3', 3L, 4L);
 INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (5L, '2020-5-1 12:00:00', null, 'Comment without picture 3', 4L, 4L);
 INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (6L, '2020-5-1 12:00:00', null, 'Comment without picture 3', 10L, 4L);
+INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (7L, '2020-5-1 12:00:00', null, 'Comment without picture 7', 7L, 3L);
+INSERT INTO public.comment(id, date, image_path, text, offer_id, user_id) VALUES (8L, '2020-5-1 12:00:00', null, 'Comment without picture 8', 7L, 4L);
 
 

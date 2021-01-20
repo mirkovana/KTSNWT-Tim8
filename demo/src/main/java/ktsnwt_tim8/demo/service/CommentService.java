@@ -47,6 +47,10 @@ public class CommentService {
 
 	public Comment create(Long id, CommentDTO commentDTO, MultipartFile imageFile) throws Exception {
 		
+		if (commentDTO.getText() == null) {
+			throw new Exception("Comment cannot be null");
+		}
+		
 		
 		if (commentDTO.getText().isEmpty()) {
 			throw new Exception("Comment cannot be empty");
@@ -109,6 +113,9 @@ public class CommentService {
 		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
+		if (commentDTO.getText() == null) {
+			throw new Exception("Comment cannot be null");
+		}
 		
 		if (commentDTO.getText().isEmpty()) {
 			throw new Exception("Comment cannot be empty.");

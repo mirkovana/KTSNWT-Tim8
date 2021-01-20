@@ -20,6 +20,7 @@ export class CommentEditComponent implements OnInit {
   editing: boolean = false;
   @Input() canEdit = false;
 
+  @Output() done = new EventEmitter<string>();
   @Input() offerId = 1;
 
   @Output() newComment = new EventEmitter();
@@ -36,7 +37,7 @@ export class CommentEditComponent implements OnInit {
   text = "neki tekst komentara";
 
 
-
+  commentText = new FormControl();
 
 
   handleFileInput(dog){
@@ -137,10 +138,11 @@ export class CommentEditComponent implements OnInit {
 
   // Submit Form - create or update
   submit() { 
-    console.log(this.uploadForm)
+    console.log(this.uploadForm.valid + " is valid?")
+
     let file = new Blob();
     if (this.uploadForm.value.file == null){
-      console.log("pa valjda nije ovde")
+      
       if (this.comment.slika){
         file = this.b64toBlob(this.comment.slika);
       }
@@ -162,6 +164,7 @@ export class CommentEditComponent implements OnInit {
         if (this.comment.imageBase64 != null){
           this.comment.slika = 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(data['imageBase64']) as any).changingThisBreaksApplicationSecurity;
         }
+        this.done.emit("Comment edited.");
         this.commentEdited.emit(this.comment)
       })
     }
@@ -172,6 +175,7 @@ export class CommentEditComponent implements OnInit {
           this.comment = new Comment(0, "", null, "", "", false, false, false, null);
           this.imageURL = "";
           this.form.resetForm();
+        this.done.emit("Comment created.");
       })  
     }
    

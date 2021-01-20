@@ -3,6 +3,8 @@ package ktsnwt_tim8.demo.service;
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -89,6 +91,36 @@ public class RatingServiceIntegrationTests {
 		assertEquals(page.getContent().size(), RatingConstants.RATINGS_FOR_ID_1);
 
 	}
+	
+	@Test (expected = Exception.class)
+	public void findUsersRatingBadOffer() throws Exception {
+		try{
+			login("kor1@nesto.com", "1");
+			service.findUsersRating(Constants.BAD_ID);
+
+		}
+		catch(Exception re)
+		{
+			String message = "Offer with given ID does not exist!";
+			assertEquals(message, re.getMessage());
+			throw re;
+		}
+		fail("Offer with given ID does not exist exception did not throw!");
+	}
+	
+	@Test
+	public void findUsersRatingRated() throws Exception {
+		login("kor1@nesto.com", "1");
+		Rating r = service.findUsersRating(1L);
+		assertNotNull(r);
+	}
+	
+	@Test 
+	public void findUsersRatingNotRated() throws Exception {
+		login("kor1@nesto.com", "1");
+		Rating r = service.findUsersRating(3L);
+		assertNull(r);
+	}
 
 
 
@@ -163,7 +195,7 @@ public class RatingServiceIntegrationTests {
 		double newAvg = pageOld.getContent().get(0).getOffer().getAvgRating();
 		
 		System.out.println(oldAvg + " " + newAvg);
-		
+		assertEquals(newAvg, 2.5);
 		assertEquals(pageOld.getContent().size() + 1, pageNew.getContent().size());
 		assertEquals(oldNumOfRatings + 1, newNumOfRatings);
 		assertEquals(r.getRating(), 1);
@@ -255,7 +287,7 @@ public class RatingServiceIntegrationTests {
 		Double newRating = ratings.getContent().get(0).getOffer().getAvgRating();
 		Integer newNumOfRates = ratings.getContent().get(0).getOffer().getNmbOfRatings();
 
-
+		assertEquals(newRating, 5);
 		assertEquals(r.getRating(), RatingConstants.UPDATED_RATING);
 		assertEquals(oldNumOfRates, newNumOfRates);
 		assertNotEquals(oldRating, newRating);
@@ -305,15 +337,15 @@ public class RatingServiceIntegrationTests {
 		login("kor1@nesto.com", "1");
 
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
-		Page<Rating> ratings = service.findAllByOfferID(RatingConstants.OFFER_ID_FOR_NEW_RATING, pageable);
-		//Integer oldNumOfRates = ratings.getContent().get(0).getOffer().getNmbOfRatings();
+		Page<Rating> ratings = service.findAllByOfferID(5L, pageable);
 		int oldRatings = ratings.getContent().size();
-
-		service.deleteRating(4L);
-		ratings = service.findAllByOfferID(RatingConstants.OFFER_ID_FOR_NEW_RATING, pageable);
-		//Integer newNumOfRates = ratings.getContent().get(0).getOffer().getNmbOfRatings();
+		
+		service.deleteRating(5L);
+		ratings = service.findAllByOfferID(5L, pageable);
 		int newRatings = ratings.getContent().size();
-
+		double newRating = ratings.getContent().get(0).getOffer().getAvgRating();
+		
+		assertEquals(newRating, 5);
 		assertEquals(oldRatings - 1, newRatings);
 	}
 

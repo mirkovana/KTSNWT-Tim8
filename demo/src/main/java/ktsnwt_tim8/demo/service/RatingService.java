@@ -43,7 +43,7 @@ public class RatingService {
 		User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Offer o = offerRepo.findOneByID(offerId);
 		if (o == null) {
-			throw new Exception("Bad request!");
+			throw new Exception("Offer with given ID does not exist!");
 		}
 		Rating r = repo.findOneByUserAndOffer(u, o);
 		return r;

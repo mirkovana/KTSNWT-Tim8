@@ -28,7 +28,7 @@ public class CommentRepositoryIntegrationTest {
 	@Test
 	public void testFindAllByOfferID() {
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
-		Page<Comment> page = commentRepository.findAllByOfferID(1L, pageable);
+		Page<Comment> page = commentRepository.findAllByOfferIDOrderByDateDesc(1L, pageable);
 		
 		assertEquals(page.getContent().size(), 2);
 	}
@@ -36,7 +36,7 @@ public class CommentRepositoryIntegrationTest {
 	@Test
 	public void testFindAllByOfferIDBadID() {
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
-		Page<Comment> page = commentRepository.findAllByOfferID(Constants.BAD_ID, pageable);
+		Page<Comment> page = commentRepository.findAllByOfferIDOrderByDateDesc(Constants.BAD_ID, pageable);
 		
 		assertEquals(page.getContent().size(), 0);
 	}

@@ -2,6 +2,7 @@ package ktsnwt_tim8.demo.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -73,6 +74,102 @@ public class RatingControllerIntegrationTest {
 	}
 
 	//------------------------------ G E T --------------------------------//
+	
+	@Test
+	public void getRatingRated() {
+		RestTemplate template = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", "1"));
+		
+		HttpEntity<RatingDTO> requestEntity = new HttpEntity<>(null, headers);
+		
+		ResponseEntity<RatingDTO> response = template.exchange("http://localhost:" + port + "/api/ratings/rated/1", HttpMethod.GET, requestEntity, RatingDTO.class);
+		
+		assertEquals(response.getBody().getRating(), 5);
+		assertEquals(response.getStatusCode(), HttpStatus.OK);
+		
+	}
+	
+	@Test
+	public void getRatingNotRated() {
+		RestTemplate template = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", "1"));
+		
+		HttpEntity<RatingDTO> requestEntity = new HttpEntity<>(null, headers);
+		
+		ResponseEntity<RatingDTO> response = template.exchange("http://localhost:" + port + "/api/ratings/rated/8", HttpMethod.GET, requestEntity, RatingDTO.class);
+		
+		assertNull(response.getBody());
+		assertEquals(response.getStatusCode(), HttpStatus.OK);
+		
+	}
+	
+	
+	@Test
+	@Transactional
+	public void getRatingBadOffer() throws Exception {
+
+		RestTemplate template = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", "1"));
+		
+		HttpEntity<RatingDTO> requestEntity = new HttpEntity<>(null, headers);
+		try {
+		
+			template.exchange("http://localhost:" + port + "/api/ratings/rated/" + Constants.BAD_ID, HttpMethod.GET, requestEntity, RatingDTO.class);
+		}
+		catch(HttpClientErrorException e) {
+			String message = "Offer with given ID does not exist!";
+			
+			String responseBody = e.getResponseBodyAsString();
+			JSONObject jsonObject = new JSONObject(responseBody);
+			
+			assertEquals(message,jsonObject.get("message"));
+			assertEquals(HttpStatus.BAD_REQUEST.value(), e.getRawStatusCode());
+		}
+		
+	}	
+	
+	@Test
+	@Transactional
+	public void getRatingForbidden() throws Exception {
+
+		RestTemplate template = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("admin@nesto.com", "1"));
+		
+		HttpEntity<RatingDTO> requestEntity = new HttpEntity<>(null, headers);
+		try {
+		
+			template.exchange("http://localhost:" + port + "/api/ratings/rated/3", HttpMethod.GET, requestEntity, RatingDTO.class);
+				}
+		catch(HttpClientErrorException e) {
+			
+			assertEquals(HttpStatus.FORBIDDEN.value(), e.getRawStatusCode());
+		}
+		
+	}
+	
+	@Test
+	@Transactional
+	public void getRatingUnauthorized() throws Exception {
+
+		RestTemplate template = new RestTemplate();
+
+		try {
+		
+			template.exchange("http://localhost:" + port + "/api/ratings/rated/3", HttpMethod.GET, null, RatingDTO.class);
+				}
+		catch(HttpClientErrorException e) {
+			
+			assertEquals(HttpStatus.UNAUTHORIZED.value(), e.getRawStatusCode());
+		}
+		
+	}	
 
 	//------------------------------ C R E A T E --------------------------------//
 	@Test

@@ -1,3 +1,6 @@
+<div *ngIf="!page.content.length">
+    <p>No offers to display.</p>
+</div>
 <div class="wrapper offers">
     <div *ngIf = "page.content">
         <div *ngFor = "let offer of page.content">
@@ -8,7 +11,8 @@
         
     </div>
 </div>
-    <mat-paginator *ngIf = "paginatorDetails.length != 0" style="
+
+    <mat-paginator style="
         display: flex;
         justify-content: left" 
         [length] = "paginatorDetails.length"

@@ -25,17 +25,27 @@
           <input class="file-input" #fileInput type="file" accept="image/*" (change)="showPreview($event)" />
       
 
-        
+          <span 
+          class="text-danger" 
+          *ngIf="(uploadForm.get('text').errors || uploadForm.controls['text'].value == null) && uploadForm.dirty "
+      >Comment text cannot be empty!</span>
+
             <div class="actions">
+
              <button mat-icon-button color="primary" matTooltip="Upload image" type="button" (click)="fileInput.click()">
                 <mat-icon>add_photo_alternate</mat-icon>
               </button>
               <button *ngIf="uploadForm.value.file" mat-icon-button color="primary" matTooltip="Remove image" type="button" (click)="removeImage()">
                 <mat-icon>remove</mat-icon>
               </button>
-          <button mat-icon-button color="primary" matTooltip="Save" type="submit">
+          <button *ngIf="username" mat-icon-button color="primary" matTooltip="Save" type="submit" [disabled]="!uploadForm.valid">
             <mat-icon>check</mat-icon>
           </button>
+          <a [routerLink]="['/login']">
+          <button *ngIf="!username" mat-button color="primary" type="button">
+            Log in to post
+          </button>
+          </a>
           </div>
         
       </mat-card>

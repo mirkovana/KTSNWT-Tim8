@@ -8,8 +8,6 @@ import ktsnwt_tim8.demo.model.Comment;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-	Page<Comment> findAllByOfferID(Long id, Pageable page);
-
 	Page<Comment> findAllByOfferIDOrderByDateDesc(Long id, Pageable page);
 
 
