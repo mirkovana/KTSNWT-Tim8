@@ -9,7 +9,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class CommentsPage {
+public class MainOffersPage {
+	
 	private WebDriver driver;
 	
 	@FindBy(css = "app-comment-edit")

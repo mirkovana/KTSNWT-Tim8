@@ -10,6 +10,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import ktsnwt_tim8.pages.CommentsPage;
 import ktsnwt_tim8.pages.LoginPage;
+import ktsnwt_tim8.pages.MainOffersPage;
 
 public class CommentE2ETest {
 
@@ -18,7 +19,9 @@ public class CommentE2ETest {
 
     private CommentsPage commentsPage;
     private LoginPage loginPage;
-
+    private MainOffersPage mainOffersPage;
+    
+    
     @Before
     public void setUp() throws InterruptedException {
 
@@ -34,14 +37,28 @@ public class CommentE2ETest {
         //this.driver.wait(5000);
         justWait(5000);
         
+        mainOffersPage = PageFactory.initElements(driver, MainOffersPage.class);
+        //mainOffersPage.ensureIsDisplayedA1();
+        justWait(1000);
+        mainOffersPage.getAnchor1().click();
+        justWait(2000);
+        //mainOffersPage.getAnchor1().click();
         //commentsPage = PageFactory.initElements(driver, CommentsPage.class);
         //driver.get("http://localhost:4200/offer");
         //justWait(5000);
+        commentsPage = PageFactory.initElements(driver, CommentsPage.class);
+        commentsPage.setupFormElements();
+        justWait(5000);
+       
     }
 
     
     @Test
-    public void createComment() {
+    public void createComment() throws InterruptedException {
+    	
+    	commentsPage.getNewCommentTextInput().sendKeys("Novi komentar");
+    	commentsPage.getNewCommentPost().click();
+    	justWait(6000);
     	
     }
     
