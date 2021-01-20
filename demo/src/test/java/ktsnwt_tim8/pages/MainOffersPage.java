@@ -13,15 +13,6 @@ public class MainOffersPage {
 	
 	private WebDriver driver;
 	
-	@FindBy(css = "app-comment-edit")
-	List<WebElement> edits;
-	
-	
-	WebElement newCommentTextInput;
-	
-	// slika
-	
-    WebElement newCommentPost;
 	
 	@FindBy(linkText = "Exit festival")
     private WebElement anchor1;
@@ -32,20 +23,8 @@ public class MainOffersPage {
     
     public void ensureIsDisplayedA1() {
         (new WebDriverWait(driver, 30)).until(ExpectedConditions.presenceOfElementLocated(By.linkText("Exit festival")));
-    }
-    
-    public WebElement getNewCommentForm() {
-    	return edits.get(0);
-    }
-    
-    public void setupFormElements() {
-    	this.newCommentTextInput = edits.get(0).findElement(By.cssSelector("textarea"));
-    	
-    	// slika
-    	
-        this.newCommentPost = edits.get(0).findElement(By.cssSelector("button[type='submit']"));
-    	
-    }
+    }    
+
 
 	public WebDriver getDriver() {
 		return driver;
@@ -55,30 +34,7 @@ public class MainOffersPage {
 		this.driver = driver;
 	}
 
-	public List<WebElement> getEdits() {
-		return edits;
-	}
-
-	public void setEdits(List<WebElement> edits) {
-		this.edits = edits;
-	}
-
-	public WebElement getNewCommentTextInput() {
-		return newCommentTextInput;
-	}
-
-	public void setNewCommentTextInput(WebElement newCommentTextInput) {
-		this.newCommentTextInput = newCommentTextInput;
-	}
-
-	public WebElement getNewCommentPost() {
-		return newCommentPost;
-	}
-
-	public void setNewCommentPost(WebElement newCommentPost) {
-		this.newCommentPost = newCommentPost;
-	}
-
+	
 	public void setAnchor1(WebElement anchor1) {
 		this.anchor1 = anchor1;
 	}

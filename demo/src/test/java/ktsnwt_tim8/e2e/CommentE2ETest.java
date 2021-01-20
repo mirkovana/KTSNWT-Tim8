@@ -1,6 +1,8 @@
 package ktsnwt_tim8.e2e;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +50,7 @@ public class CommentE2ETest {
         //justWait(5000);
         commentsPage = PageFactory.initElements(driver, CommentsPage.class);
         commentsPage.setupFormElements();
-        justWait(5000);
+        justWait(2000);
        
     }
 
@@ -56,10 +58,16 @@ public class CommentE2ETest {
     @Test
     public void createComment() throws InterruptedException {
     	
-    	commentsPage.getNewCommentTextInput().sendKeys("Novi komentar");
+    	int oldComments = commentsPage.getNumOfElements();
+    	String newCommentText = "New comment text.";
+    	commentsPage.getNewCommentTextInput().sendKeys(newCommentText);
     	commentsPage.getNewCommentPost().click();
     	justWait(6000);
-    	
+    	int newComments = commentsPage.getNumOfElements();
+    	// checking if number of all comments changed
+    	assertEquals(oldComments + 1, newComments);
+    	// checking if the text of the first comment equals to the text of new comment
+    	assertEquals(commentsPage.getFirstCommentText(), newCommentText);
     }
     
     @After

@@ -18,10 +18,18 @@ public class CommentsPage {
 	
 	WebElement newCommentTextInput;
 	
+	//mat-paginator-range-label
+	@FindBy(css = ".mat-paginator-range-label")
+	WebElement paginatorPages;
 	// slika
 	
     WebElement newCommentPost;
 	
+    @FindBy(css = "app-comment")
+	List<WebElement> comments;
+    
+    WebElement firstComment;
+    
 	@FindBy(linkText = "Exit festival")
     private WebElement anchor1;
 	
@@ -43,6 +51,12 @@ public class CommentsPage {
     	// slika
     	
         this.newCommentPost = edits.get(0).findElement(By.cssSelector("button[type='submit']"));
+    	
+    }
+    
+    public int getNumOfElements() {
+    	String[] els = this.getPaginatorPages().getText().split(" ");
+    	return Integer.parseInt(els[4]);
     	
     }
 
@@ -80,6 +94,34 @@ public class CommentsPage {
 
 	public void setAnchor1(WebElement anchor1) {
 		this.anchor1 = anchor1;
+	}
+
+	public WebElement getPaginatorPages() {
+		return paginatorPages;
+	}
+
+	public void setPaginatorPages(WebElement paginatorPages) {
+		this.paginatorPages = paginatorPages;
+	}
+
+	public List<WebElement> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<WebElement> comments) {
+		this.comments = comments;
+	}
+
+	public WebElement getFirstComment() {
+		return this.getComments().get(0);
+	}
+	
+	public String getFirstCommentText() {
+		return this.getComments().get(0).findElement(By.cssSelector("p")).getText();
+	}
+
+	public void setFirstComment(WebElement firstComment) {
+		this.firstComment = firstComment;
 	}
     
     
