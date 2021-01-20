@@ -28,7 +28,7 @@ export class OfferService {
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(offer);
     console.log(body)
-    console.log("USAAAAAAAAAAAAAAAAAAAAAAAAAAAOOOO")
+    //console.log("USAAAAAAAAAAAAAAAAAAAAAAAAAAAOOOO")
     return this.http.post<any>('http://localhost:8080/api/offers/'+idSubcategory, body, {headers: this.headers}).subscribe(
       (val) => {
           console.log("POST call successful value returned in body", 
@@ -41,5 +41,21 @@ export class OfferService {
           console.log("The POST observable is now completed.");
       });
       
+ }
+
+ updateOffer(offer:any) {
+  //const body=JSON.stringify(offer);
+  return this.http.put<any>('http://localhost:8080/api/offers/'+localStorage.getItem('offerId'), offer, {headers: this.headers}).subscribe(
+    (val) => {
+        console.log("PUT call successful value returned in body", 
+                    val);
+    },
+    response => {
+        console.log("PUT call in error", response);
+    },
+    () => {
+        console.log("The PUT observable is now completed.");
+    });
+
  }
 }

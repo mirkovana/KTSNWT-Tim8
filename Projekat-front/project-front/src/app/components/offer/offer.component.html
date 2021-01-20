@@ -3,32 +3,26 @@
    <!--<h1>{{ offer.title }}</h1>-->
    <!--<p>{{ offer.description }}</p>-->
    <div >
-      <button mat-raised-button color="primary" matTooltip="Delete offer" style="float: right;" (click)="deleteOffer()">Delete</button>
+      <button *ngIf="broj===1" mat-raised-button color="primary" matTooltip="Delete offer" style="float: right;" (click)="deleteOffer()">Delete</button>
   </div>
-   <form [formGroup]="editForm" >
+  <div class="info">
+   <mat-form-field>
       <h1>
-         <textarea class="naslov" *ngIf="broj===1" rows="3" formControlName="text" name="title">{{ offer.title }}</textarea>
-         <textarea class="naslov" *ngIf="broj===2 || !loggedIn" readonly="true" rows="3" formControlName="text" >{{ offer.title }}</textarea>
-         <div class="actions">
-            <button *ngIf="broj===1" mat-icon-button color="primary" matTooltip="Save" onclick="submit()">
-               <mat-icon>check</mat-icon>
-            </button>
-         </div>
+         <input matInput [(ngModel)]="offer.title" id="edit-offer-title-input" [readonly]="!admin" placeholder="">
       </h1>
-      <hr>
-      <mat-card class="example-card new">
-         <mat-card-content>
-            <textarea *ngIf="broj===1" rows="3" formControlName="text" name="description">{{ offer.description }}</textarea>
-            <textarea *ngIf="broj===2 || !loggedIn" readonly="true" rows="3" formControlName="text" >{{ offer.description }}</textarea>
-         </mat-card-content>
-         <div class="actions">
-            <button *ngIf="broj===1" mat-icon-button color="primary" matTooltip="Save" type="button">
-               <mat-icon>check</mat-icon>
-            </button>
-         </div>
-      </mat-card>
-   </form>
+   </mat-form-field>
+  </div>
 
+  <div class="info">
+   <mat-form-field>
+      <textarea class="opis" matInput [(ngModel)]="offer.description" id="edit-offer-description-input" [readonly]="!admin" placeholder=""></textarea>
+   </mat-form-field>
+  </div>
+
+  <div class="buttons">
+   <button *ngIf="broj===1" mat-raised-button color="primary" id="save-event-changes" [disabled]="!saveChangesEnabled()" (click)="saveChanges()">Edit</button>
+ </div>
+  
    <hr>
 
 </div>
