@@ -80,6 +80,14 @@ public class OfferController {
 	 * @GetMapping public Page<Offer> findAllPageable(Pageable page){ return
 	 * service.findAllPageable(page); }
 	 */
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<OfferDTO> getOfferById(@PathVariable Long id) {
+		Offer off = service.get(id);
+		if (off == null) {
+			return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(mapper.toDto(off), HttpStatus.OK);
+	}
 
 //	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping
@@ -141,6 +149,7 @@ public class OfferController {
 	}
 
 	/* IZMENA PONUDE */
+	@CrossOrigin
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value = "/{idOffer}", consumes = "application/json")
 	public ResponseEntity<OfferDTO> updateOffer(@PathVariable Long idOffer, @Valid @RequestBody OfferDTO offerUpdated)
@@ -178,6 +187,7 @@ public class OfferController {
 	}
 
 	/* BRISANJE PONUDE */
+	@CrossOrigin
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(value = "/{idOffer}")
 	public ResponseEntity<Void>  deleteOffer(@PathVariable Long idOffer) {

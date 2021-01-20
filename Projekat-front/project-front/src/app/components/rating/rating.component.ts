@@ -10,6 +10,7 @@ import { RatingService } from 'src/app/services/rating.service';
 export class RatingComponent implements OnInit {
 
   loggedIn = localStorage.getItem('username');
+  //offerId = JSON.parse(localStorage.getItem('offerId')); //ovako bi trebalo
   offerId = 1; // ovo ce se poslati iz offera
   starRating = 0;
   oldRating = 0;

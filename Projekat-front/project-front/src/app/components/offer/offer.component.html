@@ -1,4 +1,30 @@
-<p>offer works!</p>
+<app-navigation></app-navigation>
+<div class='offerInfo'>
+   <!--<h1>{{ offer.title }}</h1>-->
+   <!--<p>{{ offer.description }}</p>-->
+   <div >
+      <button *ngIf="broj===1" mat-raised-button color="primary" matTooltip="Delete offer" style="float: right;" (click)="deleteOffer()">Delete</button>
+  </div>
+  <div class="info">
+   <mat-form-field>
+      <h1>
+         <input matInput [(ngModel)]="offer.title" id="edit-offer-title-input" [readonly]="!admin" placeholder="">
+      </h1>
+   </mat-form-field>
+  </div>
 
+  <div class="info">
+   <mat-form-field>
+      <textarea class="opis" matInput [(ngModel)]="offer.description" id="edit-offer-description-input" [readonly]="!admin" placeholder=""></textarea>
+   </mat-form-field>
+  </div>
+
+  <div class="buttons">
+   <button *ngIf="broj===1" mat-raised-button color="primary" id="save-event-changes" [disabled]="!saveChangesEnabled()" (click)="saveChanges()">Edit</button>
+ </div>
+  
+   <hr>
+
+</div>
 <app-rating></app-rating>
 <app-comments></app-comments>
