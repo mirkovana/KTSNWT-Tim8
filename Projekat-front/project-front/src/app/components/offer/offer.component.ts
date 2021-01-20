@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { OfferService } from '../../services/offer.service';
 import {Offer} from '../../models/Offer';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-offer',
@@ -10,38 +11,44 @@ import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angula
 })
 export class OfferComponent implements OnInit {
 
+  offer = {
+    title: '',
+    description: ''
+  }
+
+  admin:boolean=false;
+
+  editedTitle:string;
+
   loggedIn = localStorage.getItem('username');
   broj:number;
-  offer:Offer;
-  editForm: FormGroup;
+  //offer:Offer;
+  editOfferForm: FormGroup;
+  submitted = false;
 
-  constructor(public fb: FormBuilder, private offerService: OfferService) { 
+  constructor(public formBuilder: FormBuilder, private offerService: OfferService, private snackbar: MatSnackBar) { 
   }
 
   ngOnInit(): void {
     //u htmlu sa !loggedIn je sve ono sto se prikazuje kad korisnik nije ulogovan uopste  
-  if(this.loggedIn){
-    console.log("ulogovan je neko");
-    if(this.loggedIn==="admin@nesto.com"){this.broj=1;} //kad je ulogovan admin
-    else{this.broj=2;} //kad je ulogovan korisnik koji nije admin
-  } 
+    if(this.loggedIn){
+      console.log("ulogovan je neko");
+      if(this.loggedIn==="admin@nesto.com"){this.broj=1;this.admin=true;} //kad je ulogovan admin
+      else{this.broj=2;} //kad je ulogovan korisnik koji nije admin
+    } 
 
-  //POKUSAJ EDITA POCETAK
+    //POKUSAJ EDITA POCETAK
     this.offerService.getOfferById().subscribe(res => {this.offer=res;});
-
-    this.editForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required]
-  });
   }
 
-  get f() { return this.editForm.controls; }
-
-  submit() {
-    console.log("blblblbl");
-    console.log(this.editForm.value);
+  saveChangesEnabled() {
+    return this.offer.title.length > 0 && this.offer.description.length > 0;
   }
-  //POKUSAJ EDITA KRAJ
+
+  saveChanges() {
+    console.log("PRITISNUTO DUGME EDIT");
+    this.offerService.updateOffer(this.offer);
+  }
 
   deleteOffer(){
     this.offerService.deleteOffer(JSON.parse(localStorage.getItem('offerId')));
