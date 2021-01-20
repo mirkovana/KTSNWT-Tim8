@@ -28,6 +28,7 @@ export class RatingComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.offerId = +localStorage.getItem('offerId');
     if (this.loggedIn){
       this.ratingService.getUsersRating(this.offerId).subscribe(data =>{
         if (data != null){
