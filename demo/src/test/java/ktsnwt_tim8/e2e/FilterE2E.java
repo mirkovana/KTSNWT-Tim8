@@ -37,6 +37,7 @@ public class FilterE2E {
 		filterPage.getFilterMore().click();
 		justWait(2000);
 		//filterPage.getCategories().get(0).click();
+		//filterPage.getSubcategories().get(3).click();
 		justWait(2000);
 		System.out.println(filterPage.getCategories().get(0).getText());
 		String searchName = "pozoriste";
