@@ -54,8 +54,10 @@ import {MatSelectModule} from '@angular/material/select';
 import { PostsComponent } from './components/posts/posts.component';
 import { PostItemComponent } from './components/post-item/post-item.component';
 import { AddPostComponent } from './components/add-post/add-post.component';
-
-
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatDialogModule} from '@angular/material/dialog';
+import { AddCategoryComponent } from './components/add-category/add-category.component';
+import { AddSubcategoryComponent } from './components/add-subcategory/add-subcategory.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +87,9 @@ import { AddPostComponent } from './components/add-post/add-post.component';
     AddOfferComponent,
     PostsComponent,
     PostItemComponent,
-    AddPostComponent
+    AddPostComponent,
+    AddCategoryComponent,
+    AddSubcategoryComponent
 
 
    
@@ -115,7 +119,9 @@ import { AddPostComponent } from './components/add-post/add-post.component';
     MatDividerModule,
     MatCardModule,
     MatTooltipModule,
-    MatSelectModule
+    MatSelectModule,
+    MatGridListModule,
+    MatDialogModule
     
   ],
   providers: [],

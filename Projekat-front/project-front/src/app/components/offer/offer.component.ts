@@ -5,8 +5,8 @@ import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angula
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PaginatorPageable } from 'src/app/models/PaginatorPageable';
 import { PostService } from 'src/app/services/post.service';
-
-
+import {MatDialog} from '@angular/material/dialog';
+import {AddPostComponent} from 'src/app/components/add-post/add-post.component'
 
 @Component({
   selector: 'app-offer',
@@ -33,7 +33,7 @@ export class OfferComponent implements OnInit {
   editOfferForm: FormGroup;
   submitted = false;
 
-  constructor(public formBuilder: FormBuilder, private offerService: OfferService, private snackbar: MatSnackBar, private postService: PostService) { 
+  constructor(public dialog: MatDialog, public formBuilder: FormBuilder, private offerService: OfferService, private snackbar: MatSnackBar, private postService: PostService) { 
   }
  
   ngOnInit(): void {
@@ -77,7 +77,11 @@ export class OfferComponent implements OnInit {
       })
     }
   
-
+    openDialog(): void {
+      const dialogRef = this.dialog.open(AddPostComponent,{
+        width: '640px',disableClose: true 
+      });
+  }
 }
 
 
