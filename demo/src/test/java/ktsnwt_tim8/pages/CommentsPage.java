@@ -54,6 +54,11 @@ public class CommentsPage {
     	
     }
     
+    public WebElement getFileInput() {
+    	return edits.get(0).findElement(By.cssSelector("input"));
+    	
+    }
+    
     public int getNumOfElements() {
     	String[] els = this.getPaginatorPages().getText().split(" ");
     	return Integer.parseInt(els[4]);
@@ -160,5 +165,9 @@ public class CommentsPage {
 		//return this.firstComment.findElement(By.cssSelector("button"));
 		return getComments().get(0).findElements(By.cssSelector("button")).get(1);
 			
+	}
+
+	public String getFirstImageSrc() {
+		return this.getComments().get(0).findElement(By.cssSelector("img")).getAttribute("src");
 	}
 }

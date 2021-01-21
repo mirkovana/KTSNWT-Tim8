@@ -4,11 +4,17 @@ package ktsnwt_tim8.e2e;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.Base64;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -78,6 +84,49 @@ public class CommentE2ETest {
     	
     }
     
+    private String toBase64(File file) {
+    	byte[] fileContent;
+    	try {
+			fileContent = FileUtils.readFileToByteArray(file);
+		} catch (IOException e) {
+			return null;
+		}
+    	return Base64.getEncoder().encodeToString(fileContent);
+    }
+    
+    @Test
+    public void createCommentWithPicture() throws InterruptedException {
+    	
+    	int oldComments = commentsPage.getNumOfElements();
+    	String newCommentText = "New comment text.";
+    	commentsPage.getNewCommentTextInput().sendKeys(newCommentText);
+    	commentsPage.getFileInput().sendKeys("C:\\Users\\Korisnik\\Desktop\\djava.jpg");
+    	justWait(2000);
+    	File file = new File("src/test/resources/imagesForUpload/petrovaradin.jpg");
+    	String base64 = "data:image/jpg;base64," + toBase64(file);
+    	URI    uri  = file.toURI();
+    	file = new File(uri);
+    	// Get the absolute path to the file.
+    	String path = file.getAbsolutePath();
+    	//commentsPage.getFileInput().sendKeys("src/test/resources/imagesForUpload/petrovaradin.jpg");
+    	commentsPage.getFileInput().sendKeys(path);
+    	justWait(3000);
+    	commentsPage.getSubmitButton().click();
+    	justWait(3000);
+    	int newComments = commentsPage.getNumOfElements();
+    	// checking if number of all comments changed
+    	assertEquals(oldComments + 1, newComments);
+    	// checking if the text of the first comment equals to the text of new comment
+    	assertEquals(commentsPage.getFirstCommentText(), newCommentText);
+    	// check if the first comment username is equals to logged-in username
+    	assertEquals("kor1@nesto.com", commentsPage.getFirstCommentUsername());
+    	
+    	//base64 = "data:image/jpg;base64," + base64;
+    	assertEquals(base64, commentsPage.getFirstImageSrc());
+    	justWait(10000);
+    	
+    }
+    
     //@Test
     public void createCommentEmptyText() throws InterruptedException {
     	
@@ -113,7 +162,7 @@ public class CommentE2ETest {
     	justWait(10000);
     }
     
-    @Test
+    //@Test
     public void deleteComment() throws InterruptedException {
     	prepCreateComment("Comment for deletion!");
     	justWait(2000);    
