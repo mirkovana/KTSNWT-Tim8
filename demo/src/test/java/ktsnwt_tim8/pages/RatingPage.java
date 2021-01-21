@@ -43,13 +43,48 @@ public class RatingPage {
 	}
 
 	public WebElement getAStar() {
-		return driver.findElement(By.cssSelector(".ng-star-inserted:nth-child(8)"));	
+		return driver.findElement(By.cssSelector(".ng-star-inserted:nth-child(6)"));	
 	}
 	
 	public WebElement getRateButton(){
-		return driver.findElement(By.name("rateButton"));
+		try {
+			return driver.findElement(By.name("rateButton"));
+
+		} catch(Exception e) {
+			return null;
+		}
 	}
 
+	public WebElement getChangeRatingButton(){
+		try {
+			return driver.findElement(By.name("changeRatingButton"));
+
+		} catch(Exception e) {
+			return null;
+		}
+	}
+
+	
+	public WebElement getDeleteRatingButton(){
+		try {
+			return driver.findElement(By.name("deleteRatingButton"));
+
+		} catch(Exception e) {
+			return null;
+		}
+	}
+	
+	public WebElement getSaveRatingButton(){
+		try {
+			return driver.findElement(By.name("saveRatingButton"));
+
+		} catch(Exception e) {
+			return null;
+		}
+	}
+
+	
+	
 	public boolean snackBarSuccess(String text) {
 		try {
 		WebElement e = driver.findElement(By.cssSelector("simple-snack-bar > span"));

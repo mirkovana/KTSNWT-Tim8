@@ -1,18 +1,16 @@
 package ktsnwt_tim8.e2e;
 
-import static org.junit.Assert.assertTrue;
+//import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import ktsnwt_tim8.pages.CommentsPage;
 import ktsnwt_tim8.pages.LoginPage;
 import ktsnwt_tim8.pages.MainOffersPage;
 import ktsnwt_tim8.pages.RatingPage;
@@ -58,30 +56,21 @@ public class RatingE2E {
 		logIn();
 		selectOffer();
 		justWait(2000);
-		for (WebElement e: ratingPage.getRating().findElements(By.cssSelector(".sr-only.ng-star-inserted"))){
-			
-			//e.click();
-			justWait(1000);
-			System.out.println(e);
-		}
-		WebElement el = ratingPage.getRating().findElements(By.cssSelector(".sr-only.ng-star-inserted")).get(2);
-		//★
-		//document.querySelectorAll("ngb-rating > span.ng-star-inserted:not(.sr-only)");
-		
-		//((JavascriptExecutor)driver).
-        //executeScript("var els = document.querySelectorAll(\"ngb-rating > span.ng-star-inserted:not(.sr-only)\");"
-        //		+ "for (el of els){"
-        //		+ "el.innerText = \"★\"}"
-        //		+ "var r = document.querySelectorAll(\"ngb-rating\");"
-        //		+ "r[0].setAttribute(\"rate\", 5);");
+		// checking if rate button is disabled since initial rating iz 0 stars
+		assertTrue(!ratingPage.getRateButton().isEnabled()); 
 		ratingPage.getAStar().click(); //css=.ng-star-inserted:nth-child(8)
 		ratingPage.getRateButton().click();
 		justWait(500);
-		//ratingPage.snackBarSuccess("Rating created");
 		assertTrue(ratingPage.snackBarSuccess(("Rating created.")));
-		
-		justWait(10000);
-		System.out.println("current rating " + ratingPage.getCurrentRatingValue());
+		justWait(2000);
+		// checking if current value is the one we chose
+		assertEquals(3, ratingPage.getCurrentRatingValue());
+		// checking if change rating button is displayed
+		assertTrue(ratingPage.getChangeRatingButton() != null);
+		// checking if delete rating button is displayed
+		assertTrue(ratingPage.getDeleteRatingButton() != null);
+		// checking if rate button is not displayed
+		assertTrue(ratingPage.getRateButton() == null);
 	}
 	
 	private void justWait(int milliseconds) throws InterruptedException {
