@@ -1,0 +1,31 @@
+<div>
+    <div class="add-title">
+      <h2 class="primary">Add new category</h2>
+    </div>
+    <div>
+      <form [formGroup]="addCusForm" (change)="formChanged()">
+        <mat-grid-list cols="2" [cols]="breakpoint" rowHeight="85px" (window:resize)="onResize($event)">
+
+
+          <mat-grid-tile >
+            <div class="text-inside">
+              <mat-form-field>
+                <input matInput placeholder="Name of category" value={{name}} formControlName="name" required>
+                <mat-error *ngIf="addCusForm.controls.name.hasError('required')">
+                  Please enter name
+                </mat-error>
+               
+              </mat-form-field>
+            </div>
+        </mat-grid-tile>
+     </mat-grid-list>
+  
+        <div class="btn-sec">
+          <button mat-raised-button type="submit" color="primary" class="Update-btn"  [disabled]="!saveChangesEnabled()"  (click)="onAddCus()" >Save</button>
+          <button mat-raised-button type="button" class="Discard-btn"  (click)="openDialog()" >Cancel</button>
+        </div>
+  
+      </form>
+    </div>
+  </div>
+  
