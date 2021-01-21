@@ -10,16 +10,16 @@
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
-          <button *ngIf="!moreOpened" class="icon-btn" type="button" (click)="moreOpened=true;" mat-icon-button
+          <button *ngIf="!moreOpened" class="icon-btn" type="button" name="moreOptions" (click)="moreOpened=true;" mat-icon-button
             color="primary" matTooltip="More filtering options">
             <mat-icon>expand_more</mat-icon>
           </button>
-          <button *ngIf="moreOpened" class="icon-btn" type="button" (click)="moreOpened=false;" mat-icon-button
+          <button *ngIf="moreOpened" class="icon-btn" type="button" name="lessOptions" (click)="moreOpened=false;" mat-icon-button
             color="primary" matTooltip="Hide filtering options">
             <mat-icon>expand_less</mat-icon>
           </button>
   
-          <button class="icon-btn" mat-icon-button class='icon' type="submit" color="accent" matTooltip="Filter!">
+          <button class="icon-btn" mat-icon-button class='icon' name="search" type="submit" color="accent" matTooltip="Filter!">
             <mat-icon>search</mat-icon>
           </button>
           <button matTooltip="Edit comment" class="icon-btn" mat-icon-button class='icon' type="button" matTooltip="Clear filter"
@@ -46,7 +46,7 @@
           <!--<hr>-->
   
           <span class="example-list-section cat" *ngFor="let c of categories; let i = index">
-            <mat-checkbox class="example-margin" [checked]="allCompleteArray[i]" color="primary"
+            <mat-checkbox class="example-margin category" [checked]="allCompleteArray[i]" color="primary"
               [indeterminate]="someComplete1(i)" (change)="setAll1($event.checked, i)">
               {{c.name}}
             </mat-checkbox>
@@ -55,7 +55,7 @@
               <ul>
                 <li *ngFor="let s of c.subcats; let j=index">
                   <mat-checkbox [(ngModel)]="s.completed" color="primary" (ngModelChange)="updateAllComplete1(i)"
-                    value="vrednost" name="subcat{{s.id}}">
+                    value="vrednost" name="subcat{{s.id}}" class="subcategory">
                     {{s.name}}
                   </mat-checkbox>
                 </li>

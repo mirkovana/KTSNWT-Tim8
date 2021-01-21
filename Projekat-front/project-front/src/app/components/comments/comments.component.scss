@@ -1,5 +1,6 @@
 .row {
-    width: 800px;
+    width: 1000px;
+    margin: auto;
 }
 .comment{
     width: 100%;
@@ -7,4 +8,12 @@
 
 :ng-deep .warinng .blue-snackbar {
    background: blue;
+}
+
+.bottom {
+    margin-bottom: 50px;
+}
+
+.row-text{
+    text-align: center;
 }

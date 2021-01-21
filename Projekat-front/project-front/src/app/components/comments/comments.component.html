@@ -20,10 +20,10 @@
 
         <hr>
     </div>
-    <div *ngIf="!content.content.length">
+    <div class="row row-text" *ngIf="!content.content.length">
         <p>No comments to display.</p>
     </div>
-    <mat-paginator style="
+    <mat-paginator class="row bottom" style="
     display: flex;
     justify-content: center" 
     [length] = "paginatorDetails.length"
