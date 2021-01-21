@@ -1,0 +1,23 @@
+<div *ngIf="!page.content.length">
+    <p>No posts to display.</p>
+</div>
+<div class="wrapper offers">
+    <div *ngIf = "page.content">
+        <div *ngFor = "let post of page.content">
+            <app-post-item [post]="post" class="page"></app-post-item>
+        <mat-divider class="divider" role="separator"></mat-divider>
+       
+        </div>
+        
+    </div>
+</div>
+
+    <mat-paginator style="
+        display: flex;
+        justify-content: left" 
+        [length] = "paginatorDetails.length"
+        [pageSize]="paginatorDetails.pageSize"
+        [pageSizeOptions]="[5, 10, 25]"
+        (page)="onClick($event)"
+        >
+    </mat-paginator>

@@ -34,8 +34,8 @@ export class AddOfferComponent implements OnInit {
     this.addOfferForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      place: ['', Validators.required]
-  });
+      place: ['', Validators.required] 
+   });
 
   // get return url from route parameters or default to '/'
   this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -43,7 +43,7 @@ export class AddOfferComponent implements OnInit {
     //this.subcategory$=this.subcategoryService.getAllSubcategories();
 
     this.subcategoryService.getAllSubcategories().subscribe((subcategory1)=>{
-      console.log("SUBBBBBB1111"+subcategory1);
+      
       this.subcategory1 = subcategory1;
     });
   }
@@ -62,5 +62,7 @@ export class AddOfferComponent implements OnInit {
     window.location.replace("http://localhost:4200/home");
     
 }
-
+saveChangesEnabled() {
+  return this.addOfferForm.value.title.length > 0 && this.selectedItem && this.addOfferForm.value.description.length >0 && this.addOfferForm.value.place.length >0;
+}
 }

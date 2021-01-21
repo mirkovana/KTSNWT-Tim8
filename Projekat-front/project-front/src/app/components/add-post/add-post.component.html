@@ -1,0 +1,46 @@
+<div>
+    <div class="add-title">
+      <h2 class="primary">Add new post</h2>
+    </div>
+    <div>
+      <form [formGroup]="addCusForm" (change)="formChanged()">
+        <mat-grid-list cols="2" [cols]="breakpoint" rowHeight="85px" (window:resize)="onResize($event)">
+
+
+          <mat-grid-tile [colspan]="2"
+          [rowspan]="1">
+            <div class="text-inside">
+              <mat-form-field>
+                <input matInput placeholder="Title" value={{title}} formControlName="title" required>
+                <mat-error *ngIf="addCusForm.controls.title.hasError('required')">
+                  Please enter title
+                </mat-error>
+               
+              </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        
+        <mat-grid-tile  [colspan]="2"
+        [rowspan]="2">
+            <div class="text-inside" id="content2">
+              <mat-form-field>
+                <textarea matInput placeholder="Content" value={{content}} formControlName="content"  required></textarea>
+                <mat-error *ngIf="addCusForm.controls.content.hasError('required')">
+                  Please enter content
+                </mat-error>
+               
+              </mat-form-field>
+            </div>
+        </mat-grid-tile>
+          
+        </mat-grid-list>
+  
+        <div class="btn-sec">
+          <button mat-raised-button type="submit" color="primary" class="Update-btn" [disabled]="!saveChangesEnabled()" (click)="onAddCus()" >Save</button>
+          <button mat-raised-button type="button" class="Discard-btn"  (click)="openDialog()" >Cancel</button>
+        </div>
+  
+      </form>
+    </div>
+  </div>
+  

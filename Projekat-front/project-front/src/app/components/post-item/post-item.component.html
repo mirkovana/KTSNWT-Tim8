@@ -1,0 +1,33 @@
+
+<div class="item header">
+    <div class="info1" style = "position: relative; right:800px; ">
+        <mat-form-field>
+           <h1 style="margin-top: 5px;"> 
+              <input  class ="naslov" matInput [(ngModel)]="post.title" [readonly]="!admin"  placeholder="">
+           </h1>
+        </mat-form-field>
+        
+       </div>
+     
+       <div  class="info">
+         
+        <mat-form-field class="cont"  style = "position: relative; right:300px; ">
+           <textarea class="opis" matInput [(ngModel)]="post.content"  [readonly]="!admin" placeholder=""></textarea>
+        </mat-form-field>
+       </div>
+
+       <div class="info3" style = "position: relative; left:800px;  ">
+         
+        <mat-form-field>
+           
+           <input matInput type="date" [ngModel] ="post.date | date:'yyyy-MM-dd'"    readonly="true" placeholder=""/>
+        </mat-form-field>
+        <div class="buttons">
+            <button *ngIf="broj===1" mat-raised-button color="primary" id="save-event-changes" matTooltip="Save changes on post" [disabled]="!saveChangesEnabled()" (click)="saveChanges(post)">Edit post</button>
+            
+            &nbsp;
+            <button *ngIf="broj===1" mat-raised-button color="primary" id="save-event-changes" matTooltip="Delete post" (click)="deletePost(post)" >Delete post</button>
+          </div>
+       </div>
+      
+</div>

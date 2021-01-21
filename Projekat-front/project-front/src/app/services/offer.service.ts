@@ -18,9 +18,7 @@ export class OfferService {
     return this.http.get<Offer>("http://localhost:8080/api/offers/"+localStorage.getItem('offerId'));
   }
 
-  deleteOffer(offerId: number){
-    console.log("USAOOO U BRISANJE OFFERAAAA");
-    console.log("ID OFFERA JEEEE: "+offerId);
+  deleteOffer(offerId: number){ 
     return this.http.delete("http://localhost:8080/api/offers/" + offerId, {headers: this.headers}).subscribe(data=>{console.log(data);});
   }
 

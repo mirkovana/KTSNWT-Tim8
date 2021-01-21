@@ -51,8 +51,13 @@ import { RatingComponent } from './components/rating/rating.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AddOfferComponent } from './components/add-offer/add-offer.component';
 import {MatSelectModule} from '@angular/material/select';
-
-
+import { PostsComponent } from './components/posts/posts.component';
+import { PostItemComponent } from './components/post-item/post-item.component';
+import { AddPostComponent } from './components/add-post/add-post.component';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatDialogModule} from '@angular/material/dialog';
+import { AddCategoryComponent } from './components/add-category/add-category.component';
+import { AddSubcategoryComponent } from './components/add-subcategory/add-subcategory.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +84,12 @@ import {MatSelectModule} from '@angular/material/select';
     CommentComponent,
     CommentEditComponent,
     RatingComponent,
-    AddOfferComponent
+    AddOfferComponent,
+    PostsComponent,
+    PostItemComponent,
+    AddPostComponent,
+    AddCategoryComponent,
+    AddSubcategoryComponent
 
 
    
@@ -109,7 +119,9 @@ import {MatSelectModule} from '@angular/material/select';
     MatDividerModule,
     MatCardModule,
     MatTooltipModule,
-    MatSelectModule
+    MatSelectModule,
+    MatGridListModule,
+    MatDialogModule
     
   ],
   providers: [],
