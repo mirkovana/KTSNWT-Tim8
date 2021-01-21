@@ -74,9 +74,9 @@ public class CommentServiceIntegrationTests {
 	public void findCommentsWithExistingOfferId() throws Exception {
 
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
-		Page<Comment> page = service.findAllByOfferID(10L, pageable);
+		Page<Comment> page = service.findAllByOfferID(7L, pageable);
 		
-		assertEquals(page.getContent().size(), 1);
+		assertEquals(page.getContent().size(), 2);
 	}
 	
 	
@@ -112,6 +112,21 @@ public class CommentServiceIntegrationTests {
 			throw re;
 		}
 		fail("Comment cannot be empty exception not thrown.");
+	}
+	
+	@Test (expected = Exception.class)
+	public void createCommentTextNull() throws Exception {
+		try{
+			login("kor1@nesto.com", "1");
+			service.create(1L, new CommentDTO(null), null);
+		}
+		catch(Exception re)
+		{
+			String message = "Comment cannot be null";
+			assertEquals(message, re.getMessage());
+			throw re;
+		}
+		fail("Comment cannot be null exception not thrown.");
 	}
 		
 
@@ -207,6 +222,22 @@ public class CommentServiceIntegrationTests {
 	}
 	
 	@Test (expected = Exception.class)
+	public void updateCommentTextNull() throws Exception {
+		try{
+			login("kor1@nesto.com", "1");
+			MultipartFile multipartFile = new MockMultipartFile("empty", new byte[0]);
+			service.updateComment(2L, new CommentDTO(null), multipartFile);
+		}
+		catch(Exception re)
+		{
+			String message = "Comment cannot be null";
+			assertEquals(message, re.getMessage());
+			throw re;
+		}
+		fail("Comment cannot be null exception not thrown.");
+	}
+	
+	@Test (expected = Exception.class)
 	public void updateCommentsSomeoneElses() throws Exception {
 		try{
 			login("kor3@nesto.com", "1");
@@ -270,19 +301,19 @@ public class CommentServiceIntegrationTests {
 		fail("Comment with given id does not exits. exception did not throw!");
 	}
 
-	//@Test 
+	@Test 
 	//@Transactional
 	public void deleteCommentWithoutPictureSuccess() throws Exception {
-		login("kor1@nesto.com", "1");
+		login("kor3@nesto.com", "1");
 
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
-		Page<Comment> page = service.findAllByOfferID(1L, pageable);
+		Page<Comment> page = service.findAllByOfferID(10L, pageable);
 		
 		int oldNumOfComments = page.getContent().size();
 		
-		service.deleteComment(1L);
+		service.deleteComment(6L);
 
-		page = service.findAllByOfferID(1L, pageable);
+		page = service.findAllByOfferID(10L, pageable);
 		int newNumOfComments = page.getContent().size();
 		
 		assertEquals(oldNumOfComments - 1, newNumOfComments);

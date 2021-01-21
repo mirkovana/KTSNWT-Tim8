@@ -1,14 +1,17 @@
 <h2>Comments</h2>
-<app-comment-edit (newComment)="onNewComment()" editing=false></app-comment-edit>
+<app-comment-edit (newComment)="onNewComment()" editing=false 
+(done)="openSnackBar($event)"></app-comment-edit>
 
 <hr>
 
 <div class="row" *ngIf="dataReady">
     <div  class="comment" *ngFor = "let comment of content.content">
-        <app-comment *ngIf="!comment.editing" [comment]="comment"
+        <app-comment 
+        (done)="openSnackBar($event)" *ngIf="!comment.editing" [comment]="comment"
         (commentDeleted)="onCommentDeleted()" (clickedEdit)="onClickedEdit($event)"></app-comment>  
         
         <app-comment-edit *ngIf="comment.editing" (commentDeleted)="onCommentDeleted()"
+        (done)="openSnackBar($event)"
         (dogadjaj)="radiNesto()"
         (commentEdited)="onCommentEdited($event)"
         (commentNew)="newComment($event)"
@@ -17,8 +20,10 @@
 
         <hr>
     </div>
-    
-    <mat-paginator *ngIf = "paginatorDetails.length != 0" style="
+    <div *ngIf="!content.content.length">
+        <p>No comments to display.</p>
+    </div>
+    <mat-paginator style="
     display: flex;
     justify-content: center" 
     [length] = "paginatorDetails.length"

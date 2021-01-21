@@ -1,4 +1,38 @@
-<p>offer works!</p>
+<app-navigation></app-navigation>
+<div class='offerInfo'>
+   <!--<h1>{{ offer.title }}</h1>-->
+   <!--<p>{{ offer.description }}</p>-->
+   <div style="float: right;">
+      <button   *ngIf="broj===1" mat-raised-button color="primary"   matTooltip="Add new post"  (click)="openDialog()" >Add post</button> 
 
+         &nbsp;
+       <button   *ngIf="broj===1" mat-raised-button color="primary" id="save-event-changes"  matTooltip="Saves changes on offer" [disabled]="!saveChangesEnabled()" (click)="saveChanges()" >Edit offer</button> 
+
+         &nbsp;
+         <button  *ngIf="broj===1" mat-raised-button color="primary" matTooltip="Delete offer"  (click)="deleteOffer()">Delete offer</button>
+  </div>
+  <div class="info">
+   <mat-form-field>
+      <h1>
+         <input matInput [(ngModel)]="offer.title" id="edit-offer-title-input" [readonly]="!admin" placeholder="">
+      </h1>
+   </mat-form-field>
+  </div>
+
+  <div class="info">
+   <mat-form-field>
+      <textarea class="opis" matInput [(ngModel)]="offer.description" id="edit-offer-description-input" [readonly]="!admin" placeholder=""></textarea>
+   </mat-form-field>
+  </div>
+
+  <!-- <div class="buttons">
+ </div> -->
+  
+ 
+
+</div>
+<hr>
+<app-posts (pageChanged)="onPageChange($event)" [page]="offersPage" [paginatorDetails]="info"></app-posts>
 <app-rating></app-rating>
+
 <app-comments></app-comments>

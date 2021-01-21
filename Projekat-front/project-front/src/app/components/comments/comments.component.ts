@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Params } from '@angular/router';
 import { PageGen } from 'src/app/models/Offer';
@@ -16,7 +17,7 @@ export class CommentsComponent implements OnInit {
 
   //username="kor1@nesto.com"
 
-  offerId = 1;   // dobijen iz urla, ili da primi kao input()
+  offerId = 2;   // dobijen iz urla, ili da primi kao input()
 
   content: PageGen = null;   // da stavim tamo da je content any?
   
@@ -29,14 +30,22 @@ export class CommentsComponent implements OnInit {
   dict = {}
 
   constructor(private service: CommentService, private sanitizer: DomSanitizer,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute, private _snackBar: MatSnackBar) { }
+
+
+    openSnackBar(message) {
+      this._snackBar.open(message, "Close", {
+        duration: 2000,
+        panelClass: ['blue-snackbar']
+      });
+    }
 
   ngOnInit(): void {
       // aj nek je dobijem iz urla
       // mozda da se posalje iz parent komponente?
       this.route.params.subscribe((params: Params) => {
         this.offerId = +params['id'];
-        this.offerId = 1; // ovo promijeniti kasnije kad se budu stvarno dobavljali komentari
+        this.offerId = 5; // ovo promijeniti kasnije kad se budu stvarno dobavljali komentari
        });
       this.service.getCommentsFromOffer(this.offerId, this.paginatorDetails.pageSize, 0).subscribe(data=> {
           this.setupComments(data)

@@ -13,11 +13,11 @@
      <app-offer-modal></app-offer-modal>
 
 </div> -->
-<!--<app-navigation></app-navigation>
+<app-navigation></app-navigation>
 
    
     
-    <div class="wrapper">
+   <!-- <div class="wrapper">
         
         <app-filter (filterClick)="filterClicked($event)"></app-filter>
         <app-offers (pageChanged)="onPageChange($event)" [page] = "offersPage" [paginatorDetails]="info"></app-offers>
@@ -29,7 +29,7 @@
 
     <div>
 
-        <app-filter (filterClick)="filterClicked($event)"></app-filter>
+        <app-filter (filterClick)="filterClicked($event)" (filterCleared)="clearFilter()"></app-filter>
         <!--<app-offer-info [page]="offersPage"></app-offer-info>-->
         <app-offers (pageChanged)="onPageChange($event)" [page]="offersPage" [paginatorDetails]="info"></app-offers>
 

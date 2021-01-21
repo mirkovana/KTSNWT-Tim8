@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,8 +53,7 @@ public class PostController {
 
 	/* ISPISIVANJE SVIH POSTOVA ZA PONUDU */
 	@GetMapping(value = "/{idOffer}")
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-	public ResponseEntity<List<PostDTO>> getAllPosts(@PathVariable Long idOffer, Pageable pageable) {
+	public ResponseEntity<Page<PostDTO>> getAllPosts(@PathVariable Long idOffer, Pageable pageable) {
 		Offer offer = offerService.get(idOffer);
 		Page<Post> posts = service.findAllByOffer1(offer, pageable);
 		List<PostDTO> postsDTO = new ArrayList<PostDTO>();
@@ -64,10 +64,10 @@ public class PostController {
 		
 		Page<PostDTO> postsPageDTO = new PageImpl<>(postsDTO, posts.getPageable(), posts.getTotalElements());
 		List<PostDTO> lista = new ArrayList<PostDTO>();
-		for(PostDTO p : postsPageDTO) {
-			lista.add(p);
-		}
-        return new ResponseEntity<>(lista, HttpStatus.OK);
+//		for(PostDTO p : postsPageDTO) {
+//			lista.add(p);
+//		}
+        return new ResponseEntity<>(postsPageDTO, HttpStatus.OK);
     }
 //	public Page<Post> getAllByOffer(@PathVariable Long idOffer) {
 //		Offer offer = offerService.get(idOffer);
@@ -112,6 +112,7 @@ public class PostController {
 	}
 
 	/* BRISANJE POSTA */
+	@CrossOrigin
 	@DeleteMapping(value = "/{idPost}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> deletePost(@PathVariable Long idPost) {
@@ -131,6 +132,7 @@ public class PostController {
 	}
 	
 	/*IZMENA POSTA*/
+	@CrossOrigin
 	@PutMapping(value = "/{idPost}", consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<PostDTO> updatePost(@PathVariable Long idPost,@Valid @RequestBody PostDTO postUpdated)

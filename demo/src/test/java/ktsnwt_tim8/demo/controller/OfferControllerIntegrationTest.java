@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -33,9 +34,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import ktsnwt_tim8.demo.constants.OfferImageConstants;
+import ktsnwt_tim8.demo.dto.CommentDTO;
 import ktsnwt_tim8.demo.dto.OfferDTO;
 import ktsnwt_tim8.demo.dto.UserLoginDTO;
 import ktsnwt_tim8.demo.dto.UserTokenStateDTO;
+import ktsnwt_tim8.demo.helper.RestResponsePage;
 import ktsnwt_tim8.demo.model.Offer;
 import ktsnwt_tim8.demo.service.OfferService;
 
@@ -326,4 +329,40 @@ public class OfferControllerIntegrationTest {
 		// provera odgovora servera
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
+	
+
+	@Test
+	public void filter1() {
+		
+		ParameterizedTypeReference<RestResponsePage<OfferDTO>> responseType = new ParameterizedTypeReference<RestResponsePage<OfferDTO>>() {};
+		String name = "kalemeg";
+		ResponseEntity<RestResponsePage<OfferDTO>> result = restTemplate.exchange("http://localhost:" + port + "/api/offers/filter?name=" + name + "&page=0&size=10", HttpMethod.GET, null, responseType);
+		assertEquals(result.getStatusCode(), HttpStatus.OK);
+		assertEquals(1, result.getBody().getContent().size());
+		
+	}
+	
+	@Test
+	public void filter2() {
+		
+		ParameterizedTypeReference<RestResponsePage<OfferDTO>> responseType = new ParameterizedTypeReference<RestResponsePage<OfferDTO>>() {};
+		String subcats="5,6";
+		ResponseEntity<RestResponsePage<OfferDTO>> result = restTemplate.exchange("http://localhost:" + port + "/api/offers/filter?name=&subcategories=" + subcats + "&page=0&size=10", HttpMethod.GET, null, responseType);
+		assertEquals(result.getStatusCode(), HttpStatus.OK);
+		assertEquals(2, result.getBody().getContent().size());
+		
+	}
+	
+	@Test
+	public void filter3() {
+		
+		ParameterizedTypeReference<RestResponsePage<OfferDTO>> responseType = new ParameterizedTypeReference<RestResponsePage<OfferDTO>>() {};
+		String place = "beog";
+		String subcats="3,5,6";
+		ResponseEntity<RestResponsePage<OfferDTO>> result = restTemplate.exchange("http://localhost:" + port + "/api/offers/filter?name=&place=" + place + "&subcategories" + subcats + "&page=0&size=10", HttpMethod.GET, null, responseType);
+		assertEquals(result.getStatusCode(), HttpStatus.OK);
+		assertEquals(2, result.getBody().getContent().size());
+		
+	}
+	
 }

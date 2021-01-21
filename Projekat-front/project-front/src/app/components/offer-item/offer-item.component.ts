@@ -14,4 +14,9 @@ export class OfferItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  saveOfferId(id:number){
+    console.log("ID OFERA JE:" + id );
+    localStorage.setItem('offerId',JSON.stringify(id));
+  }
+
 }

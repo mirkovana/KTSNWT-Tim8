@@ -1,0 +1,45 @@
+h1{
+    text-align: center;
+    font-size: 50px;
+    padding : 25px;
+}
+
+p{
+    font-size: 20px;
+}
+
+textarea{
+    border:transparent;
+    resize: none;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .actions{
+    //float: right;
+    margin-left: auto; 
+    margin-right: 0;
+    text-align: right;
+  }
+
+.buttons {
+    margin-top: 5px;
+    text-align: right;
+}
+
+.info {
+  width: 100%;
+  margin-top: 5px;
+  text-align: center;
+}
+
+mat-form-field {
+  width: 100%;
+  text-align: center;
+
+}
+
+.opis {
+  height: 200px;
+}
+

@@ -16,7 +16,9 @@ export class RatingService{
     constructor(private http: HttpClient){}
 
     getUsersRating(offerId: number){
-        return this.http.get(this.url + "/rated/" + offerId, {headers: this.headers});
+        let headerss = new HttpHeaders({"Authorization": "Bearer " + localStorage.getItem('token')})
+
+        return this.http.get(this.url + "/rated/" + offerId, {headers: headerss});
     }
 
     updateRating(ratingId: number, rating: number){

@@ -51,6 +51,17 @@ export class MainOffersViewComponent implements OnInit {
     })
   }
 
+  clearFilter(){
+    this.currentlyFiltered = null;
+    this.info.pageIndex = 0;
+    this.offerService.getOffersPage(this.info).subscribe(data => {
+      this.offersPage = data;
+      this.info.length = this.offersPage.totalElements;
+      console.log(this.offersPage);
+      this.dataReady = true;
+    });
+  }
+
   onPageChange(event){
     this.info = event;
     console.log("currentyl filtered")

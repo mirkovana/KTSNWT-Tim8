@@ -101,6 +101,8 @@ public class CommentControllerIntegrationTest {
 
 	}
 	
+
+	
 	
 	//------------------------------ C R E A T E --------------------------------//
 
@@ -129,6 +131,29 @@ public class CommentControllerIntegrationTest {
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
 	}
 
+	@Test
+	@Transactional
+	public void createCommentTextNull() throws Exception {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", "1"));
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		FileSystemResource fsr = new FileSystemResource("src/main/resources/images/beforeHouseWasDisco.jpg");
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+		body.add("image", fsr); 
+		body.add("text", null); /////
+		body.add("offerId", 1L);		
+
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/comments", HttpMethod.POST, request, CommentDTO.class);
+
+		
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+	}
 
 	@Test
 	@Transactional
@@ -318,6 +343,29 @@ public class CommentControllerIntegrationTest {
 
 		body.add("image", fsr);
 		body.add("text", ""); 		//!
+		body.add("commentId", 1L);
+
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<CommentDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/comments", HttpMethod.PUT, request, CommentDTO.class);
+
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+
+	}
+	
+	@Test
+	@Transactional
+	public void updateCommentTextNull() throws JSONException{
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor2@nesto.com", "1"));
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		FileSystemResource fsr = new FileSystemResource("src/main/resources/images/beforeHouseWasDisco.jpg");
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+		body.add("image", fsr);
+		body.add("text", null); 		//!
 		body.add("commentId", 1L);
 
 		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
