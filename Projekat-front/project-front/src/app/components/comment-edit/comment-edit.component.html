@@ -38,6 +38,9 @@
               <button *ngIf="uploadForm.value.file" mat-icon-button color="primary" matTooltip="Remove image" type="button" (click)="removeImage()">
                 <mat-icon>remove</mat-icon>
               </button>
+              <button *ngIf="comment.editing" mat-icon-button color="primary" matTooltip="Cancel edit" type="button" (click)="cancelEdit()">
+                <mat-icon>close</mat-icon>
+              </button>
           <button *ngIf="username" mat-icon-button color="primary" matTooltip="Save" type="submit" [disabled]="!uploadForm.valid">
             <mat-icon>check</mat-icon>
           </button>

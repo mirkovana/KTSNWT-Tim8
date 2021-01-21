@@ -91,6 +91,11 @@ export class CommentEditComponent implements OnInit {
     })
   }
 
+
+  cancelEdit(){
+    this.commentEdited.emit(this.comment)
+  }
+
   deleteComment(){
     this.commentService.deleteComment(this.comment.id).subscribe(() => {
       this.commentDeleted.emit();
