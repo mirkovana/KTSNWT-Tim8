@@ -27,6 +27,7 @@ export class SubscriptionTableComponent implements AfterViewInit, OnInit {
   toastColor: string; 
   uslov:boolean = false; //za toast
   subSuccess: string = "///"; //tekst poruke toast-a
+  brojac : number = 0;
 
   ngOnInit() {
 
@@ -69,6 +70,7 @@ export class SubscriptionTableComponent implements AfterViewInit, OnInit {
       this.data = data.content;
       for (let index = 0; index < data.content.length; index++) {
         this.display.push({ position: index + 1, description: this.data[index].description, id: this.data[index].id, title: this.data[index].title });
+        this.brojac++;
       }
       this.dataSource = new MatTableDataSource<DisplayOffer>(this.display);
       console.log("OVO : " + this.paginator.pageIndex);

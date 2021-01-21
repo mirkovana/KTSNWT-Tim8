@@ -19,8 +19,8 @@
             <div class="starsRating"> <img src="assets/img/star1.png"><b>{{informacije.avgRating| number:'1.1-1'}}/10, voted: {{informacije.nmbOfRatings}}
                     people</b></div>
 
-            <p-button label="Subscribe" class="subBtn" (click)="subscribe(informacije)"></p-button>
-            <app-toast [succ]="subSuccess" [color]="toastColor" [cond]="uslov"></app-toast>
+            <p-button id="subBtn" label="Subscribe" class="subBtn" (click)="subscribe(informacije)"></p-button>
+            <app-toast id="toast" [succ]="subSuccess" [color]="toastColor" [cond]="uslov"></app-toast>
             <!--  -->
         </div>
     </div>
@@ -36,7 +36,7 @@
     </div> -->
 
     <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="displayModal=false" label="Ok" styleClass="p-button-text"></p-button>
+        <p-button id="okBtn" icon="pi pi-check" (click)="displayModal=false" label="Ok" styleClass="p-button-text"></p-button>
     </ng-template>
 
 </p-dialog>

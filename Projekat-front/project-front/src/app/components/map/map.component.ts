@@ -92,14 +92,16 @@ export class MapComponent implements OnChanges, AfterContentInit, OnInit {
   pinMarkers(map: L.Map, data: Page): void { //dodavanje markera
     this.deleteMarkers(map);
     this.alloffers = data["content"];
-
+    let id : number = 0;
     for (const o of this.alloffers) {
+      
       const lat = o.lat;
       const lon = o.lon;
       // let off = new L.customID(o.id, o.title, o.description, o.avgRating, o.nmbOfRatings, o.lat, o.lon, o.place); //o.id, o.title, o.description, o.avgRating, o.nmbOfRatings, o.lat, o.lon, o.place
-      const marker = L.marker([lon, lat], { customID: o, title: o.title }).addTo(map).on('click', this.onClick);
+      const marker = L.marker([lon, lat], { customID: o, title: o.title} ).addTo(map).on('click', this.onClick);
       // const popup = L.popup().setLatLng([lon, lat]).setContent(o.title).addTo(map);
       this.markers.push(marker);
+      id = id + 1;
     }
   }
 
