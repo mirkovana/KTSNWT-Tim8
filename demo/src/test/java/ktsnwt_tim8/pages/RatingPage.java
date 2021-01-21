@@ -11,6 +11,13 @@ public class RatingPage {
 
 	private WebDriver driver;
 
+	@FindBy(linkText = "Log in")
+    private WebElement loginLink;
+	
+	@FindBy(linkText = "sign up")
+    private WebElement signupLink;
+	
+	
 	@FindBy(css = "ngb-rating")
 	private WebElement rating;
 
@@ -74,9 +81,9 @@ public class RatingPage {
 		}
 	}
 	
-	public WebElement getSaveRatingButton(){
+	public WebElement getSaveUpdateButton(){
 		try {
-			return driver.findElement(By.name("saveRatingButton"));
+			return driver.findElement(By.name("saveUpdateButton"));
 
 		} catch(Exception e) {
 			return null;
@@ -97,5 +104,18 @@ public class RatingPage {
 			return false;
 		}
 	}
+
+	public WebElement getAStar(int rating) {
+		return driver.findElement(By.cssSelector(".ng-star-inserted:nth-child(" + rating*2 + ")"));	
+	}
+
+	public WebElement getLoginLink() {
+		return loginLink;
+	}
+
+	public WebElement getSignupLink() {
+		return signupLink;
+	}
+	
 
 }

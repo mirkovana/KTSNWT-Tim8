@@ -17,8 +17,24 @@ public class MainOffersPage {
 	@FindBy(linkText = "Exit festival")
     private WebElement anchor1;
 	
+	@FindBy(xpath = "//a[contains(@class, 'offer-item-link')]")
+	public WebElement linkx;
+	
+	 @FindBy(css = ".offer-item-link")
+	List<WebElement> links;
+	    
+ 	
     public WebElement getAnchor1() {
         return anchor1;
+    }
+    
+    public WebElement getLink1j() {
+    	//return links.get(0);
+    	return driver.findElements(By.cssSelector(".offer-item-link")).get(0);
+    }
+    
+    public WebElement getAnchorFirst() {
+        return driver.findElement(By.cssSelector("ng-star-inserted:nth-child(2) > .page > .item .btn"));
     }
     
     public void ensureIsDisplayedA1() {

@@ -44,8 +44,12 @@ public class RatingE2E {
 	private void selectOffer() throws InterruptedException {
 		driver.get("http://localhost:4200/home");
 		mainOffersPage = PageFactory.initElements(driver, MainOffersPage.class);
-		justWait(1000);
-		mainOffersPage.getAnchor1().click();
+		justWait(3000);
+		//mainOffersPage.getAnchor1().click();
+		//mainOffersPage.getAnchorFirst().click();
+		mainOffersPage.linkx.click();
+		//mainOffersPage.getLink1j().click();
+		//mainOffersPage.getLink1().click();
 		justWait(2000);
 		ratingPage = PageFactory.initElements(driver, RatingPage.class);
 		justWait(2000);
@@ -71,6 +75,117 @@ public class RatingE2E {
 		assertTrue(ratingPage.getDeleteRatingButton() != null);
 		// checking if rate button is not displayed
 		assertTrue(ratingPage.getRateButton() == null);
+	}
+	
+	
+	private void rate() throws InterruptedException {
+		if (ratingPage.getRateButton() != null ) {
+			ratingPage.getAStar().click(); //css=.ng-star-inserted:nth-child(8)
+			ratingPage.getRateButton().click();
+			justWait(500);
+		}
+		
+		
+	}
+	
+	@Test
+	public void updateOffer() throws InterruptedException {
+		logIn();
+		selectOffer();
+		rate();
+		justWait(2000);
+		// checking if rate button is not displayed
+		assertTrue(ratingPage.getRateButton() == null); 
+		
+		// checking if change rating button is displayed
+		assertTrue(ratingPage.getChangeRatingButton().isDisplayed());
+		
+		// click on change rating
+		ratingPage.getChangeRatingButton().click();
+		
+		// change rating
+		ratingPage.getAStar(2).click(); //css=.ng-star-inserted:nth-child(8)
+		// save rating
+		ratingPage.getSaveUpdateButton().click();
+		justWait(500);
+		assertTrue(ratingPage.snackBarSuccess(("Rating updated.")));
+		justWait(2000);
+		// checking if current value is the one we chose
+		assertEquals(2, ratingPage.getCurrentRatingValue());
+		// checking if change rating button is displayed
+		assertTrue(ratingPage.getChangeRatingButton() != null);
+		// checking if delete rating button is displayed
+		assertTrue(ratingPage.getDeleteRatingButton() != null);
+		// checking if rate button is not displayed
+		assertTrue(ratingPage.getRateButton() == null);
+	}
+	
+	@Test
+	public void deleteRating() throws InterruptedException {
+		logIn();
+		selectOffer();
+		rate();
+		justWait(2000);
+		// checking if rate button is not displayed
+		assertTrue(ratingPage.getRateButton() == null); 
+		
+		// checking if change rating button is displayed
+		assertTrue(ratingPage.getDeleteRatingButton().isDisplayed());
+		
+		ratingPage.getDeleteRatingButton().click();
+		justWait(500);
+		assertTrue(ratingPage.snackBarSuccess(("Rating deleted.")));
+		justWait(2000);
+		assertEquals(0, ratingPage.getCurrentRatingValue());
+		// checking if change rating button is not displayed
+		assertTrue(ratingPage.getChangeRatingButton() == null);
+		// checking if delete rating button is not displayed
+		assertTrue(ratingPage.getDeleteRatingButton() == null);
+		// checking if rate button is displayed
+		assertTrue(ratingPage.getRateButton() != null);
+		assertTrue(!ratingPage.getRateButton().isEnabled());
+		
+	}
+	
+	@Test
+	public void rateNotLoggedIn1() throws InterruptedException {
+		selectOffer();
+		// ensure none of the buttons are displayed
+		assertTrue(ratingPage.getChangeRatingButton() == null);
+		assertTrue(ratingPage.getDeleteRatingButton() == null);
+		assertTrue(ratingPage.getRateButton() == null);
+		assertTrue(ratingPage.getSaveUpdateButton() == null);
+		
+		assertTrue(ratingPage.getLoginLink().isDisplayed());
+		assertTrue(ratingPage.getSignupLink().isDisplayed());
+		
+		ratingPage.getLoginLink().click();
+		justWait(300);
+		assertEquals("http://localhost:4200/login", driver.getCurrentUrl());
+		
+	}
+	@Test
+	public void rateNotLoggedIn2() throws InterruptedException {
+		selectOffer();
+		// ensure none of the buttons are displayed
+		assertTrue(ratingPage.getChangeRatingButton() == null);
+		assertTrue(ratingPage.getDeleteRatingButton() == null);
+		assertTrue(ratingPage.getRateButton() == null);
+		assertTrue(ratingPage.getSaveUpdateButton() == null);
+		
+		assertTrue(ratingPage.getLoginLink().isDisplayed());
+		assertTrue(ratingPage.getSignupLink().isDisplayed());
+		
+		ratingPage.getSignupLink().click();
+		justWait(300);
+		 
+		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
+		
+	}
+	
+	//Test
+	public void doS() throws InterruptedException {
+		selectOffer();
 	}
 	
 	private void justWait(int milliseconds) throws InterruptedException {
