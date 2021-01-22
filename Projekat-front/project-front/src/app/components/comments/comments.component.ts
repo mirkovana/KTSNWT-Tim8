@@ -45,8 +45,6 @@ export class CommentsComponent implements OnInit {
       // mozda da se posalje iz parent komponente?
       this.route.params.subscribe((params: Params) => {
         this.offerId = +params['id'];
-        this.offerId = 5; // ovo promijeniti kasnije kad se budu stvarno dobavljali komentari
-        this.offerId = +localStorage.getItem("offerId")
         this.username=localStorage.getItem("username");
        });
       this.service.getCommentsFromOffer(this.offerId, this.paginatorDetails.pageSize, 0).subscribe(data=> {

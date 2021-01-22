@@ -13,9 +13,9 @@ export class PostService {
   constructor(private http: HttpClient) { }
 
 
-  getPostsPage(pageable: PaginatorPageable){
+  getPostsPage(id, pageable: PaginatorPageable){
     
-    return this.http.get<Page>("http://localhost:8080/api/posts/" + localStorage.getItem("offerId") + "?size=" + pageable.pageSize
+    return this.http.get<Page>("http://localhost:8080/api/posts/" + id + "?size=" + pageable.pageSize
      + "&page=" + pageable.pageIndex );
 }
 deletePost(postId: number){

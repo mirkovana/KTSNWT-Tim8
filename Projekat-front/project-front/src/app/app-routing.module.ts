@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'validateEmail', component: ValidateEmailComponent },
   { path: 'edit-offer', component: EditOfferComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'offer', component: OfferComponent }, // ovde treba da ide id jer ce se na osnovu njega dobaviti offer
+  { path: 'offers/:id', component: OfferComponent }, // ovde treba da ide id jer ce se na osnovu njega dobaviti offer
   { path: 'addOffer', component: AddOfferComponent }
 ];//component: MapComponent
 
