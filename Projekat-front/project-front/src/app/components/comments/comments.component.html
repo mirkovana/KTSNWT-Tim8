@@ -1,5 +1,5 @@
-<h2>Comments</h2>
-<app-comment-edit (newComment)="onNewComment()" editing=false 
+<h2 class="center" >Comments</h2>
+<app-comment-edit *ngIf="!admin" (newComment)="onNewComment()" editing=false 
 (done)="openSnackBar($event)"></app-comment-edit>
 
 <hr>

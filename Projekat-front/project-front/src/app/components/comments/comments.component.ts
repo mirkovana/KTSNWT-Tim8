@@ -26,6 +26,8 @@ export class CommentsComponent implements OnInit {
   dataReady = false;
   //@ViewChild(MatPaginator) paginator: MatPaginator;
 
+  admin = false;
+
   // paginator ne radi
   dict = {}
 
@@ -46,6 +48,7 @@ export class CommentsComponent implements OnInit {
       this.route.params.subscribe((params: Params) => {
         this.offerId = +params['id'];
         this.username=localStorage.getItem("username");
+        this.admin = this.username === "admin@nesto.com";
        });
       this.service.getCommentsFromOffer(this.offerId, this.paginatorDetails.pageSize, 0).subscribe(data=> {
           this.setupComments(data)

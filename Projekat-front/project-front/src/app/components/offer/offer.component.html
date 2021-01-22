@@ -40,6 +40,6 @@
 <hr>
 <app-posts (pageChanged)="onPageChange($event)" [page]="offersPage" [paginatorDetails]="info"></app-posts>
 <p>Rating: {{offer.avgRating| number:'1.1-1'}} <img class="star" src="assets/img/star.png"> ({{offer.nmbOfRatings}} votes)</p>
-<app-rating></app-rating>
+<app-rating *ngIf="!admin" [offerId] = "offer.id" ></app-rating>
 
 <app-comments></app-comments>

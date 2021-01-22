@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RatingService } from 'src/app/services/rating.service';
 
@@ -11,12 +11,20 @@ export class RatingComponent implements OnInit {
 
   loggedIn = localStorage.getItem('username');
   //offerId = JSON.parse(localStorage.getItem('offerId')); //ovako bi trebalo
-  offerId = 1; // ovo ce se poslati iz offera
+  //offerId = 1; // ovo ce se poslati iz offera
+  
+  _offerId = 0;
+
+  @Input() set offerId(value){
+    this._offerId = value;
+    this.setUpRating();
+  }
   starRating = 0;
   oldRating = 0;
   rated = false;
   updating = false;
   ratingId = 0;
+  admin = false;
   
   constructor(private ratingService: RatingService, private _snackBar: MatSnackBar) { }
 
@@ -27,10 +35,11 @@ export class RatingComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.offerId = +localStorage.getItem('offerId');
+  setUpRating(){
+    this.admin = this.loggedIn === "admin@nesto.com";
+    //this.offerId = +localStorage.getItem('offerId');
     if (this.loggedIn){
-      this.ratingService.getUsersRating(this.offerId).subscribe(data =>{
+      this.ratingService.getUsersRating(this._offerId).subscribe(data =>{
         if (data != null){
           this.rated = true;
           this.oldRating = data["rating"];
@@ -40,6 +49,26 @@ export class RatingComponent implements OnInit {
         }
       })
     }
+  }
+
+  ngOnInit(): void {
+    // this.admin = this.loggedIn === "admin@nesto.com";
+    // this.offerId = +localStorage.getItem('offerId');
+    // if (this.loggedIn){
+    //   this.ratingService.getUsersRating(this.offerId).subscribe(data =>{
+    //     if (data != null){
+    //       this.rated = true;
+    //       this.oldRating = data["rating"];
+    //       this.starRating = this.oldRating;
+    //       this.updating = false;
+    //       this.ratingId = data['id'];
+    //     }
+    //   })
+    // }
+  }
+
+  ngOnChange(){
+
   }
 
   saveUpdate(){
@@ -59,7 +88,7 @@ export class RatingComponent implements OnInit {
   }
 
   rateOffer(){
-    this.ratingService.createRating(this.offerId, this.starRating).subscribe(data=>
+    this.ratingService.createRating(this._offerId, this.starRating).subscribe(data=>
       {
         this.rated = true;
         this.ratingId = data['id']

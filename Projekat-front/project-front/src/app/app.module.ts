@@ -5,10 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MapComponent } from './components/map/map.component';
-import { OfferInfoComponent } from './components/offer-info/offer-info.component';
 import { from } from 'rxjs';
 import { MainOffersViewComponent } from './components/main-offers-view/main-offers-view.component';
-import { OfferTableItemComponent } from './components/offer-table-item/offer-table-item.component';
 import { OfferModalComponent } from './components/offer-modal/offer-modal.component';
 import { NgbModule, NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
@@ -68,9 +66,7 @@ import { DeletePostDialogComponent } from './components/delete-post-dialog/delet
 @NgModule({
   declarations: [
     AppComponent,
-    OfferInfoComponent,
     MainOffersViewComponent,
-    OfferTableItemComponent,
     MapComponent,
     OfferModalComponent,
     MainSubscriptionsViewComponent,
