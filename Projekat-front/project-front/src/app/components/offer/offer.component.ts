@@ -22,7 +22,10 @@ export class OfferComponent implements OnInit {
   offer = {
     id: 0,
     title: '',
-    description: ''
+    description: '',
+    avgRating: 0,
+    nmbOfRatings: 0,
+    place: ''
   }
 
   admin:boolean=false;
@@ -74,7 +77,7 @@ export class OfferComponent implements OnInit {
 
   // ovo izmijeniti, da salje offer.id
   deleteOffer(){
-    this.offerService.deleteOffer(JSON.parse(localStorage.getItem('offerId')));
+    this.offerService.deleteOffer(this.offer.id);
     window.location.replace("http://localhost:4200/home");
   }
 
@@ -90,7 +93,9 @@ export class OfferComponent implements OnInit {
   
     openDialog(): void {
       const dialogRef = this.dialog.open(AddPostComponent,{
-        width: '640px',disableClose: true 
+        width: '640px',disableClose: true, data: {
+          dataKey: this.offer.id
+        }
       });
   }
 }

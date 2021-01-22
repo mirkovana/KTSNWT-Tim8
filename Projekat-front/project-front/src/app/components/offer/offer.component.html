@@ -16,7 +16,13 @@
       <h1>
          <input matInput [(ngModel)]="offer.title" id="edit-offer-title-input" [readonly]="!admin" placeholder="">
       </h1>
+      <h2>
+         <img class="pin" src="assets/img/pin.png">
+         {{offer.place}}
+         <!-- <input matInput {{offer.place}} id="edit-offer-title-input" readonly="true" placeholder=""> -->
+      </h2>
    </mat-form-field>
+   
   </div>
 
   <div class="info">
@@ -33,6 +39,7 @@
 </div>
 <hr>
 <app-posts (pageChanged)="onPageChange($event)" [page]="offersPage" [paginatorDetails]="info"></app-posts>
+<p>Rating: {{offer.avgRating| number:'1.1-1'}} <img class="star" src="assets/img/star.png"> ({{offer.nmbOfRatings}} votes)</p>
 <app-rating></app-rating>
 
 <app-comments></app-comments>
