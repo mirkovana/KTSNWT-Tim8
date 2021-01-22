@@ -49,7 +49,7 @@ export class RegistrationComponent implements OnInit {
     if (this.registerForm.invalid) {
       return;
   }
-  this.loading = true;
+  location.replace("http://localhost:4200/validateEmail");
 
   console.log(this.registerForm.value.name);
   this.userService.addUser(this.registerForm.value);
