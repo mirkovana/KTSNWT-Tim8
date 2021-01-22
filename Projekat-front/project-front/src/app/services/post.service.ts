@@ -40,12 +40,12 @@ updatePost(post: Post) {
 
  }
 
- addPost(post:Post)  {
+ addPost(id:number, post:Post)  {
   const headers = { 'content-type': 'application/json'}  
   const body=JSON.stringify(post);
     console.log(body)
   
-  return this.http.post<any>('http://localhost:8080/api/posts/'+localStorage.getItem("offerId"), body, {headers: this.headers}).subscribe(
+  return this.http.post<any>('http://localhost:8080/api/posts/'+id, body, {headers: this.headers}).subscribe(
     (val) => {
         console.log("POST call successful value returned in body", 
                     val);

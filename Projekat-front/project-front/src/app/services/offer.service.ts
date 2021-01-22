@@ -43,7 +43,7 @@ export class OfferService {
 
  updateOffer(offer:any) {
   //const body=JSON.stringify(offer);
-  return this.http.put<any>('http://localhost:8080/api/offers/'+localStorage.getItem('offerId'), offer, {headers: this.headers}).subscribe(
+  return this.http.put<any>('http://localhost:8080/api/offers/'+offer.id, offer, {headers: this.headers}).subscribe(
     (val) => {
         console.log("PUT call successful value returned in body", 
                     val);
