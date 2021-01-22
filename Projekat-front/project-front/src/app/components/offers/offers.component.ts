@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Page } from 'src/app/models/Offer';
+import { Offer, Page } from 'src/app/models/Offer';
 import { PaginatorPageable } from 'src/app/models/PaginatorPageable';
 import { OfferInfoService } from 'src/app/services/offer-info.service';
 
@@ -14,7 +14,7 @@ export class OffersComponent implements OnInit {
 
   //*********************//
   @Output() pageChanged = new EventEmitter<PaginatorPageable>();
-
+  
   constructor(private offersService:OfferInfoService) { }
 
   ngOnInit(): void {

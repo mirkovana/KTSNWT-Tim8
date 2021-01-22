@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from "rxjs/operators"
 import { Offer, Page } from '../models/Offer';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 // import { Rating } from '../models/Rating';
 import { EventEmitter } from 'events';
 import { PageEvent } from '@angular/material/paginator';
@@ -15,10 +15,15 @@ import { PaginatorPageable } from '../models/PaginatorPageable';
 })
 export class OfferInfoService {
  
+  offerChosenEvent = new Subject<Offer>();
 
   constructor(
     private http: HttpClient) {}
 
+
+  offerChosen(offer: Offer){
+    this.offerChosenEvent.next(offer);
+  }
 
   getOffers() {
     return this.http.get<Page>("http://localhost:8080/api/offers");
