@@ -21,11 +21,38 @@ public class CommentsPage {
 	//mat-paginator-range-label
 	@FindBy(css = ".mat-paginator-range-label")
 	WebElement paginatorPages;
+	
+	@FindBy(css = ".mat-paginator-range-label")
+	List<WebElement> paginatorPagesList;
 	// slika
 	
-    WebElement submitButton;
+
+
+	WebElement submitButton;
+    
+    @FindBy(name = "yesButton")
+    WebElement yesButton;
 	
-    @FindBy(css = "app-comment")
+    @FindBy(name = "noButton")
+    WebElement noButton;
+	
+    @FindBy(name = "logBtn")
+    WebElement logBtn;
+	
+    
+    public WebElement getLogBtn() {
+		return logBtn;
+	}
+
+	public WebElement getNoButton() {
+		return noButton;
+	}
+
+	public WebElement getYesButton() {
+		return yesButton;
+	}
+
+	@FindBy(css = "app-comment")
 	List<WebElement> comments;
     
     WebElement firstComment;
@@ -45,13 +72,21 @@ public class CommentsPage {
     	return edits.get(0);
     }
     
+    public WebElement getEditCommentForm() {
+    	return edits.get(1);
+    }
+    
+   
+    
     public void setupFormElements() {
     	this.newCommentTextInput = edits.get(0).findElement(By.cssSelector("textarea"));
     	
     	// slika
-    	
-        this.submitButton = edits.get(0).findElement(By.cssSelector("button[type='submit']"));
-    	
+    	try {
+    		this.submitButton = edits.get(0).findElement(By.cssSelector("button[type='submit']"));
+    	}catch(Exception e) {
+    		
+    	}
     }
     
     public WebElement getFileInput() {
@@ -59,8 +94,15 @@ public class CommentsPage {
     	
     }
     
+    public WebElement getEditCommentTextInput() {
+    	return edits.get(1).findElement(By.cssSelector("textarea"));
+    }
+    
     public int getNumOfElements() {
     	String[] els = this.getPaginatorPages().getText().split(" ");
+    	if (els.length < 4) {
+    		return 0;
+    	}
     	return Integer.parseInt(els[4]);
     	
     }
@@ -90,7 +132,12 @@ public class CommentsPage {
 	}
 
 	public WebElement getSubmitButton() {
-		return submitButton;
+		try {
+			return edits.get(0).findElement(By.cssSelector("button[type='submit']"));
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 
 	public void setSubmitButton(WebElement newCommentPost) {
@@ -102,7 +149,7 @@ public class CommentsPage {
 	}
 
 	public WebElement getPaginatorPages() {
-		return paginatorPages;
+		 return this.paginatorPagesList.get(1);
 	}
 
 	public void setPaginatorPages(WebElement paginatorPages) {
@@ -161,6 +208,17 @@ public class CommentsPage {
 		return getComments().get(0).findElements(By.cssSelector("button")).get(0);
 	}
 	
+	public boolean messageErrorDisplayedEdit() {
+		
+		try {
+			this.getEditCommentForm().findElement(By.cssSelector("span.text-danger"));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
+	}
+	
 	public WebElement getDeleteButton() {
 		//return this.firstComment.findElement(By.cssSelector("button"));
 		return getComments().get(0).findElements(By.cssSelector("button")).get(1);
@@ -168,6 +226,36 @@ public class CommentsPage {
 	}
 
 	public String getFirstImageSrc() {
+		try {
 		return this.getComments().get(0).findElement(By.cssSelector("img")).getAttribute("src");
+		}
+		catch(Exception e) {
+			return null;
+		}
+		}
+    public List<WebElement> getPaginatorPagesList() {
+		return paginatorPagesList;
+	}
+    
+    public boolean snackBarSuccess(String text) {
+		try {
+			driver.findElement(By.cssSelector("simple-snack-bar > span"));
+			return true;
+		}
+		catch (Exception e) {
+			System.out.println("nije ga nasao");
+			return false;
+		}
+	}
+
+	public WebElement getEditSubmitButton() {
+		return edits.get(1).findElement(By.cssSelector("button[type='submit']"));
+	}
+	public WebElement getRemoveImageButton() {
+		return edits.get(1).findElement(By.cssSelector("button[name='removeImage']"));
+	}
+
+	public WebElement getUploadImageButton() {
+		return edits.get(1).findElement(By.cssSelector("input"));
 	}
 }

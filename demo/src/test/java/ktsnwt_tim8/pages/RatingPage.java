@@ -95,12 +95,10 @@ public class RatingPage {
 	public boolean snackBarSuccess(String text) {
 		try {
 		WebElement e = driver.findElement(By.cssSelector("simple-snack-bar > span"));
-		System.out.println(e);
 		return true;
 		//return e.getText().equals(text);
 		}
 		catch (Exception e) {
-			System.out.println("Nije uspeo da ga nadje");
 			return false;
 		}
 	}

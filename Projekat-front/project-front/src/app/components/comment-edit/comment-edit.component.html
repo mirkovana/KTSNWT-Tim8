@@ -32,20 +32,20 @@
 
             <div class="actions">
 
-             <button mat-icon-button color="primary" matTooltip="Upload image" type="button" (click)="fileInput.click()">
+             <button mat-icon-button color="primary" name="uploadImage" matTooltip="Upload image" type="button" (click)="fileInput.click()">
                 <mat-icon>add_photo_alternate</mat-icon>
               </button>
-              <button *ngIf="uploadForm.value.file" mat-icon-button color="primary" matTooltip="Remove image" type="button" (click)="removeImage()">
+              <button *ngIf="uploadForm.value.file" name="removeImage" mat-icon-button color="primary" matTooltip="Remove image" type="button" (click)="removeImage()">
                 <mat-icon>remove</mat-icon>
               </button>
-              <button *ngIf="comment.editing" mat-icon-button color="primary" matTooltip="Cancel edit" type="button" (click)="cancelEdit()">
+              <button *ngIf="comment.editing"name="cancelEdit" mat-icon-button color="primary" matTooltip="Cancel edit" type="button" (click)="cancelEdit()">
                 <mat-icon>close</mat-icon>
               </button>
-          <button *ngIf="username" mat-icon-button color="primary" matTooltip="Save" type="submit" [disabled]="!uploadForm.valid">
+          <button *ngIf="username" name="submit" mat-icon-button color="primary" matTooltip="Save" type="submit" [disabled]="!uploadForm.valid">
             <mat-icon>check</mat-icon>
           </button>
           <a [routerLink]="['/login']">
-          <button *ngIf="!username" mat-button color="primary" type="button">
+          <button *ngIf="!username" name="logBtn" mat-button color="primary" type="button">
             Log in to post
           </button>
           </a>
