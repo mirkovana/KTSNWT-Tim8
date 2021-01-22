@@ -1,6 +1,8 @@
 import { Component,Input, OnInit } from '@angular/core';
 import { Post } from 'src/app/models/Post';
 import { PostService } from 'src/app/services/post.service';
+import { DeletePostDialogComponent } from '../delete-post-dialog/delete-post-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-post-item',
@@ -17,7 +19,7 @@ export class PostItemComponent implements OnInit {
   broj:number;
 
 
-  constructor(private postService:PostService) { }
+  constructor(private postService:PostService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -34,12 +36,19 @@ export class PostItemComponent implements OnInit {
 
   saveChanges(post1: Post) {
     this.postService.updatePost(post1);
-    location.reload();
   }
 
   deletePost(post1: Post){
     this.postService.deletePost(post1.id);
-    
-    location.reload();
+  }
+
+  openDeletePost(post:Post) {
+    const dialogRef = this.dialog.open(DeletePostDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      if (result){
+        this.deletePost(post);
+      }
+    });
   }
 }

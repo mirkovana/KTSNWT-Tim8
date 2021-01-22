@@ -152,15 +152,18 @@ public class AuthenticationController {
 	
 	@PostMapping(value="/validateEmail/{token}", consumes = "application/json")
 	@PreAuthorize("permitAll()")
-	public String confirmRegistration(@PathVariable String token){
+	public ResponseEntity<?> confirmRegistration(@PathVariable String token){
+		try {
        
-		VerificationToken verificationToken = verificationTokenService.findByToken(token);
-		RegisteredUser user = verificationToken.getRegisteredUser();
-		user.setActive(true);
-		user.setAuthorities(authorityService.findByName("ROLE_USER"));
-		userService.save(user);
-		
-		return token;
+			VerificationToken verificationToken = verificationTokenService.findByToken(token);
+			RegisteredUser user = verificationToken.getRegisteredUser();
+			user.setActive(true);
+			user.setAuthorities(authorityService.findByName("ROLE_USER"));
+			userService.save(user);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	// U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token
