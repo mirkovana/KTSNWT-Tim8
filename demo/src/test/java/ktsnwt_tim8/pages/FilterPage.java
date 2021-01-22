@@ -27,15 +27,37 @@ public class FilterPage {
 	@FindBy(name = "search")
 	WebElement search;
 	
+	@FindBy(name = "clearSearch")
+	WebElement clearSearch;
+	
 	@FindBy(tagName = "app-offer-item")
 	List<WebElement> offers;
 	
-
+	@FindBy(css = ".mat-paginator-range-label")
+	WebElement paginatorPages;
 	
 	public List<WebElement> getOffers() {
 		return offers;
 	}
 	
+	public int getNumOfElements() {
+    	String[] els = this.getPaginatorPages().getText().split(" ");
+    	if (els.length < 4) {
+    		return 0;
+    	}
+    	return Integer.parseInt(els[4]);
+    	
+    }
+
+	
+	public WebElement getPaginatorPages() {
+		return paginatorPages;
+	}
+
+	public WebElement getClearSearch() {
+		return clearSearch;
+	}
+
 	public List<String> getOffersTitles(){
 		List<String> list = new ArrayList<String>();
 		for (WebElement el: offers) {

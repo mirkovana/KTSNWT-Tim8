@@ -7,6 +7,7 @@ import { PaginatorPageable } from 'src/app/models/PaginatorPageable';
 import { PostService } from 'src/app/services/post.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AddPostComponent} from 'src/app/components/add-post/add-post.component'
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-offer',
@@ -19,6 +20,7 @@ export class OfferComponent implements OnInit {
 
   info = new PaginatorPageable(5000, 0, 10, 0);
   offer = {
+    id: 0,
     title: '',
     description: ''
   }
@@ -33,7 +35,8 @@ export class OfferComponent implements OnInit {
   editOfferForm: FormGroup;
   submitted = false;
 
-  constructor(public dialog: MatDialog, public formBuilder: FormBuilder, private offerService: OfferService, private snackbar: MatSnackBar, private postService: PostService) { 
+  constructor(public dialog: MatDialog, public formBuilder: FormBuilder,
+    private route: ActivatedRoute, private offerService: OfferService, private snackbar: MatSnackBar, private postService: PostService) { 
   }
  
   ngOnInit(): void {
@@ -43,15 +46,22 @@ export class OfferComponent implements OnInit {
       if(this.loggedIn==="admin@nesto.com"){this.broj=1;this.admin=true;} //kad je ulogovan admin
       else{this.broj=2;} //kad je ulogovan korisnik koji nije admin
     } 
+    this.route.params
+    .subscribe(
+      (params: Params) => {
+        this.offer.id = +params['id'];
+        this.offerService.getOfferById(this.offer.id).subscribe(res => {this.offer=res;});
+      }
+    );
 
-    this.postService.getPostsPage(this.info).subscribe(data => {
+    this.postService.getPostsPage(this.offer.id, this.info).subscribe(data => {
       this.offersPage = data;
       this.info.length = this.offersPage.totalElements;
       //console.log(this.offersPage);
       //this.dataReady = true;
     });
     //POKUSAJ EDITA POCETAK
-    this.offerService.getOfferById().subscribe(res => {this.offer=res;});
+    //this.offerService.getOfferById(this.offer.id).subscribe(res => {this.offer=res;});
   }
 
   saveChangesEnabled() {
@@ -62,6 +72,7 @@ export class OfferComponent implements OnInit {
      this.offerService.updateOffer(this.offer);
   }
 
+  // ovo izmijeniti, da salje offer.id
   deleteOffer(){
     this.offerService.deleteOffer(JSON.parse(localStorage.getItem('offerId')));
     window.location.replace("http://localhost:4200/home");
@@ -72,7 +83,7 @@ export class OfferComponent implements OnInit {
     this.info = event;
     console.log("currentyl filtered")
    
-      this.postService.getPostsPage(this.info).subscribe(data =>{
+      this.postService.getPostsPage(this.offer.id, this.info).subscribe(data =>{
         this.offersPage = data;
       })
     }

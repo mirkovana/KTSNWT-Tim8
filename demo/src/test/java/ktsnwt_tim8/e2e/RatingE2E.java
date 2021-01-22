@@ -45,11 +45,7 @@ public class RatingE2E {
 		driver.get("http://localhost:4200/home");
 		mainOffersPage = PageFactory.initElements(driver, MainOffersPage.class);
 		justWait(3000);
-		//mainOffersPage.getAnchor1().click();
-		//mainOffersPage.getAnchorFirst().click();
 		mainOffersPage.linkx.click();
-		//mainOffersPage.getLink1j().click();
-		//mainOffersPage.getLink1().click();
 		justWait(2000);
 		ratingPage = PageFactory.initElements(driver, RatingPage.class);
 		justWait(2000);
@@ -182,11 +178,7 @@ public class RatingE2E {
 		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
 		
 	}
-	
-	//Test
-	public void doS() throws InterruptedException {
-		selectOffer();
-	}
+
 	
 	private void justWait(int milliseconds) throws InterruptedException {
         synchronized (driver)

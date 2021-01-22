@@ -58,6 +58,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatDialogModule} from '@angular/material/dialog';
 import { AddCategoryComponent } from './components/add-category/add-category.component';
 import { AddSubcategoryComponent } from './components/add-subcategory/add-subcategory.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -89,7 +91,8 @@ import { AddSubcategoryComponent } from './components/add-subcategory/add-subcat
     PostItemComponent,
     AddPostComponent,
     AddCategoryComponent,
-    AddSubcategoryComponent
+    AddSubcategoryComponent,
+    DialogComponent
 
 
    

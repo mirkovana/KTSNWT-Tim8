@@ -14,8 +14,8 @@ export class OfferService {
 
   constructor(private http: HttpClient) { }
 
-  getOfferById():Observable<Offer>{
-    return this.http.get<Offer>("http://localhost:8080/api/offers/"+localStorage.getItem('offerId'));
+  getOfferById(id):Observable<Offer>{
+    return this.http.get<Offer>("http://localhost:8080/api/offers/"+ id);
   }
 
   deleteOffer(offerId: number){ 

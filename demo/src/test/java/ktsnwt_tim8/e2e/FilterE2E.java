@@ -1,6 +1,8 @@
 package ktsnwt_tim8.e2e;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.After;
 import org.junit.Before;
@@ -10,14 +12,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import ktsnwt_tim8.pages.FilterPage;
-import ktsnwt_tim8.pages.LoginPage;
-import ktsnwt_tim8.pages.MainOffersPage;
 
 public class FilterE2E {
 
 	private WebDriver driver;
 
-    private MainOffersPage mainOffersPage;
 	private FilterPage filterPage;
     
 	@Before
@@ -26,7 +25,6 @@ public class FilterE2E {
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.get("http://localhost:4200/home");
-		mainOffersPage = PageFactory.initElements(driver, MainOffersPage.class);
 		filterPage = PageFactory.initElements(driver, FilterPage.class);
 		justWait(3000);
 		
@@ -51,6 +49,28 @@ public class FilterE2E {
 			}
 		};
 		assertTrue(correct);
+	}
+	
+	@Test
+	public void filterGibberish() throws InterruptedException {
+		String searchName = "lkjwfwpe9ffewljk";
+		filterPage.getNameInput().sendKeys(searchName);
+		filterPage.getSearch().click();
+		justWait(2000);
+		assertEquals(filterPage.getNumOfElements(), 0);
+	}
+	
+	@Test
+	public void filterGibberishThenClear() throws InterruptedException {
+		String searchName = "lkjwfwpe9ffewljk";
+		filterPage.getNameInput().sendKeys(searchName);
+		filterPage.getSearch().click();
+		justWait(2000);
+		assertEquals(filterPage.getNumOfElements(), 0);
+		filterPage.getClearSearch().click();
+		filterPage.getSearch().click();
+		justWait(2000);
+		assertNotEquals(filterPage.getNumOfElements(), 0);
 	}
 	
 	private void justWait(int milliseconds) throws InterruptedException {
