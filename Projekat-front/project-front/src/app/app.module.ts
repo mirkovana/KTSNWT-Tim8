@@ -59,6 +59,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { AddCategoryComponent } from './components/add-category/add-category.component';
 import { AddSubcategoryComponent } from './components/add-subcategory/add-subcategory.component';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { OfferImagesComponent } from './components/offer-images/offer-images.component';
+import { ImageItemComponent } from './components/image-item/image-item.component';
 
 
 @NgModule({
@@ -92,7 +94,9 @@ import { DialogComponent } from './components/dialog/dialog.component';
     AddPostComponent,
     AddCategoryComponent,
     AddSubcategoryComponent,
-    DialogComponent
+    DialogComponent,
+    OfferImagesComponent,
+    ImageItemComponent
 
 
    
