@@ -42,7 +42,7 @@ export class AddSubcategoryComponent implements OnInit {
     // this.markAsDirty(this.addCusForm);
     this.categoryService.addNewSubcategory(this.addCusForm.value, this.selectedItem.id);
     this.dialog.closeAll();
-    location.reload();
+    //location.reload();
     
   }
 

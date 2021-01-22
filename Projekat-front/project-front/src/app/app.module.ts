@@ -61,6 +61,8 @@ import { AddSubcategoryComponent } from './components/add-subcategory/add-subcat
 import { DialogComponent } from './components/dialog/dialog.component';
 import { OfferImagesComponent } from './components/offer-images/offer-images.component';
 import { ImageItemComponent } from './components/image-item/image-item.component';
+import { DeleteOfferDialogComponent } from './components/delete-offer-dialog/delete-offer-dialog.component';
+import { DeletePostDialogComponent } from './components/delete-post-dialog/delete-post-dialog.component';
 
 
 @NgModule({
@@ -96,7 +98,9 @@ import { ImageItemComponent } from './components/image-item/image-item.component
     AddSubcategoryComponent,
     DialogComponent,
     OfferImagesComponent,
-    ImageItemComponent
+    ImageItemComponent,
+    DeleteOfferDialogComponent,
+    DeletePostDialogComponent
 
 
    

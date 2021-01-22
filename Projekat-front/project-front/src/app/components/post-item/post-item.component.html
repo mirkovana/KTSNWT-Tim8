@@ -26,7 +26,7 @@
             <button *ngIf="broj===1" mat-raised-button color="primary" id="save-event-changes" matTooltip="Save changes on post" [disabled]="!saveChangesEnabled()" (click)="saveChanges(post)">Edit post</button>
             
             &nbsp;
-            <button *ngIf="broj===1" mat-raised-button color="primary" id="save-event-changes" matTooltip="Delete post" (click)="deletePost(post)" >Delete post</button>
+            <button *ngIf="broj===1" mat-raised-button color="primary" id="save-event-changes" matTooltip="Delete post" (click)="openDeletePost(post)" >Delete post</button>
           </div>
        </div>
       

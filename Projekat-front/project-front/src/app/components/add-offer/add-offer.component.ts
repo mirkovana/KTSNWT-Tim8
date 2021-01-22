@@ -59,7 +59,7 @@ export class AddOfferComponent implements OnInit {
     }
     this.loading = true;
     this.offerService.addOffer(this.addOfferForm.value, this.selectedItem.id);
-    window.location.replace("http://localhost:4200/home");
+    //window.location.replace("http://localhost:4200/home");
     
 }
 saveChangesEnabled() {

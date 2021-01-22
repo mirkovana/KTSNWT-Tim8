@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient , HttpHeaders} from '@angular/common/http';
 import {Page, Post } from '../models/Post';
 import { PaginatorPageable } from '../models/PaginatorPageable';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class PostService {
   bear  = localStorage.getItem("token");
     
   headers: HttpHeaders = new HttpHeaders({"Authorization": "Bearer " + this.bear, 'content-type': 'application/json'})
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) { }
 
 
   getPostsPage(id, pageable: PaginatorPageable){
@@ -20,7 +21,7 @@ export class PostService {
 }
 deletePost(postId: number){
   
-  return this.http.delete("http://localhost:8080/api/posts/" + postId, {headers: this.headers}).subscribe(data=>{console.log(data);});
+  return this.http.delete("http://localhost:8080/api/posts/" + postId, {headers: this.headers}).subscribe(data=>{console.log(data);this.openSnackBarSD();location.reload();});
 }
 
 
@@ -33,9 +34,11 @@ updatePost(post: Post) {
     },
     response => {
         console.log("PUT call in error", response);
+        this.openSnackBarUS();
     },
     () => {
         console.log("The PUT observable is now completed.");
+        this.openSnackBarSE();
     });
 
  }
@@ -52,10 +55,37 @@ updatePost(post: Post) {
     },
     response => {
         console.log("POST call in error", response);
+        this.openSnackBarUS();
     },
     () => {
         console.log("The POST observable is now completed.");
+        this.openSnackBarS();
+        location.reload();
     });
     
+}
+
+openSnackBarS() {
+  this._snackBar.open("Successfully added.", "OK", {
+    duration: 2000,
+  });
+}
+
+openSnackBarSE() {
+  this._snackBar.open("Successfully edited.", "OK", {
+    duration: 2000,
+  });
+}
+
+openSnackBarSD() {
+  this._snackBar.open("Successfully deleted.", "OK", {
+    duration: 2000,
+  });
+}
+
+openSnackBarUS() {
+  this._snackBar.open("Error occurs!", "OK", {
+    duration: 2000,
+  });
 }
 }

@@ -21,7 +21,6 @@ export class PostsComponent implements OnInit {
   constructor(private postService:PostService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    console.log("NAAAAAAAAAAAAAAAAAAAS" + JSON.stringify(this.page));
     this.route.params
     .subscribe(
       (params: Params) => {
