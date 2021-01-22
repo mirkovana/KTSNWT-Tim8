@@ -8,6 +8,8 @@ import { PostService } from 'src/app/services/post.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AddPostComponent} from 'src/app/components/add-post/add-post.component'
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import {Page1} from '../../models/OfferImage';
+import { OfferImageService } from 'src/app/services/offer-image.service';
 
 @Component({
   selector: 'app-offer',
@@ -17,6 +19,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 export class OfferComponent implements OnInit {
 
   offersPage: Page = new Page(0, 0, []);
+  offersPageImage: Page1 = new Page1(0, 0, []);
 
   info = new PaginatorPageable(5000, 0, 10, 0);
   offer = {
@@ -26,6 +29,11 @@ export class OfferComponent implements OnInit {
     avgRating: 0,
     nmbOfRatings: 0,
     place: ''
+  }
+
+  infoImage = new PaginatorPageable(5000, 0, 1, 0);
+  offerImage = {
+    imageBase64: ''
   }
 
   admin:boolean=false;
@@ -39,7 +47,7 @@ export class OfferComponent implements OnInit {
   submitted = false;
 
   constructor(public dialog: MatDialog, public formBuilder: FormBuilder,
-    private route: ActivatedRoute, private offerService: OfferService, private snackbar: MatSnackBar, private postService: PostService) { 
+    private route: ActivatedRoute, private offerService: OfferService, private offerImageService: OfferImageService, private snackbar: MatSnackBar, private postService: PostService) { 
   }
  
   ngOnInit(): void {
@@ -60,6 +68,14 @@ export class OfferComponent implements OnInit {
     this.postService.getPostsPage(this.offer.id, this.info).subscribe(data => {
       this.offersPage = data;
       this.info.length = this.offersPage.totalElements;
+      //console.log(this.offersPage);
+      //this.dataReady = true;
+    });
+
+    this.offerImageService.getOfferImagePage(this.offer.id, this.infoImage).subscribe(data => {
+      this.offersPageImage = data;
+      console.log("BLALLALALAALALA " +JSON.stringify(this.offersPageImage))
+      this.infoImage.length = this.offersPageImage.totalElements;
       //console.log(this.offersPage);
       //this.dataReady = true;
     });
@@ -98,6 +114,15 @@ export class OfferComponent implements OnInit {
         }
       });
   }
+
+  onPageChangeImage(event){
+    this.infoImage = event;
+    console.log("currentyl filtered")
+   
+      this.offerImageService.getOfferImagePage(this.offer.id, this.infoImage).subscribe(data =>{
+        this.offersPageImage = data;
+      })
+    }
 }
 
 
