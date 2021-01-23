@@ -4,13 +4,13 @@
 
     <div class="form-group">
         <label for="token">Enter token here</label>
-        <input type="text" formControlName="token" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.token.errors }" />
+        <input type="text" name="token" formControlName="token" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.token.errors }" />
         <div *ngIf="submitted && f.token.errors" class="invalid-feedback">
-            <div *ngIf="f.token.errors.required">Token is required</div>
+            <div *ngIf="f.token.errors.required" name="tokenReq">Token is required</div>
         </div>
     </div>
     <div class="form-group">
-        <button   class="btn btn-primary">
+        <button   class="btn btn-primary" name="validateToken">
             
             Activate
         </button>
