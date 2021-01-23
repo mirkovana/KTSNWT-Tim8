@@ -47,7 +47,7 @@ export class RatingComponent implements OnInit {
           this.updating = false;
           this.ratingId = data['id'];
         }
-      })
+      }, error => this.openSnackBar("Sorry! We couldn't get your rating on this offer, try again later."))
     }
   }
 
@@ -77,14 +77,15 @@ export class RatingComponent implements OnInit {
       this.updating = false;
       this.openSnackBar("Rating updated.")
      
-    })
+    }, error => this.openSnackBar("Sorry! There was a problem with updating your rating, try again later."))
   }
 
   deleteRating(){
     this.ratingService.deleteRating(this.ratingId).subscribe(()=>{
     this.rated = false;
     this.starRating = 0;})
-    this.openSnackBar("Rating deleted.")
+    this.openSnackBar("Rating deleted."),
+    error => this.openSnackBar("Sorry! There was a problem deleting your rating, try again later.")
   }
 
   rateOffer(){
@@ -93,7 +94,7 @@ export class RatingComponent implements OnInit {
         this.rated = true;
         this.ratingId = data['id']
         this.openSnackBar("Rating created.")
-      })
+      }, error => this.openSnackBar("Sorry! There was a problem rating this offer, try again later."))
   }
 
 }

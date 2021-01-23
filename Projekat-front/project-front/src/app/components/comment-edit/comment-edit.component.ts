@@ -171,7 +171,7 @@ export class CommentEditComponent implements OnInit {
         }
         this.done.emit("Comment edited.");
         this.commentEdited.emit(this.comment)
-      })
+      },  error => this.done.emit("Sorry! We couldn't update your comment, try again later."))
     }
     else {
       //this.commentNew.emit("asdasd");
@@ -181,7 +181,7 @@ export class CommentEditComponent implements OnInit {
           this.imageURL = "";
           this.form.resetForm();
         this.done.emit("Comment created.");
-      })  
+      }, error => this.done.emit("Sorry! There was a problem with creating your comment, try again later."))  
     }
    
   }

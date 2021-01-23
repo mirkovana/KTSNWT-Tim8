@@ -45,7 +45,7 @@ export class CommentComponent implements OnInit {
       this.commentService.deleteComment(this.comment.id).subscribe(() => {
         this.commentDeleted.emit();
         this.done.emit("Comment deleted.")
-      })
+      }, error => this.done.emit("Sorry! There was a problem deleting this comment, try again later."))
 
   
   }

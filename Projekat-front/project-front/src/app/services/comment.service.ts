@@ -15,6 +15,15 @@ export class CommentService{
     
     headers: HttpHeaders = new HttpHeaders({"Authorization": "Bearer " + this.bear})
 
+
+
+    setupHeader(){
+
+        this.bear = localStorage.getItem("token");
+        this.headers = new HttpHeaders({"Authorization": "Bearer " + this.bear})
+        
+    }
+
     getCommentsFromOffer(id: number, size, page){
         return this.http.get<PageGen>("http://localhost:8080/api/comments/" + id + "?size="
         + size + "&page=" + page).pipe(map(response => {
@@ -31,6 +40,7 @@ export class CommentService{
     }
 
     updateComment(commentId: number, text: string, image: Blob){
+        this.setupHeader();
         const data = new FormData();
         data.append("text", text);
         data.append("image", image)
@@ -39,6 +49,7 @@ export class CommentService{
     }
 
     createComment(offerId: number, text: string, image: Blob){
+        this.setupHeader();
         let bear  = localStorage.getItem("token");
         let headers1: HttpHeaders = new HttpHeaders({"Authorization": "Bearer " + bear})
         const data = new FormData();
@@ -50,6 +61,7 @@ export class CommentService{
     }
 
     deleteComment(commentId: number){
+        this.setupHeader();
         return this.http.delete("http://localhost:8080/api/comments/" + commentId, {headers: this.headers})
     }
 
