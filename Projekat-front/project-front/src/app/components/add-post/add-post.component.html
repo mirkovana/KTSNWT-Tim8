@@ -11,8 +11,8 @@
           [rowspan]="1">
             <div class="text-inside">
               <mat-form-field>
-                <input matInput placeholder="Title" value={{title}} formControlName="title" required>
-                <mat-error *ngIf="addCusForm.controls.title.hasError('required')">
+                <input matInput placeholder="Title" value={{title}} name="postTitle" formControlName="title" required>
+                <mat-error *ngIf="addCusForm.controls.title.hasError('required')" name="postTitleReq">
                   Please enter title
                 </mat-error>
                
@@ -24,8 +24,8 @@
         [rowspan]="2">
             <div class="text-inside" id="content2">
               <mat-form-field>
-                <textarea matInput placeholder="Content" value={{content}} formControlName="content"  required></textarea>
-                <mat-error *ngIf="addCusForm.controls.content.hasError('required')">
+                <textarea matInput placeholder="Content" value={{content}} formControlName="content" name="postContent"  required></textarea>
+                <mat-error *ngIf="addCusForm.controls.content.hasError('required')" name="postContentReq">
                   Please enter content
                 </mat-error>
                
@@ -36,7 +36,7 @@
         </mat-grid-list>
   
         <div class="btn-sec">
-          <button mat-raised-button type="submit" color="primary" class="Update-btn" [disabled]="!saveChangesEnabled()" (click)="onAddCus()" >Save</button>
+          <button mat-raised-button type="submit" color="primary" class="Update-btn" [disabled]="!saveChangesEnabled()" name="addPost" (click)="onAddCus()" >Save</button>
           <button mat-raised-button type="button" class="Discard-btn"  (click)="openDialog()" >Cancel</button>
         </div>
   

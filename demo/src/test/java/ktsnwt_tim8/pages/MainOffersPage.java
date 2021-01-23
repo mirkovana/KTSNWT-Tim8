@@ -17,6 +17,9 @@ public class MainOffersPage {
 	@FindBy(linkText = "Exit festival")
     private WebElement anchor1;
 	
+
+	@FindBy(linkText = "Srpsko narodno pozoriste")
+    private WebElement anchor2;
 	@FindBy(xpath = "//a[contains(@class, 'offer-item-link')]")
 	public WebElement linkx;
 	
@@ -41,6 +44,10 @@ public class MainOffersPage {
         (new WebDriverWait(driver, 30)).until(ExpectedConditions.presenceOfElementLocated(By.linkText("Exit festival")));
     }    
 
+
+	public WebElement getAnchor2() {
+		return anchor2;
+	}
 
 	public WebDriver getDriver() {
 		return driver;
