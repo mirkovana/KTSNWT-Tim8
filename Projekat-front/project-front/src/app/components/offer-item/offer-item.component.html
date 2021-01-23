@@ -1,6 +1,6 @@
 <div class="item header">
     <div class='content logo'>
-        <p class="title"> <b><a routerLink="/offers/{{offer.id}}" (click)="saveOfferId(offer.id)" class="btn btn-link offer-item-link">{{ offer.title }}</a></b></p>
+        <p class="title"><b><a routerLink="/offers/{{offer.id}}" (click)="saveOfferId(offer.id)" class=" offer-item-link">{{ offer.title }}</a></b></p>
         <p><a [routerLink]="" (click)="viewOnMap()">View on map</a></p>
         <p>Location: {{ offer.place}}</p>
         
@@ -9,7 +9,9 @@
 
         <p>Labels: </p>
     </div>
-    <!--<div class="imageDIV navigation">
+    
+    <div class="imageDIV navigation">
         <img src="https://image.freepik.com/free-vector/cute-avocado-cartoon-hand-drawn-style_42349-476.jpg" alt="" class="image">
-    </div>-->
+    </div>
+
 </div>

@@ -16,7 +16,7 @@
 }
 */
 .image {
-    width: 150px;
+    width: 100px;
     height: 150px;
 }
 
@@ -32,9 +32,14 @@
     //margin-top: 10%;
     //margin-bottom: 5px;
     //display: inline-block;
+    
     display: flex; 
     justify-content: flex-end;
     vertical-align: top;
+}
+
+.image-holder{
+    
 }
 
 .boxTitle {
@@ -49,11 +54,11 @@
 }
 
 .logo {
-    flex: 0 0 75%;
+    flex: 0 0 50%;
 }
 
 .navigation {
-    flex: 0 0 25%;
+    flex: 0 0 50%;
 }
 
 
@@ -61,8 +66,17 @@
 p {
     font-family: 'Noto Sans TC', sans-serif;
 }
-p.title {
-    font-size: 20px;
+p.title > a {
+    font-size: 50px;
+    font-weight: bold;
+}
+//a {
+//    font-weight: bold;
+//}
+
+.offer-item-link{
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .star {

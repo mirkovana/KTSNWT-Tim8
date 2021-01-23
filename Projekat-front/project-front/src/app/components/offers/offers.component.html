@@ -1,10 +1,11 @@
 <div *ngIf="!page.content.length">
     <p>No offers to display.</p>
 </div>
+<div> 
 <div class="wrapper offers">
     <div *ngIf = "page.content">
         <div *ngFor = "let offer of page.content">
-            <app-offer-item [offer]="offer" class="page"></app-offer-item>
+            <app-offer-item [offer]="offer" class="page offer"></app-offer-item>
         <mat-divider class="divider" role="separator"></mat-divider>
        
         </div>
@@ -22,6 +23,6 @@
         >
     </mat-paginator>
     
-    
+</div>
     
       
