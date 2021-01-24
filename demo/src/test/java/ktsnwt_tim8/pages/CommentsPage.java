@@ -69,10 +69,16 @@ public class CommentsPage {
     }
     
     public WebElement getNewCommentForm() {
+    	if (edits.size() == 0) {
+    		return null;
+    	}
     	return edits.get(0);
     }
     
     public WebElement getEditCommentForm() {
+    	if (edits.size() == 0) {
+    		return null;
+    	}
     	return edits.get(1);
     }
     
@@ -149,7 +155,7 @@ public class CommentsPage {
 	}
 
 	public WebElement getPaginatorPages() {
-		 return this.paginatorPagesList.get(1);
+		 return this.paginatorPagesList.get(2);
 	}
 
 	public void setPaginatorPages(WebElement paginatorPages) {

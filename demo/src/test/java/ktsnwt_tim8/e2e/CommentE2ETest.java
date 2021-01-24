@@ -105,6 +105,7 @@ public class CommentE2ETest {
     	logIn();
     	chooseOffer();
     	int oldComments = commentsPage.getNumOfElements();
+    	
     	String newCommentText = "New comment text.";
     	commentsPage.getNewCommentTextInput().sendKeys(newCommentText);
     	
@@ -132,8 +133,10 @@ public class CommentE2ETest {
     	justWait(3000);
     	commentsPage.getSubmitButton().click();
     	
-    	justWait(1000);
+    	justWait(3000);
     	int newComments = commentsPage.getNumOfElements();
+    	
+    	justWait(1000);
     	// checking if number of all comments changed
     	assertEquals(oldComments + 1, newComments);
     	// checking if the text of the first comment equals to the text of new comment
@@ -303,12 +306,41 @@ public class CommentE2ETest {
     	assertEquals(driver.getCurrentUrl(), "http://localhost:4200/login");
      }
     
+    @Test
+    public void commentLoggedAsAdmin() throws InterruptedException {
+    	logInAsAdmin();
+    	chooseOffer2();
+    	justWait(1000);
+    	// ensuring admin can't create comments
+    	assertEquals(commentsPage.getNewCommentForm(), null);
+    	assertEquals(commentsPage.getEditCommentForm(), null);
+    }
+    
+    private void chooseOffer2() throws InterruptedException {
+    driver.get("http://localhost:4200/home");
+    mainOffersPage = PageFactory.initElements(driver, MainOffersPage.class);
+    justWait(1000);
+    mainOffersPage.getAnchor1().click();
+    justWait(2000);
+    commentsPage = PageFactory.initElements(driver, CommentsPage.class);
+    justWait(2000);
+    
+    }
+    private void logInAsAdmin() throws InterruptedException{
+        driver.get ("http://localhost:4200/login");
+        loginPage = PageFactory.initElements(driver, LoginPage.class);
+        loginPage.getEmail().sendKeys("admin@nesto.com");
+        loginPage.getPassword().sendKeys("1");
+        loginPage.getLoginBtn().click();
+        justWait(1000);
+    }
     
     private void prepCreateComment(String text, String path) throws InterruptedException {
     	commentsPage.getNewCommentTextInput().sendKeys(text);
     	if (path != null) {
         	commentsPage.getFileInput().sendKeys(pathForUpload(path));
     	}
+    	justWait(1000);
     	commentsPage.getSubmitButton().click();
     	justWait(2000);
     }

@@ -94,7 +94,7 @@ export class CommentsComponent implements OnInit {
         console.log("o radi nesto")
       }
 
-
+        
       onCommentEdited(comm){
         console.log(comm);
         for (let c of this.content.content){
@@ -116,6 +116,7 @@ export class CommentsComponent implements OnInit {
          })
       }
 
+      // ovo koristim u comment
       onClickedEdit(event){
         console.log(event);
         // nadji taj komentar

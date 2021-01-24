@@ -2,7 +2,7 @@
     <div class='content logo'>
         <p class="title"><b><a routerLink="/offers/{{offer.id}}" (click)="saveOfferId(offer.id)" class=" offer-item-link">{{ offer.title }}</a></b></p>
         <p><a [routerLink]="" (click)="viewOnMap()">View on map</a></p>
-        <p>Location: {{ offer.place}}</p>
+        <p class="inline">Location: </p><p class="inline location">{{ offer.place}}</p>
         
         <div class="starsRating"> <!--<mat-icon class="star">star</mat-icon> -->
         Rating: {{offer.avgRating| number:'1.1-1'}} <img class="star" src="assets/img/star.png"> ({{offer.nmbOfRatings}} votes)</div>
