@@ -143,21 +143,46 @@ public class PostE2ETest {
 //
 //	}
 	 
-	@Test
-	public void DeletePostTest() throws InterruptedException {
-
+//	@Test
+//	public void DeletePostTest() throws InterruptedException {
+//
+//		logIn();
+//		chooseOffer();
+//		justWait(1000);
+//	
+//		postPage.getDugme2().click();
+//	    postPage.getYesButtonP().click();
+//	    
+//		 justWait(2000);
+//	  
+//		assertEquals("http://localhost:4200/offers/1", driver.getCurrentUrl());
+//
+//	}
+    
+    @Test
+	public void EditPostTestTitleEmpty() throws InterruptedException {	 
 		logIn();
 		chooseOffer();
 		justWait(1000);
-	
-		postPage.getDugme2().click();
-	    postPage.getYesButtonP().click();
-	    
-		 justWait(2000);
-	  
-		assertEquals("http://localhost:4200/offers/1", driver.getCurrentUrl());
 
+		postPage.getName1().clear();
+		postPage.getName1().sendKeys("");
+
+		assertEquals("http://localhost:4200/offers/1", driver.getCurrentUrl());
 	}
+    
+    @Test
+	public void EditPostTestContentEmpty() throws InterruptedException {
+		logIn();
+		chooseOffer();
+		justWait(1000);
+		
+		postPage.getContent1().clear();
+		postPage.getContent1().sendKeys("");
+		
+		assertEquals("http://localhost:4200/offers/1", driver.getCurrentUrl());
+	}
+    
     @After
     public void tearDown() {
         driver.quit();
