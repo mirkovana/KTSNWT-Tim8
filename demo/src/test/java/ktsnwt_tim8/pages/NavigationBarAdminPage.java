@@ -14,10 +14,16 @@ public class NavigationBarAdminPage {
 
 	@FindBy(name = "addSubcategory")
 	WebElement addSubcategory;
+	
+	@FindBy(name = "addOffer")
+	WebElement addOffer;
 
-	public NavigationBarAdminPage(WebElement addCategory, WebElement addSubcategory) {
+	public NavigationBarAdminPage(WebElement addCategory, WebElement addSubcategory, WebElement addOffer) {
  		this.addCategory = addCategory;
  		this.addSubcategory=addSubcategory;
+ 		this.addOffer=addOffer;
+
+ 		
 	}
 
 
@@ -38,7 +44,9 @@ public class NavigationBarAdminPage {
 	public WebElement getAddSubcategory() {
 		return addSubcategory;
 	}
-	
-	
-	
+
+
+	public WebElement getAddOffer() {
+		return addOffer;
+	}	
 }

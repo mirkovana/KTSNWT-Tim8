@@ -6,15 +6,15 @@
       <button   *ngIf="broj===1" mat-raised-button color="primary"   matTooltip="Add new post" name="addPostDialog"  (click)="openDialog()" >Add post</button> 
 
          &nbsp;
-       <button   *ngIf="broj===1" mat-raised-button color="primary" id="save-event-changes"  matTooltip="Saves changes on offer" [disabled]="!saveChangesEnabled()" (click)="saveChanges()" >Edit offer</button> 
+       <button   *ngIf="broj===1" mat-raised-button color="primary" id="save-event-changes"  matTooltip="Saves changes on offer" [disabled]="!saveChangesEnabled()" (click)="saveChanges()" name="editOfferBtnnn">Edit offer</button> 
 
          &nbsp;
-         <button  *ngIf="broj===1" mat-raised-button color="primary" matTooltip="Delete offer"  (click)="openDeleteOffer()">Delete offer</button>
+         <button  *ngIf="broj===1" mat-raised-button color="primary" matTooltip="Delete offer"  (click)="openDeleteOffer()" name="deleteOfferBtnnn">Delete offer</button>
   </div>
   <div class="info">
    <mat-form-field>
       <h1>
-         <input matInput [(ngModel)]="offer.title" id="edit-offer-title-input" [readonly]="!admin" placeholder="">
+         <input matInput [(ngModel)]="offer.title" id="edit-offer-title-input" [readonly]="!admin" placeholder="" name="titleForEditOffer">
       </h1>
       <h2>
          <img class="pin" src="assets/img/pin.png">
@@ -27,7 +27,7 @@
 
   <div class="info">
    <mat-form-field>
-      <textarea class="opis" matInput [(ngModel)]="offer.description" id="edit-offer-description-input" [readonly]="!admin" placeholder=""></textarea>
+      <textarea class="opis" matInput [(ngModel)]="offer.description" id="edit-offer-description-input" [readonly]="!admin" placeholder="" name="descriptionForEditOffer"></textarea>
    </mat-form-field>
   </div>
 

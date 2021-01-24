@@ -9,45 +9,59 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginPage {
 
-    private WebDriver driver;
+	private WebDriver driver;
 
-    @FindBy(css = "input[formControlName='username']")
-    private WebElement email;
+	@FindBy(css = "input[formControlName='username']")
+	private WebElement email;
 
-    @FindBy(css = "input[formControlName='password']")
-    private WebElement password;
+	@FindBy(css = "input[formControlName='password']")
+	private WebElement password;
 
-    @FindBy(css = "button")
-    private WebElement loginBtn;
+	@FindBy(css = "button")
+	private WebElement loginBtn;
 
-    public LoginPage() {
-    }
+	public LoginPage() {
+	}
 
-    public LoginPage(WebDriver driver) {
-        this.driver = driver;
-    }
+	public LoginPage(WebDriver driver) {
+		this.driver = driver;
+	}
 
-    public void ensureIsDisplayedEmail() {
-        (new WebDriverWait(driver, 30)).until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[formControlName='username']")));
-    }
-    public void ensureIsNotVisibleLoginBtn() {
-        (new WebDriverWait(driver, 10)).until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("button")));
-    }
+	public void ensureIsDisplayedEmail() {
+		(new WebDriverWait(driver, 30))
+				.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[formControlName='username']")));
+	}
 
+	public void ensureIsNotVisibleLoginBtn() {
+		(new WebDriverWait(driver, 10))
+				.until(ExpectedConditions.invisibilityOfElementLocated(By.name("buttonForLogin")));
+	}
 
-    public void ensureIsNotVisibleEmail() {
-        (new WebDriverWait(driver, 10)).until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("input[formControlName='username']")));
-    }
+	public void ensureIsNotVisibleEmail() {
+		(new WebDriverWait(driver, 10)).until(
+				ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("input[formControlName='username']")));
+	}
 
-    public WebElement getEmail() {
-        return email;
-    }
+	public boolean messageErrorDisplayed(String naziv) {
 
-    public WebElement getPassword() {
-        return password;
-    }
+		try {
+			this.driver.findElement(By.name(naziv));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 
-    public WebElement getLoginBtn() {
-        return loginBtn;
-    }
+	}
+
+	public WebElement getEmail() {
+		return email;
+	}
+
+	public WebElement getPassword() {
+		return password;
+	}
+
+	public WebElement getLoginBtn() {
+		return loginBtn;
+	}
 }

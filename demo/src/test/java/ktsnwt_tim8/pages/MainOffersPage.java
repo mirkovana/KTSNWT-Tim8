@@ -20,6 +20,10 @@ public class MainOffersPage {
 
 	@FindBy(linkText = "Srpsko narodno pozoriste")
     private WebElement anchor2;
+	
+	@FindBy(linkText = "Uzice")
+    private WebElement anchor3;
+	
 	@FindBy(xpath = "//a[contains(@class, 'offer-item-link')]")
 	public WebElement linkx;
 	
@@ -61,6 +65,8 @@ public class MainOffersPage {
 	public void setAnchor1(WebElement anchor1) {
 		this.anchor1 = anchor1;
 	}
-    
-    
+
+	public WebElement getAnchor3() {
+		return anchor3;
+	}
 }
