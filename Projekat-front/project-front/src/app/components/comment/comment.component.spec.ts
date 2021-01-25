@@ -83,7 +83,7 @@ describe('CommentComponent', () => {
     expect(component.clickedEdit.emit).toHaveBeenCalledWith(component.comment.id);
   })
 
-  it('should call deleteComment', fakeAsync(() => {
+  it('should call deleteComment from service', fakeAsync(() => {
     component.comment = new Comment(1, "Comment text", null, null,
     "user@gmail.com", new Date(), true, false, null); // user can edit
     fixture.detectChanges();
@@ -95,18 +95,12 @@ describe('CommentComponent', () => {
   }))
 
 
-  it('should call deleteComment', fakeAsync(() => {
+  it('should call deleteComment from dialog', fakeAsync(() => {
     component.comment = new Comment(1, "Comment text", null, null,
     "user@gmail.com", new Date(), true, false, null); // user can edit
     fixture.detectChanges();
     component.openDialog();
     expect(commentService.deleteComment).toHaveBeenCalled();
-    //expect(dialog.open).toHaveBeenCalledWith(DialogComponent);
-    //expect(commentService.deleteComment).toHaveBeenCalledWith(component.comment.id);
-    //tick();
-    //expect(component.commentDeleted.emit).toHaveBeenCalled();
-    //expect(component.done.emit).toHaveBeenCalledWith('Comment deleted.');
   }))
-  // dialog tests
 
 });

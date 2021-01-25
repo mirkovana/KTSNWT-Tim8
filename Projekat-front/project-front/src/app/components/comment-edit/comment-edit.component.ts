@@ -1,4 +1,3 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -12,96 +11,52 @@ import { CommentService } from 'src/app/services/comment.service';
 })
 export class CommentEditComponent implements OnInit {
 
-  nesto;
-
   username = localStorage.getItem('username');
 
   @Input() comment: Comment = new Comment(0, "", null, "", "", false, false, false, null);
-  editing: boolean = false;
-  @Input() canEdit = false;
-
+  @Input() offerId;
   @Output() done = new EventEmitter<string>();
-  @Input() offerId = 1;
-
-  @Output() newComment = new EventEmitter();
-
-  @ViewChild("f", { static: false }) form: NgForm;
-
-  @Output() commentDeleted = new EventEmitter();
-  @Output() commentCreated = new EventEmitter<string>();
-
-  @Output() commentEdited = new EventEmitter<Comment>();
-  @Output() commentNew = new EventEmitter<any>();
-
-  @Output() dogadjaj = new EventEmitter();
-  text = "neki tekst komentara";
-
-
-  commentText = new FormControl();
-
-
-  handleFileInput(dog){
-    console.log(dog)
-  }
-
-  ngOnInit(): void {
-    //this.form.patchValue({description: 'Upisani tekst'});
-    //this.form.setValue({
-    //  text: this.text
-    //this.form.setValue({
-    //  name: "neki tekst komentara"
-    //})
-    //})
-    setTimeout(() => {
-      if (this.comment != null){ 
-        if (this.comment.editing)
-          this.form.form.patchValue({text: this.comment.text});
-          if (this.comment.slika){
-            this.form.form.patchValue({file: this.b64toBlob(this.comment.slika)})
-          }
-      }
-    });
-  }
-  ngAfterViewInit(){
-    //this.form.form.patchValue({text: this.text})
-    //this.form.setValue({
-    //  text: this.text
-    //})
-  }
-
   
 
-  onSubmit(form){
-    console.log(form);
-    //this.commentService.editComment(this).subscribe(data => {
-    //
-    //})
-  }
-
-
+  @Output() newComment = new EventEmitter();
+  @Output() commentEdited = new EventEmitter<Comment>();
+  
+  text = "neki tekst komentara";
+  commentText = new FormControl();
   imageURL: string;
   uploadForm: FormGroup;
 
+  ngOnInit(): void {
+    console.log(this.offerId + " offerrr")
+    console.log(this.comment)
+    setTimeout(() => {
+      //this.comment = new Comment(1, "tekst", null, "", new Date(), true, true, true, null);
+      if (this.comment != null){ 
+        if (this.comment.editing)
+          this.uploadForm.patchValue({text: this.comment.text});
+          if (this.comment.slika){
+            this.uploadForm.patchValue({file: this.b64toBlob(this.comment.slika)})
+          }
+      }
+      //console.log(this.uploadForm);
+    });
+  }
+
+
   constructor(public fb: FormBuilder, private commentService: CommentService, 
-    private sanitizer: DomSanitizer, private http: HttpClient) {
+    private sanitizer: DomSanitizer) {
     // Reactive Form
     this.uploadForm = this.fb.group({
       file: [null],
       text: new FormControl(null, Validators.required)
     })
+    console.log(this.uploadForm);
   }
 
 
   cancelEdit(){
     this.commentEdited.emit(this.comment)
   }
-
-  deleteComment(){
-    this.commentService.deleteComment(this.comment.id).subscribe(() => {
-      this.commentDeleted.emit();
-    })
-  }
-
 
   // Image Preview
   showPreview(event) {
@@ -133,11 +88,9 @@ export class CommentEditComponent implements OnInit {
 }
 
 
-  
-
   removeImage(){
     this.imageURL = "";
-    this.form.form.patchValue({file: null});
+    this.uploadForm.patchValue({file: null});
     this.comment.slika = null;
   }
 
@@ -174,12 +127,12 @@ export class CommentEditComponent implements OnInit {
       },  error => this.done.emit("Sorry! We couldn't update your comment, try again later."))
     }
     else {
-      //this.commentNew.emit("asdasd");
+      console.log(this.offerId + " to je offerid")
       this.commentService.createComment(this.offerId, text, file).subscribe(data => {
           this.newComment.emit();  
           this.comment = new Comment(0, "", null, "", "", false, false, false, null);
           this.imageURL = "";
-          this.form.resetForm();
+          this.uploadForm.reset();
         this.done.emit("Comment created.");
       }, error => this.done.emit("Sorry! There was a problem with creating your comment, try again later."))  
     }

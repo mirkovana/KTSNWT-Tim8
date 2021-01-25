@@ -18,6 +18,8 @@ export class Comment {
         this.date = date;
         this.username = username;
         this.canEdit = canEdit;
+        this.editing = editing;
+        this.slika = slika;
     }
 
 }

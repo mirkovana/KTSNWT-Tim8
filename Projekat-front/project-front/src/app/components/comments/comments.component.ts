@@ -28,8 +28,6 @@ export class CommentsComponent implements OnInit {
 
   admin = false;
 
-  // paginator ne radi
-  dict = {}
 
   constructor(private service: CommentService, private sanitizer: DomSanitizer,
     private route: ActivatedRoute, private _snackBar: MatSnackBar) { }
@@ -47,6 +45,7 @@ export class CommentsComponent implements OnInit {
       // mozda da se posalje iz parent komponente?
       this.route.params.subscribe((params: Params) => {
         this.offerId = +params['id'];
+        console.log("offer id iz koments " + this.offerId)
         this.username=localStorage.getItem("username");
         this.admin = this.username === "admin@nesto.com";
        });
@@ -60,7 +59,6 @@ export class CommentsComponent implements OnInit {
         this.content = content;
         let i=0;
         for (let c of this.content.content){
-            this.dict[c.id] = c;
             if (c.username == this.username){
               c.canEdit = true;
             }
