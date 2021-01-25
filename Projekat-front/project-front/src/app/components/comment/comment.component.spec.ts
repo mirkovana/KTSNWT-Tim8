@@ -93,4 +93,7 @@ describe('CommentComponent', () => {
     expect(component.done.emit).toHaveBeenCalledWith('Comment deleted.');
   }))
 
+
+  // dialog tests
+
 });

@@ -12,24 +12,15 @@ export class OffersComponent implements OnInit {
   @Input() page: Page;
   @Input() paginatorDetails: PaginatorPageable;
 
-  //*********************//
   @Output() pageChanged = new EventEmitter<PaginatorPageable>();
   
-  constructor(private offersService:OfferInfoService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
-  getData(event){
-    console.log(event);
-  }
-
-  //************************************************ */
   onClick(event){
-    //console.log(event)
     this.pageChanged.emit(event);
-
-    //this.offersService.emitChildEvent(event);
   }
 
 

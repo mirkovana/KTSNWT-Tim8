@@ -1,7 +1,7 @@
 <div class="item header">
     <div class='content logo'>
-        <p class="title"><b><a routerLink="/offers/{{offer.id}}" (click)="saveOfferId(offer.id)" class=" offer-item-link">{{ offer.title }}</a></b></p>
-        <p><a [routerLink]="" (click)="viewOnMap()">View on map</a></p>
+        <p class="title"><b><a routerLink="/offers/{{offer.id}}" class=" offer-item-link">{{ offer.title }}</a></b></p>
+        <p><a [routerLink]="" (click)="viewOnMap()" class="view-on-map">View on map</a></p>
         <p class="inline">Location: </p><p class="inline location">{{ offer.place}}</p>
         
         <div class="starsRating"> <!--<mat-icon class="star">star</mat-icon> -->

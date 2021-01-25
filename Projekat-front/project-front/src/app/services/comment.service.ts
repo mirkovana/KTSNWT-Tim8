@@ -56,7 +56,7 @@ export class CommentService{
         console.log(text + " tekst ");
         data.append("text", text);
         data.append("image", image)
-        data.append("offerId", "" + localStorage.getItem('offerId'))
+        data.append("offerId", "" + offerId)
         return this.http.post(this.url, data, {headers: headers1});
     }
 

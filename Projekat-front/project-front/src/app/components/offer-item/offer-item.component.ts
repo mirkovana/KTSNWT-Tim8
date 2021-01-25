@@ -10,7 +10,6 @@ import { OfferInfoService } from 'src/app/services/offer-info.service';
 export class OfferItemComponent implements OnInit {
 
   @Input() offer;
-  @Output() viewOnMapEvent = new EventEmitter<Offer>();
 
   constructor(private offerService: OfferInfoService) { }
 
@@ -22,9 +21,5 @@ export class OfferItemComponent implements OnInit {
     this.offerService.offerChosenEvent.next(this.offer);
   }
 
-  saveOfferId(id:number){
-    console.log("ID OFERA JE:" + id );
-    localStorage.setItem('offerId',JSON.stringify(id));
-  }
 
 }
