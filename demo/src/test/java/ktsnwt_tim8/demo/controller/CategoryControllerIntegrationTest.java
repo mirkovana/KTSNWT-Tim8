@@ -85,7 +85,53 @@ public class CategoryControllerIntegrationTest {
 		// mora biti jedan manje slog sada nego pre
 		assertEquals(size - 1, categoryService.listAll().size());
 	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteCategoryForbidden() throws Exception {
 
+		Long id = 1L;
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", ADMIN_PASSWORD));
+
+		int size = categoryService.listAll().size();
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		// poziv REST servisa za brisanje
+		ResponseEntity<Void> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/categories/4",
+				HttpMethod.DELETE, httpEntity, Void.class);
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+
+		// mora biti jedan manje slog sada nego pre
+		assertEquals(size, categoryService.listAll().size());
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteCategoryBadRequest() throws Exception {
+
+		Long id = 1L;
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+
+		int size = categoryService.listAll().size();
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		// poziv REST servisa za brisanje
+		ResponseEntity<Void> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/categories/987987",
+				HttpMethod.DELETE, httpEntity, Void.class);
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		// mora biti jedan manje slog sada nego pre
+		assertEquals(size , categoryService.listAll().size());
+	}
+	
 	/*USPESNO DODAVANJE*/
 	@Test
 	@Transactional
@@ -153,5 +199,51 @@ public class CategoryControllerIntegrationTest {
 
 		List<Category> categories = categoryService.listAll();
 		assertEquals(size, categories.size()); // mora biti isti broj slogova kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveCategory_NameNull() throws Exception {
+		int size = categoryService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new CategoryDTO(null, 11l), headers);
+
+		ResponseEntity<CategoryDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/categories", HttpMethod.POST, httpEntity, CategoryDTO.class);
+
+		// provera odgovora servera
+		CategoryDTO category = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		// assertNull(category);
+
+		List<Category> categories = categoryService.listAll();
+		assertEquals(size, categories.size()); // mora biti isti broj slogova kao i pre
+	}
+	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveCategorForbidden() throws Exception {
+		int size = categoryService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new CategoryDTO("nazivv", 10l), headers);
+
+		ResponseEntity<CategoryDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/categories", HttpMethod.POST, httpEntity, CategoryDTO.class);
+
+
+		CategoryDTO category = responseEntity.getBody();
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+		
+		List<Category> categories = categoryService.listAll();
+		assertEquals(size , categories.size()); // mora biti jedan vise slog sada nego pre
+		
+		
 	}
 }

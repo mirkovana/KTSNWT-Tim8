@@ -58,10 +58,10 @@ public class OfferController {
 
 	@Autowired
 	private OfferImageService serviceOfferImage;
-	
+
 	@Autowired
 	private CommentService serviceComment;
-	
+
 	@Autowired
 	private RatingService serviceRating;
 
@@ -89,7 +89,7 @@ public class OfferController {
 		return new ResponseEntity<>(mapper.toDto(off), HttpStatus.OK);
 	}
 
-//	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	// @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping
 	public ResponseEntity<Page<OfferDTO>> getAllOffers(Pageable pageable) {
 		Page<Offer> offers = service.findAllPageable(pageable);
@@ -101,9 +101,9 @@ public class OfferController {
 
 		Page<OfferDTO> pageOffersDTO = new PageImpl<>(offersDTO, offers.getPageable(), offers.getTotalElements());
 		List<OfferDTO> lista = new ArrayList<OfferDTO>();
-//		for(OfferDTO o : pageOffersDTO) {
-//			lista.add(o);
-//		}
+		// for(OfferDTO o : pageOffersDTO) {
+		// lista.add(o);
+		// }
 		return new ResponseEntity<>(pageOffersDTO, HttpStatus.OK);
 	}
 
@@ -120,24 +120,24 @@ public class OfferController {
 			throws Exception {
 		Offer offer = new Offer();
 		if (offerDTO.getDescription().isEmpty()) {
-			//throw new Exception("Description cannot be empty");
+			// throw new Exception("Description cannot be empty");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		offer.setDescription(offerDTO.getDescription());
 		offer.setLat(offerDTO.getLat());
 		offer.setLon(offerDTO.getLon());
 		if (offerDTO.getTitle().isEmpty()) {
-			//throw new Exception("Title cannot be empty");
+			// throw new Exception("Title cannot be empty");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		offer.setTitle(offerDTO.getTitle());
-		
+
 		if (offerDTO.getPlace().isEmpty()) {
-			//throw new Exception("Place cannot be empty");
+			// throw new Exception("Place cannot be empty");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		offer.setPlace(offerDTO.getPlace());
-		
+
 		Subcategory subcategory = serviceSubcategory.get(idSubcategory);
 		offer.setSubcategory(subcategory);
 		offer.setAvgRating(0);
@@ -145,7 +145,8 @@ public class OfferController {
 
 		offer = service.save(offer);
 		return new ResponseEntity<>(new OfferDTO(offer.getID(), offer.getTitle(), offer.getDescription(),
-				offer.getAvgRating(), offer.getNmbOfRatings(), offer.getLat(), offer.getLon(), offer.getPlace()), HttpStatus.CREATED);
+				offer.getAvgRating(), offer.getNmbOfRatings(), offer.getLat(), offer.getLon(), offer.getPlace()),
+				HttpStatus.CREATED);
 	}
 
 	/* IZMENA PONUDE */
@@ -155,34 +156,36 @@ public class OfferController {
 	public ResponseEntity<OfferDTO> updateOffer(@PathVariable Long idOffer, @Valid @RequestBody OfferDTO offerUpdated)
 			throws NotFoundException, Exception {
 		if (offerUpdated.getDescription().isEmpty()) {
-			//throw new Exception("Description cannot be empty");
+			// throw new Exception("Description cannot be empty");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		if (offerUpdated.getTitle().isEmpty()) {
-			//throw new Exception("Title cannot be empty");
+			// throw new Exception("Title cannot be empty");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		if (offerUpdated.getPlace().isEmpty()) {
-			//throw new Exception("Place cannot be empty");
+			// throw new Exception("Place cannot be empty");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-	    Offer offer = repository.getOne(idOffer);
+		Offer offer = repository.getOne(idOffer);
 		offer.setDescription(offerUpdated.getDescription());
 		offer.setPlace(offerUpdated.getPlace());
 		offer.setTitle(offerUpdated.getTitle());
 		repository.save(offer);
 		return new ResponseEntity<>(new OfferDTO(offer.getID(), offer.getTitle(), offer.getDescription(),
-				offer.getAvgRating(), offer.getNmbOfRatings(), offer.getLat(), offer.getLon(), offer.getPlace()), HttpStatus.OK);
-		/*return repository.findById(idOffer).map(offer -> {
-			// offer.setAvgRating(offerUpdated.getAvgRating());
-			offer.setDescription(offerUpdated.getDescription());
-			// offer.setLat(offerUpdated.getLat());
-			// offer.setLon(offerUpdated.getLon());
-			// offer.setNmbOfRatings(offerUpdated.getNmbOfRatings());
-			offer.setPlace(offerUpdated.getPlace());
-			offer.setTitle(offerUpdated.getTitle());
-			return repository.save(offer);
-		}).orElseThrow(() -> new NotFoundException("Offer not found with id " + idOffer));*/
+				offer.getAvgRating(), offer.getNmbOfRatings(), offer.getLat(), offer.getLon(), offer.getPlace()),
+				HttpStatus.OK);
+		/*
+		 * return repository.findById(idOffer).map(offer -> { //
+		 * offer.setAvgRating(offerUpdated.getAvgRating());
+		 * offer.setDescription(offerUpdated.getDescription()); //
+		 * offer.setLat(offerUpdated.getLat()); // offer.setLon(offerUpdated.getLon());
+		 * // offer.setNmbOfRatings(offerUpdated.getNmbOfRatings());
+		 * offer.setPlace(offerUpdated.getPlace());
+		 * offer.setTitle(offerUpdated.getTitle()); return repository.save(offer);
+		 * }).orElseThrow(() -> new NotFoundException("Offer not found with id " +
+		 * idOffer));
+		 */
 
 	}
 
@@ -190,8 +193,10 @@ public class OfferController {
 	@CrossOrigin
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(value = "/{idOffer}")
-	public ResponseEntity<Void>  deleteOffer(@PathVariable Long idOffer) {
+	public ResponseEntity<Void> deleteOffer(@PathVariable Long idOffer) {
+
 		Offer offer = service.get(idOffer);
+
 		List<Offer> offers = service.listAll();
 
 		offers.remove(offer);
@@ -204,24 +209,24 @@ public class OfferController {
 		for (OfferImage oi : offerimages) {
 			try {
 				serviceOfferImage.deleteImage(oi.getID());
-				//IZMENJENO SA delete na deleteImage
+				// IZMENJENO SA delete na deleteImage
 			} catch (Exception e) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 		}
-		for (Comment com: offer.getComments()) {
+		for (Comment com : offer.getComments()) {
 			serviceComment.deleteCommentById(com);
 		}
-		for (Rating r: offer.getRatings()) {
+		for (Rating r : offer.getRatings()) {
 			serviceRating.deleteRatingById(r.getID());
 		}
 		try {
-		service.delete(idOffer);
-		}		catch  (Exception e) {
+			service.delete(idOffer);
+		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		 return new ResponseEntity<>(HttpStatus.OK);
-		//return offers;
+		return new ResponseEntity<>(HttpStatus.OK);
+		// return offers;
 	}
 
 	/* SUBSCRIBING TO OFFER */
@@ -235,11 +240,11 @@ public class OfferController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 
-//		service.save(offer);
+		// service.save(offer);
 		OfferDTO ret = new OfferDTO(offer);
-//		
-//		Offer off = service.get(idOffer);
-//		System.out.println(off.getUsers().size());
+		//
+		// Offer off = service.get(idOffer);
+		// System.out.println(off.getUsers().size());
 
 		return new ResponseEntity<>(ret, HttpStatus.CREATED);
 	}
@@ -258,12 +263,14 @@ public class OfferController {
 		service.save(offer);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/filter")
-	public ResponseEntity<Page<OfferDTO>> filter(@RequestParam String name, @RequestParam(required = false) String place, @RequestParam(required = false) List<Long> subcategories,Pageable pageable) {
-		
+	public ResponseEntity<Page<OfferDTO>> filter(@RequestParam String name,
+			@RequestParam(required = false) String place, @RequestParam(required = false) List<Long> subcategories,
+			Pageable pageable) {
+
 		Page<Offer> offers = service.filter(name, place, subcategories, pageable);
-		
+
 		List<OfferDTO> offersDTO = new ArrayList<OfferDTO>();
 
 		for (Offer o : offers) {
