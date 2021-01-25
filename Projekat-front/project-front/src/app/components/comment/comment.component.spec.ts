@@ -1,11 +1,12 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { CommentService } from 'src/app/services/comment.service';
+import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 
 import { CommentComponent } from './comment.component';
 
 import { of } from 'rxjs';
 import { Dialog } from 'primeng/dialog';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DebugElement, EventEmitter } from '@angular/core';
 import { Comment } from 'src/app/models/Comment';
 import { By } from '@angular/platform-browser';
@@ -16,7 +17,7 @@ describe('CommentComponent', () => {
   let fixture: ComponentFixture<CommentComponent>;
   let commentService: any;
   let dialog: any;
-
+  let dialogRef = { afterClosed: jasmine.createSpy("afterClosed").and.returnValue(of(true))} //= new MatDialogRef<DialogComponent, any>(null, null);
 
   beforeEach(async () => {
 
@@ -24,7 +25,7 @@ describe('CommentComponent', () => {
       deleteComment: jasmine.createSpy("deleteComment").and.returnValue(of(''))
     }
 
-    let dialogMock = { open: jasmine.createSpy('open') }
+    let dialogMock = { open: jasmine.createSpy('open').and.returnValue(dialogRef) }
 
     await TestBed.configureTestingModule({
       declarations: [ CommentComponent ],
@@ -94,6 +95,18 @@ describe('CommentComponent', () => {
   }))
 
 
+  it('should call deleteComment', fakeAsync(() => {
+    component.comment = new Comment(1, "Comment text", null, null,
+    "user@gmail.com", new Date(), true, false, null); // user can edit
+    fixture.detectChanges();
+    component.openDialog();
+    expect(commentService.deleteComment).toHaveBeenCalled();
+    //expect(dialog.open).toHaveBeenCalledWith(DialogComponent);
+    //expect(commentService.deleteComment).toHaveBeenCalledWith(component.comment.id);
+    //tick();
+    //expect(component.commentDeleted.emit).toHaveBeenCalled();
+    //expect(component.done.emit).toHaveBeenCalledWith('Comment deleted.');
+  }))
   // dialog tests
 
 });

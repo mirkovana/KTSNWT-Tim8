@@ -1,9 +1,6 @@
-import { EventEmitter } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router, RouterLinkWithHref } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Offer } from 'src/app/models/Offer';
 import { OfferInfoService } from 'src/app/services/offer-info.service';
 
 import { OfferItemComponent } from './offer-item.component';

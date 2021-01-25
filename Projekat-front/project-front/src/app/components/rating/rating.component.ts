@@ -52,31 +52,13 @@ export class RatingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.admin = this.loggedIn === "admin@nesto.com";
-    // this.offerId = +localStorage.getItem('offerId');
-    // if (this.loggedIn){
-    //   this.ratingService.getUsersRating(this.offerId).subscribe(data =>{
-    //     if (data != null){
-    //       this.rated = true;
-    //       this.oldRating = data["rating"];
-    //       this.starRating = this.oldRating;
-    //       this.updating = false;
-    //       this.ratingId = data['id'];
-    //     }
-    //   })
-    // }
-  }
-
-  ngOnChange(){
-
+   
   }
 
   saveUpdate(){
-    // namjestim nove vrijednosti, update = false
     this.ratingService.updateRating(this.ratingId, this.starRating).subscribe(data => {
       this.updating = false;
       this.openSnackBar("Rating updated.")
-     
     }, error => this.openSnackBar("Sorry! There was a problem with updating your rating, try again later."))
   }
 
