@@ -9,9 +9,15 @@ export class Comment {
     public editing?
     slika
 
-    constructor(id, text, imageBase64, imagFile, username, date, canEdit, editing, slika){
+    constructor(id, text, imageBase64, imageFile, username, date, canEdit, editing, slika){
         this.id = id;
         this.text = text;
+        this.imageBase64 = imageBase64;
+        this.imageFile = imageFile;
+        this.username = username;
+        this.date = date;
+        this.username = username;
+        this.canEdit = canEdit;
     }
 
 }

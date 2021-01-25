@@ -6,8 +6,9 @@ import { CommentComponent } from './comment.component';
 import { of } from 'rxjs';
 import { Dialog } from 'primeng/dialog';
 import { MatDialog } from '@angular/material/dialog';
-import { EventEmitter } from '@angular/core';
+import { DebugElement, EventEmitter } from '@angular/core';
 import { Comment } from 'src/app/models/Comment';
+import { By } from '@angular/platform-browser';
 
 describe('CommentComponent', () => {
   let component: CommentComponent;
@@ -38,23 +39,69 @@ describe('CommentComponent', () => {
     component = fixture.componentInstance;
     commentService = TestBed.inject(CommentService);
     dialog = TestBed.inject(MatDialog);
-    //component.comment = new Comment(1, "Comment text", null, null,
-    //"kor1@nesto.com", new Date(), true, false, null);
-    //component.done = new EventEmitter<string>();
-    //component.clickedEdit = new EventEmitter();
-    //component.commentDeleted = new EventEmitter();
-    
+
   });
 
-  it('should create', () => {
-    //const comp = new CommentComponent();
-    //component.ngOnInit();
-    //component.comment = new Comment(1, "Comment text", null, null,
-    //"kor1@nesto.com", new Date(), true, false, null);
-    //fixture.detectChanges();
+  it('should create editable comment', () => {
+    component.done = new EventEmitter<string>();
+    component.clickedEdit = new EventEmitter();
+    component.commentDeleted = new EventEmitter();
     component.comment = new Comment(1, "Comment text", null, null,
-    "kor1@nesto.com", new Date(), true, false, null);
+    "user@gmail.com", new Date(), true, false, null); // user can edit
     fixture.detectChanges();
     expect(component).toBeTruthy();
+    fixture.whenStable().then(() => { 
+      let elements: DebugElement[] = 
+      fixture.debugElement.queryAll(By.css('div.actions'));
+      // making sure actions of deleting and editing are displayed
+      expect(elements.length).toBe(1);    // ovde vrati 0 umjesto 1 :(
+    })
+
   });
+
+  it('should create non-editable comment', () => {
+    component.done = new EventEmitter<string>();
+    component.clickedEdit = new EventEmitter();
+    component.commentDeleted = new EventEmitter();
+    component.comment = new Comment(1, "Comment text", null, null,
+    "kor1@nesto.com", new Date(), false, false, null); // user cannot edit
+    fixture.detectChanges();
+    expect(component).toBeTruthy();
+    fixture.whenStable().then(() => { 
+      let elements: DebugElement[] = 
+      fixture.debugElement.queryAll(By.css('div.actions'));
+      expect(elements.length).toBe(0);
+    })
+  });
+
+  it('should emit edit event', () => {
+    component.done = new EventEmitter<string>();
+    component.clickedEdit = new EventEmitter();
+    spyOn(component.clickedEdit, 'emit');
+    component.commentDeleted = new EventEmitter();
+    component.comment = new Comment(1, "Comment text", null, null,
+    "user@gmail.com", new Date(), true, false, null); // user can edit
+    fixture.detectChanges();
+    component.onEdit();
+    expect(component.clickedEdit.emit).toHaveBeenCalledWith(component.comment.id);
+  })
+
+  it('should call deleteComment', () => {
+    component.done = new EventEmitter<string>();
+    component.commentDeleted = new EventEmitter();
+    spyOn(component.done, 'emit');
+    spyOn(component.commentDeleted, 'emit');
+    component.comment = new Comment(1, "Comment text", null, null,
+    "user@gmail.com", new Date(), true, false, null); // user can edit
+    fixture.detectChanges();
+    component.deleteComment();
+    //expect(commentService.deleteComment).toHaveBeenCalled();
+    commentService.deleteComment().subscribe(()=>{
+      // ovo ne radi
+      expect(component.commentDeleted.emit).toHaveBeenCalled();
+      expect(component.done.emit).toHaveBeenCalledWith("Comment deleted.");
+    })
+    
+  })
+
 });

@@ -21,10 +21,8 @@ export class CommentComponent implements OnInit {
   @Output() commentDeleted = new EventEmitter();
 
   constructor(private commentService: CommentService, public dialog: MatDialog) { }
-
   
   ngOnInit(): void {
-
   }
 
   openDialog() {
