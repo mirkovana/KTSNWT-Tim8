@@ -17,9 +17,6 @@ export class CommentComponent implements OnInit {
 
   @Input() comment: Comment = null;
   @Output() done = new EventEmitter<string>();
-
-  //@Input() canEdit = false;
-  editing = false;
   @Output() clickedEdit = new EventEmitter();
   @Output() commentDeleted = new EventEmitter();
 
