@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { CommentService } from 'src/app/services/comment.service';
 
 import { CommentComponent } from './comment.component';
@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DebugElement, EventEmitter } from '@angular/core';
 import { Comment } from 'src/app/models/Comment';
 import { By } from '@angular/platform-browser';
+import { delay } from 'rxjs/operators';
 
 describe('CommentComponent', () => {
   let component: CommentComponent;
@@ -20,8 +21,7 @@ describe('CommentComponent', () => {
   beforeEach(async () => {
 
     let commentServiceMock = {
-      deleteComment: jasmine.createSpy("deleteComment")
-      .and.returnValue(of())
+      deleteComment: jasmine.createSpy("deleteComment").and.returnValue(of(''))
     }
 
     let dialogMock = { open: jasmine.createSpy('open') }
@@ -39,13 +39,16 @@ describe('CommentComponent', () => {
     component = fixture.componentInstance;
     commentService = TestBed.inject(CommentService);
     dialog = TestBed.inject(MatDialog);
+    component.clickedEdit = new EventEmitter();
+    component.done = new EventEmitter<string>();
+    component.commentDeleted = new EventEmitter();
+    spyOn(component.done, 'emit');
+    spyOn(component.commentDeleted, 'emit');
+    spyOn(component.clickedEdit, 'emit');
 
   });
 
   it('should create editable comment', () => {
-    component.done = new EventEmitter<string>();
-    component.clickedEdit = new EventEmitter();
-    component.commentDeleted = new EventEmitter();
     component.comment = new Comment(1, "Comment text", null, null,
     "user@gmail.com", new Date(), true, false, null); // user can edit
     fixture.detectChanges();
@@ -60,9 +63,6 @@ describe('CommentComponent', () => {
   });
 
   it('should create non-editable comment', () => {
-    component.done = new EventEmitter<string>();
-    component.clickedEdit = new EventEmitter();
-    component.commentDeleted = new EventEmitter();
     component.comment = new Comment(1, "Comment text", null, null,
     "kor1@nesto.com", new Date(), false, false, null); // user cannot edit
     fixture.detectChanges();
@@ -75,10 +75,6 @@ describe('CommentComponent', () => {
   });
 
   it('should emit edit event', () => {
-    component.done = new EventEmitter<string>();
-    component.clickedEdit = new EventEmitter();
-    spyOn(component.clickedEdit, 'emit');
-    component.commentDeleted = new EventEmitter();
     component.comment = new Comment(1, "Comment text", null, null,
     "user@gmail.com", new Date(), true, false, null); // user can edit
     fixture.detectChanges();
@@ -86,22 +82,15 @@ describe('CommentComponent', () => {
     expect(component.clickedEdit.emit).toHaveBeenCalledWith(component.comment.id);
   })
 
-  it('should call deleteComment', () => {
-    component.done = new EventEmitter<string>();
-    component.commentDeleted = new EventEmitter();
-    spyOn(component.done, 'emit');
-    spyOn(component.commentDeleted, 'emit');
+  it('should call deleteComment', fakeAsync(() => {
     component.comment = new Comment(1, "Comment text", null, null,
     "user@gmail.com", new Date(), true, false, null); // user can edit
     fixture.detectChanges();
     component.deleteComment();
-    //expect(commentService.deleteComment).toHaveBeenCalled();
-    commentService.deleteComment().subscribe(()=>{
-      // ovo ne radi
-      expect(component.commentDeleted.emit).toHaveBeenCalled();
-      expect(component.done.emit).toHaveBeenCalledWith("Comment deleted.");
-    })
-    
-  })
+    expect(commentService.deleteComment).toHaveBeenCalledWith(component.comment.id);
+    tick();
+    expect(component.commentDeleted.emit).toHaveBeenCalled();
+    expect(component.done.emit).toHaveBeenCalledWith('Comment deleted.');
+  }))
 
 });
