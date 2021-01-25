@@ -66,8 +66,14 @@ public class SubcategoryController {
 	@DeleteMapping(value = "/{idSubcategory}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public  ResponseEntity<Void>  deleteSubcategory(@PathVariable Long idSubcategory) {
-
-		Subcategory subcat = service.get(idSubcategory);
+		Subcategory subcat = new Subcategory();
+		try {
+			subcat = service.get(idSubcategory);
+		}
+		catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		List<Subcategory> subcategories = service.listAll();
 
 		subcategories.remove(subcat);

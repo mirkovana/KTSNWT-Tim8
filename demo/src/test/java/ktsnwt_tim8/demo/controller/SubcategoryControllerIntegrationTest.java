@@ -80,6 +80,52 @@ public class SubcategoryControllerIntegrationTest {
 		// mora biti jedan manje slog sada nego pre
 		assertEquals(size - 1, subcategoryService.listAll().size());
 	}
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteSubcategoryForbidden() throws Exception {
+
+		Long id = 1L;
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", ADMIN_PASSWORD));
+
+		int size = subcategoryService.listAll().size();
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		// poziv REST servisa za brisanje
+		ResponseEntity<Void> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/subcategories/7",
+				HttpMethod.DELETE, httpEntity, Void.class);
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+
+		// mora biti jedan manje slog sada nego pre
+		assertEquals(size , subcategoryService.listAll().size());
+	}
+	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteSubcategoryBadRequest() throws Exception {
+
+		Long id = 1L;
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+
+		int size = subcategoryService.listAll().size();
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		// poziv REST servisa za brisanje
+		ResponseEntity<Void> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/subcategories/9999",
+				HttpMethod.DELETE, httpEntity, Void.class);
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		// mora biti jedan manje slog sada nego pre
+		assertEquals(size, subcategoryService.listAll().size());
+	}
 
 	@Test
 	@Transactional
@@ -109,6 +155,28 @@ public class SubcategoryControllerIntegrationTest {
 		// uklanjamo dodatu kategoriju
 		subcategoryService.delete(category.getID());
 	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveSubcategoryForbidden() throws Exception {
+		int size = subcategoryService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new SubcategoryDTO("naziv", 10l), headers);
+
+		ResponseEntity<SubcategoryDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/subcategories/1", HttpMethod.POST, httpEntity, SubcategoryDTO.class);
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+		
+
+		List<Subcategory> categories = subcategoryService.listAll();
+		assertEquals(size , categories.size()); // mora biti jedan vise slog sada nego pre
+		
+	}
 
 	@Test
 	public void testGetAllSubcategories() {
@@ -136,6 +204,27 @@ public class SubcategoryControllerIntegrationTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new SubcategoryDTO("", 11l), headers);
+
+		ResponseEntity<SubcategoryDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/subcategories/1", HttpMethod.POST, httpEntity, SubcategoryDTO.class);
+
+		// provera odgovora servera
+		SubcategoryDTO category = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		
+		List<Subcategory> categories = subcategoryService.listAll();
+		assertEquals(size, categories.size()); // mora isti broj kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveSubcategory_NameIsnull() throws Exception {
+		int size = subcategoryService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new SubcategoryDTO(null, 11l), headers);
 
 		ResponseEntity<SubcategoryDTO> responseEntity = restTemplate.exchange(
 				"http://localhost:" + port + "/api/subcategories/1", HttpMethod.POST, httpEntity, SubcategoryDTO.class);

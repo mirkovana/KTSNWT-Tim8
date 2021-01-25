@@ -116,9 +116,12 @@ public class PostController {
 	@DeleteMapping(value = "/{idPost}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> deletePost(@PathVariable Long idPost) {
-
-		Post post = service.get(idPost);
-		List<Post> posts = service.listAll();
+		Post post = new Post();
+		try {
+		post = service.get(idPost);
+		}catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}List<Post> posts = service.listAll();
 
 		posts.remove(post);
 		try {

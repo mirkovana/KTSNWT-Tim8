@@ -53,7 +53,9 @@ public class OfferService {
 	public Offer get(Long id) {
 		return repo.findById(id).orElse(null);
 	}
-
+	public Offer getOne(Long id) {
+		return repo.findOneByID(id);
+	}
 	public void delete(Long id) {
 		repo.deleteById(id);
 	}

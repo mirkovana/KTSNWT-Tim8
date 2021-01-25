@@ -99,12 +99,96 @@ public class UserControllerIntegrationTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSaveUser_UsernameAndPasswordAreEmpty() throws Exception {
+	public void testSaveUser_UsernameEmpty() throws Exception {
 		int size = userService.listAll().size(); // broj slogova pre ubacivanja novog
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
-		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new UserDTO(11L, "sdfgh", "", "ime", "prez"), headers);
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new UserDTO(11L, "", "123456", "ime", "prez"), headers);
+
+		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/auth/sign-up",
+				HttpMethod.POST, httpEntity, UserDTO.class);
+
+		// provera odgovora servera
+		UserDTO user = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<User> users = userService.listAll();
+		assertEquals(size, users.size()); // mora biti jednak broj kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveUser_UsernameInvlaidEmpty() throws Exception {
+		int size = userService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new UserDTO(11L, "sdfgh", "123456", "ime", "prez"), headers);
+
+		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/auth/sign-up",
+				HttpMethod.POST, httpEntity, UserDTO.class);
+
+		// provera odgovora servera
+		UserDTO user = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<User> users = userService.listAll();
+		assertEquals(size, users.size()); // mora biti jednak broj kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveUser_PasswordEmpty() throws Exception {
+		int size = userService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new UserDTO(11L, "mejl@nesto.com", "", "ime", "prez"), headers);
+
+		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/auth/sign-up",
+				HttpMethod.POST, httpEntity, UserDTO.class);
+
+		// provera odgovora servera
+		UserDTO user = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<User> users = userService.listAll();
+		assertEquals(size, users.size()); // mora biti jednak broj kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveUser_UsernameAndPasswordEmpty() throws Exception {
+		int size = userService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new UserDTO(11L, "", "", "ime", "prez"), headers);
+
+		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/auth/sign-up",
+				HttpMethod.POST, httpEntity, UserDTO.class);
+
+		// provera odgovora servera
+		UserDTO user = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<User> users = userService.listAll();
+		assertEquals(size, users.size()); // mora biti jednak broj kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveUser_UsernameInvalidAndPasswordEmpty() throws Exception {
+		int size = userService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new UserDTO(11L, "mejl", "", "ime", "prez"), headers);
 
 		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/auth/sign-up",
 				HttpMethod.POST, httpEntity, UserDTO.class);
@@ -135,4 +219,69 @@ public class UserControllerIntegrationTest {
 		
 	}
 
+	
+	
+	/*SAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD*/
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveUser_UsernameAndPasswordnully() throws Exception {
+		int size = userService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new UserDTO(11L, null, null, "ime", "prez"), headers);
+
+		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/auth/sign-up",
+				HttpMethod.POST, httpEntity, UserDTO.class);
+
+		// provera odgovora servera
+		UserDTO user = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<User> users = userService.listAll();
+		assertEquals(size, users.size()); // mora biti jednak broj kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveUser_Passwordnull() throws Exception {
+		int size = userService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new UserDTO(11L, "mejl@nesto.com", null, "ime", "prez"), headers);
+
+		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/auth/sign-up",
+				HttpMethod.POST, httpEntity, UserDTO.class);
+
+		// provera odgovora servera
+		UserDTO user = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<User> users = userService.listAll();
+		assertEquals(size, users.size()); // mora biti jednak broj kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveUser_Usernamenull() throws Exception {
+		int size = userService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(new UserDTO(11L, null, "123456", "ime", "prez"), headers);
+
+		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/auth/sign-up",
+				HttpMethod.POST, httpEntity, UserDTO.class);
+
+		// provera odgovora servera
+		UserDTO user = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<User> users = userService.listAll();
+		assertEquals(size, users.size()); // mora biti jednak broj kao i pre
+	}
 }
