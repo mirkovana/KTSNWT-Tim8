@@ -5,7 +5,7 @@ import { Comment } from 'src/app/models/Comment';
 import { CommentService } from 'src/app/services/comment.service';
 import { CommentEditComponent } from './comment-edit.component';
 import { of } from 'rxjs';
-import { DebugElement } from '@angular/core';
+import { DebugElement, EventEmitter } from '@angular/core';
 
 describe('CommentEditComponent', () => {
   let component: CommentEditComponent;
@@ -43,42 +43,68 @@ describe('CommentEditComponent', () => {
     commentService = TestBed.inject(CommentService);
     //fb = TestBed.inject(FormBuilder);
     sanitizer = TestBed.inject(DomSanitizer);
-    
-    
+    component.done = new EventEmitter<string>();
+    component.commentEdited = new EventEmitter<Comment>();
+    component.newComment = new EventEmitter();
+    spyOn(component.commentEdited, 'emit');
+    spyOn(component.done, 'emit');
+    spyOn(component.newComment, 'emit');
+    spyOn(component.uploadForm, 'reset');
   });
 
-  it('should create comment being edited', fakeAsync(() => {
-    component.comment = new Comment(1, "asksadkkasd", null, "", new Date(), true, true, true, null);
+  it('should create new comment component', fakeAsync(() => {
+    component.comment = new Comment(0, "", null, "", "", false, false, false, null);
     component.offerId = "1";
     fixture.detectChanges();
     tick();
-    fixture.detectChanges();
-    console.log("\nforma\n\n\n\n\n\n\n")
-    console.log(component.uploadForm.value);
-    // component.comment = new Comment(0, "", null, "", "", false, false, false, null);
-    // component.offerId = "1";
-    let element: DebugElement = fixture.debugElement.query(By.css('textarea'));
-    console.log(element.nativeElement);
-    console.log(element);
-    
+    expect(component.uploadForm.value.text).toBe(null); 
+    expect(component.uploadForm.value.file).toBe(null); 
     expect(component).toBeTruthy();
   }));
 
 
-  it('should create new comment', fakeAsync(() => {
-    component.comment = new Comment(1, "asksadkkasd", null, "", new Date(), true, true, true, null);
+  it('should create editing comment component', fakeAsync(() => {
+    component.comment = new Comment(1, "Comment", null, "", "username@gmail.com", new Date() , true, true, null);
     component.offerId = "1";
     fixture.detectChanges();
-    tick();
+    tick();   // jer imam set timeout u ngoninit
     //fixture.detectChanges();
-    console.log("\nforma\n\n\n\n\n\n\n")
     console.log(component.uploadForm.value);
-    // component.comment = new Comment(0, "", null, "", "", false, false, false, null);
-    // component.offerId = "1";
-    let element: DebugElement = fixture.debugElement.query(By.css('textarea'));
-    console.log(element.nativeElement);
-    console.log(element);
-    
+    expect(component.uploadForm.value.text).toBe("Comment"); 
+    expect(component.uploadForm.value.file).toBe(null); 
+    //let 
     expect(component).toBeTruthy();
   }));
+
+  it('should submit new comment', fakeAsync(() => {
+    component.comment = new Comment(1, "", null, "", "username@gmail.com", new Date(), true, false, null);
+    component.offerId = "1";
+    fixture.detectChanges();
+    tick();   // jer imam set timeout u ngoninit
+    component.uploadForm.value.text = "";
+    //klikni na dugme?
+    component.submit();
+    tick();
+    expect(commentService.createComment).toHaveBeenCalled();    // moze i with
+    expect(component.newComment.emit).toHaveBeenCalled();
+    expect(component.done.emit).toHaveBeenCalledWith("Comment created.");
+    expect(component.uploadForm.reset).toHaveBeenCalled();
+    
+  }))
+
+  it('should edit comment', fakeAsync(() => {
+    component.comment = new Comment(1, "Comment", null, "", "username@gmail.com", new Date() , true, true, null);
+    component.offerId = "1";
+    fixture.detectChanges();
+    tick();   // jer imam set timeout u ngoninit
+    component.uploadForm.value.text = "";
+    //klikni na dugme?
+    component.submit();
+    tick();
+    expect(commentService.updateComment).toHaveBeenCalled();
+    expect(component.commentEdited.emit).toHaveBeenCalled();
+    expect(component.done.emit).toHaveBeenCalledWith("Comment edited.");
+    
+  }))
+
 });
