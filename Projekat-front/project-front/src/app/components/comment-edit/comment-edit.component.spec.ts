@@ -81,7 +81,9 @@ describe('CommentEditComponent', () => {
     component.offerId = "1";
     fixture.detectChanges();
     tick();   // jer imam set timeout u ngoninit
-    component.uploadForm.value.text = "";
+    component.uploadForm.controls.text.setValue("new comment");
+    console.log("\n\n\n\n\nforma")
+    console.log(component.uploadForm.value)
     //klikni na dugme?
     component.submit();
     tick();
@@ -97,7 +99,7 @@ describe('CommentEditComponent', () => {
     component.offerId = "1";
     fixture.detectChanges();
     tick();   // jer imam set timeout u ngoninit
-    component.uploadForm.value.text = "";
+    component.uploadForm.controls.text.setValue("updated comment");
     //klikni na dugme?
     component.submit();
     tick();

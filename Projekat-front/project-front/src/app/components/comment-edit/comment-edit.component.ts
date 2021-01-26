@@ -96,6 +96,8 @@ export class CommentEditComponent implements OnInit {
 
   // Submit Form - create or update
   submit() { 
+    console.log(this.uploadForm.value.text + " je tekst") ;
+    console.log(this.uploadForm)
     console.log(this.uploadForm.valid + " is valid?")
 
     let file = new Blob();
