@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SubcategoryService } from 'src/app/services/subcategory.service';
+
 @Component({
   selector: 'app-add-category',
   templateUrl: './add-category.component.html',
@@ -29,7 +30,7 @@ export class AddCategoryComponent implements OnInit {
     // this.markAsDirty(this.addCusForm);
     this.categoryService.addNewCategory(this.addCusForm.value);
     this.dialog.closeAll();
-    location.reload();
+    //location.reload();
     //console.log(JSON.stringify(this.addCusForm.value) + "JEEEEEEEEEEEEEEEEEEEEEEEEEEEJJJJJJJJJJ");
   }
 
@@ -49,5 +50,4 @@ export class AddCategoryComponent implements OnInit {
   formChanged() {
     this.wasFormChanged = true;
   }
-
 }

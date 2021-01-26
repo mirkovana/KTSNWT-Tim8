@@ -21,7 +21,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'offer', component: OfferComponent }, // ovde treba da ide id jer ce se na osnovu njega dobaviti offer
   { path: 'addOffer', component: AddOfferComponent },
-  { path: 'add-offer-image', component: AddOfferImageComponent}
+  { path: 'add-offer-image', component: AddOfferImageComponent},
+  { path: 'offers/:id', component: OfferComponent }, // ovde treba da ide id jer ce se na osnovu njega dobaviti offer
 
 ];//component: MapComponent
 

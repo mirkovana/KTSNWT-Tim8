@@ -20,18 +20,18 @@ INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subc
 INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica', 'src/main/resources/images/offerImage58820.jpg', 1);
 INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica', 'src/main/resources/images/petrovaradin.jpg', 1);
 INSERT INTO OFFER_IMAGE(description, path, offer_id) values ('slicica', 'src/main/resources/images/snp.jpg', 1);
+INSERT INTO POST(content, date, title, offer_id) VALUES ('Nova predstava','2020-5-1 12:00:00', 'nova predstava', 1);
+INSERT INTO POST(content, date, title, offer_id) VALUES ('Pop Cira i pop Spira','2020-5-1 12:00:00', 'nova predstava', 1);
+INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
+INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
+INSERT INTO POST(content, date, title, offer_id) VALUES ('Cica Gorio','2020-5-1 12:00:00', 'nova predstava', 1);
+INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
+INSERT INTO POST(content, date, title, offer_id) VALUES ('Cekajuci Godoa','2020-5-1 12:00:00', 'nova predstava', 1);
 INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
 INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
 INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
-INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
-INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
-INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
-INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
-INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
-INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
-INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 1);
-INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 2);
-INSERT INTO POST(content, date, title, offer_id) VALUES ('ovo je neki post','2020-5-1 12:00:00', 'nova predstava', 2);
+INSERT INTO POST(content, date, title, offer_id) VALUES ('Viszont','2020-5-1 12:00:00', 'nova predstava', 2);
+INSERT INTO POST(content, date, title, offer_id) VALUES ('Lataszro','2020-5-1 12:00:00', 'nova predstava', 2);
 
 
 INSERT INTO CATEGORY(name) values ('Manifestacija');
@@ -42,7 +42,7 @@ INSERT INTO CATEGORY(name) values ('Kulturno dobro');
 INSERT INTO SUBCATEGORY(name, category_id) values ('Spomenik',3);
 INSERT INTO SUBCATEGORY(name, category_id) values ('Znamenitost',3);
 
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (2.3,'Opis Exit festivala sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi esadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e ', 21.895841, 43.320833, 230,'Exit festival',3, 'Nis');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4.3,'Opis Exit festivala sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi esadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e ', 21.895841, 43.320833, 230,'Exit festival',3, 'Nis');
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (1.3,'Opis nekog niskog festivalasadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e', 20.45938, 44.81578, 130,'Beograd',3, 'Beograd');
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4.5,'ovo je neki opis sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e', 19.84102, 43.85581, 200,'Uzice',2, 'Uzice');
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4.2,'ovo je neki opis sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e', 20.683333, 43.716667, 3500,'Kraljevo',2, 'Kraljevo');
@@ -92,3 +92,4 @@ INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2
 INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 19', 4, 2);
 INSERT INTO public.comment(date, image_path, text, offer_id, user_id) VALUES ('2020-5-1 12:00:00', null, 'Comment text 120', 4, 2);
 
+INSERT INTO RATING(offer_id, user_id, rating) VALUES (1, 2, 4);

@@ -1,6 +1,6 @@
 <div class="item header">
     <div class='content logo'>
-        <p class="title"> <b><a routerLink="/offer" (click)="saveOfferId(offer.id)" class="btn btn-link">{{ offer.title }} </a></b></p>
+        <p class="title"> <b><a routerLink="/offers/{{offer.id}}" (click)="saveOfferId(offer.id)" class="btn btn-link offer-item-link">{{ offer.title }}</a></b></p>
 
         <p>Location: {{ offer.place}}</p>
         

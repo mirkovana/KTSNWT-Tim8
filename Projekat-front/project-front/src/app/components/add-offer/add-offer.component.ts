@@ -31,6 +31,9 @@ export class AddOfferComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   offer: Offer = new Offer();
+  public title: string='';
+  public description: string='';
+  public place: string='';
 
   subcategory1;
   subcategory$: Observable<Subcategory[]>;
@@ -45,10 +48,10 @@ export class AddOfferComponent implements OnInit {
 
   ngOnInit(): void {
     this.addOfferForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      place: ['', Validators.required]
-    });
+      title: [this.title, Validators.required],
+      description: [this.description, Validators.required],
+      place: [this.place, Validators.required] 
+   });
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -142,4 +145,10 @@ export class AddOfferComponent implements OnInit {
     // let offerID = 1; // uzeti vracenog OfferDTO-a
 
   }
+    //window.location.replace("http://localhost:4200/home");
+    
+   
+
 }
+
+

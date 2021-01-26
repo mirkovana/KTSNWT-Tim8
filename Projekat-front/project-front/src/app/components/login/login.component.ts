@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from '../../services/alert.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { first } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -20,11 +21,11 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private alertService: AlertService) { }
+    private alertService: AlertService,  private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      username: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
   });
 
@@ -48,12 +49,23 @@ export class LoginComponent implements OnInit {
           .pipe(first())
           .subscribe(
               data => {
-                  this.router.navigate([this.returnUrl]);
+                  // this.router.navigate([this.returnUrl]);
+                  
+                  location.replace("http://localhost:4200/home");
               },
               error => {
+                this.openSnackBarSE();
                   this.alertService.error(error);
                   this.loading = false;
               });
   }
 
+
+ 
+  openSnackBarSE() {
+    this._snackBar.open("Invalid username or password.", "OK", {
+      duration: 2000,
+    });
+  }
+  
 }

@@ -7,6 +7,10 @@ import { PaginatorPageable } from 'src/app/models/PaginatorPageable';
 import { PostService } from 'src/app/services/post.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AddPostComponent} from 'src/app/components/add-post/add-post.component'
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import {Page1} from '../../models/OfferImage';
+import { OfferImageService } from 'src/app/services/offer-image.service';
+import { DeleteOfferDialogComponent } from '../delete-offer-dialog/delete-offer-dialog.component';
 
 @Component({
   selector: 'app-offer',
@@ -16,11 +20,21 @@ import {AddPostComponent} from 'src/app/components/add-post/add-post.component'
 export class OfferComponent implements OnInit {
 
   offersPage: Page = new Page(0, 0, []);
+  offersPageImage: Page1 = new Page1(0, 0, []);
 
   info = new PaginatorPageable(5000, 0, 10, 0);
   offer = {
+    id: 0,
     title: '',
-    description: ''
+    description: '',
+    avgRating: 0,
+    nmbOfRatings: 0,
+    place: ''
+  }
+
+  infoImage = new PaginatorPageable(5000, 0, 1, 0);
+  offerImage = {
+    imageBase64: ''
   }
 
   admin:boolean=false;
@@ -33,7 +47,8 @@ export class OfferComponent implements OnInit {
   editOfferForm: FormGroup;
   submitted = false;
 
-  constructor(public dialog: MatDialog, public formBuilder: FormBuilder, private offerService: OfferService, private snackbar: MatSnackBar, private postService: PostService) { 
+  constructor(public dialog: MatDialog, public formBuilder: FormBuilder,
+    private route: ActivatedRoute, private offerService: OfferService, private offerImageService: OfferImageService, private snackbar: MatSnackBar, private postService: PostService) { 
   }
  
   ngOnInit(): void {
@@ -43,15 +58,25 @@ export class OfferComponent implements OnInit {
       if(this.loggedIn==="admin@nesto.com"){this.broj=1;this.admin=true;} //kad je ulogovan admin
       else{this.broj=2;} //kad je ulogovan korisnik koji nije admin
     } 
+    this.route.params
+    .subscribe(
+      (params: Params) => {
+        this.offer.id = +params['id'];
+        this.offerService.getOfferById(this.offer.id).subscribe(res => {this.offer=res;});
+      }
+    );
 
-    this.postService.getPostsPage(this.info).subscribe(data => {
+    this.postService.getPostsPage(this.offer.id, this.info).subscribe(data => {
       this.offersPage = data;
       this.info.length = this.offersPage.totalElements;
-      //console.log(this.offersPage);
-      //this.dataReady = true;
+    });
+
+    this.offerImageService.getOfferImagePage(this.offer.id, this.infoImage).subscribe(data => {
+      this.offersPageImage = data;
+      this.infoImage.length = this.offersPageImage.totalElements;
     });
     //POKUSAJ EDITA POCETAK
-    this.offerService.getOfferById().subscribe(res => {this.offer=res;});
+    //this.offerService.getOfferById(this.offer.id).subscribe(res => {this.offer=res;});
   }
 
   saveChangesEnabled() {
@@ -62,9 +87,10 @@ export class OfferComponent implements OnInit {
      this.offerService.updateOffer(this.offer);
   }
 
+  // ovo izmijeniti, da salje offer.id
   deleteOffer(){
-    this.offerService.deleteOffer(JSON.parse(localStorage.getItem('offerId')));
-    window.location.replace("http://localhost:4200/home");
+    this.offerService.deleteOffer(this.offer.id);
+    //window.location.replace("http://localhost:4200/home");
   }
 
 
@@ -72,16 +98,37 @@ export class OfferComponent implements OnInit {
     this.info = event;
     console.log("currentyl filtered")
    
-      this.postService.getPostsPage(this.info).subscribe(data =>{
+      this.postService.getPostsPage(this.offer.id, this.info).subscribe(data =>{
         this.offersPage = data;
       })
     }
   
     openDialog(): void {
       const dialogRef = this.dialog.open(AddPostComponent,{
-        width: '640px',disableClose: true 
+        width: '640px',disableClose: true, data: {
+          dataKey: this.offer.id
+        }
       });
   }
+
+  onPageChangeImage(event){
+    this.infoImage = event;
+    console.log("currentyl filtered")
+   
+      this.offerImageService.getOfferImagePage(this.offer.id, this.infoImage).subscribe(data =>{
+        this.offersPageImage = data;
+      })
+    }
+
+    openDeleteOffer() {
+      const dialogRef = this.dialog.open(DeleteOfferDialogComponent);
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(`Dialog result: ${result}`);
+        if (result){
+          this.deleteOffer();
+        }
+      });
+    }
 }
 
 

@@ -65,8 +65,12 @@ public class CategoryController {
 	@DeleteMapping(value = "/{idCategory}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public  ResponseEntity<Void> deleteCategory(@PathVariable Long idCategory) {
-
-		Category cat = service.get(idCategory);
+		Category cat = new Category();
+		try {
+		cat = service.get(idCategory);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		List<Category> categories = service.listAll();
 
 		categories.remove(cat);

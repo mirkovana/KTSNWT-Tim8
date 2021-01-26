@@ -38,7 +38,7 @@ export class RegistrationComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
       surname: ['', Validators.required],
-      username: ['', Validators.required],
+      username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
   });
   }
@@ -49,7 +49,7 @@ export class RegistrationComponent implements OnInit {
     if (this.registerForm.invalid) {
       return;
   }
-  this.loading = true;
+  location.replace("http://localhost:4200/validateEmail");
 
   console.log(this.registerForm.value.name);
   this.userService.addUser(this.registerForm.value);

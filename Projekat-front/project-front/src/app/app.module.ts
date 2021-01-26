@@ -59,6 +59,12 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { AddCategoryComponent } from './components/add-category/add-category.component';
 import { AddSubcategoryComponent } from './components/add-subcategory/add-subcategory.component';
 import { AddOfferImageComponent } from './components/add-offer-image/add-offer-image.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { OfferImagesComponent } from './components/offer-images/offer-images.component';
+import { ImageItemComponent } from './components/image-item/image-item.component';
+import { DeleteOfferDialogComponent } from './components/delete-offer-dialog/delete-offer-dialog.component';
+import { DeletePostDialogComponent } from './components/delete-post-dialog/delete-post-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -91,7 +97,15 @@ import { AddOfferImageComponent } from './components/add-offer-image/add-offer-i
     AddPostComponent,
     AddCategoryComponent,
     AddSubcategoryComponent,
-    AddOfferImageComponent
+    AddOfferImageComponent,
+    DialogComponent,
+    OfferImagesComponent,
+    ImageItemComponent,
+    DeleteOfferDialogComponent,
+    DeletePostDialogComponent
+
+
+   
 
   ],
   imports: [

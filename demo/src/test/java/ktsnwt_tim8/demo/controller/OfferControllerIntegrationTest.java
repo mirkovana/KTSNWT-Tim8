@@ -22,6 +22,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -36,10 +39,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ktsnwt_tim8.demo.constants.OfferImageConstants;
 import ktsnwt_tim8.demo.dto.CommentDTO;
 import ktsnwt_tim8.demo.dto.OfferDTO;
+import ktsnwt_tim8.demo.dto.PostDTO;
 import ktsnwt_tim8.demo.dto.UserLoginDTO;
 import ktsnwt_tim8.demo.dto.UserTokenStateDTO;
 import ktsnwt_tim8.demo.helper.RestResponsePage;
 import ktsnwt_tim8.demo.model.Offer;
+import ktsnwt_tim8.demo.model.Post;
 import ktsnwt_tim8.demo.service.OfferService;
 
 @RunWith(SpringRunner.class)
@@ -71,18 +76,21 @@ public class OfferControllerIntegrationTest {
 	/* ISPISIVANJE PONUDA */
 	@Test
 	public void testGetAllOffers() {
-
+		Pageable pageable = PageRequest.of(0, 5);
+		Page<Offer> page = offerService.findAllPageable(pageable);
+		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
 
-		ResponseEntity<OfferDTO[]> responseEntity = restTemplate.exchange(
-				"http://localhost:" + port + "/api/offers?page=0&size=5", HttpMethod.GET, httpEntity, OfferDTO[].class);
+		
+		ParameterizedTypeReference<RestResponsePage<OfferDTO>> responseType = new ParameterizedTypeReference<RestResponsePage<OfferDTO>>() {};
+		ResponseEntity<RestResponsePage<OfferDTO>> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/offers?page=0&size=5", HttpMethod.GET, httpEntity, responseType);
 
-		OfferDTO[] offers = responseEntity.getBody();
+		List<OfferDTO> searchResult = responseEntity.getBody().getContent();
 
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(FIND_ALL_NUMBER_OF_ITEMS, offers.length);
+		assertEquals(page.getContent().size(), searchResult.size());
 	}
 
 	/* DODAVANJE */
@@ -115,6 +123,31 @@ public class OfferControllerIntegrationTest {
 		// uklanjamo dodatu kategoriju
 		offerService.delete(offer.getID());
 	}
+	
+	/* DODAVANJE */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOfferForbidden() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(20l, "naslov", "opis", 0.0, 50, 50.0, 50.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+		 
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size , offers.size()); // mora biti jedan vise slog sada nego pre
+		 
+	}
 
 	/* BRISANJE */
 	@Test
@@ -139,6 +172,30 @@ public class OfferControllerIntegrationTest {
 		// mora biti jedan manje slog sada nego pre
 		assertEquals(size - 1, offerService.listAll().size());
 	}
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteOfferForbidden() throws Exception {
+
+		Long id = 1L;
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", ADMIN_PASSWORD));
+
+		int size = offerService.listAll().size();
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+		// poziv REST servisa za brisanje
+		ResponseEntity<Void> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/6",
+				HttpMethod.DELETE, httpEntity, Void.class);
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+
+		// mora biti jedan manje slog sada nego pre
+		assertEquals(size , offerService.listAll().size());
+	}
+	
+
 
 	/* IZMENA */
 	@Test
@@ -170,6 +227,30 @@ public class OfferControllerIntegrationTest {
 		offerdb.setTitle(OFFER_TITLE_DB);
 		offerdb.setDescription(OFFER_DESCRIPTION_DB);
 		offerService.save(offerdb);
+	}
+	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOfferForbidden() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login("kor1@nesto.com", ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, "naslov", "opis", 0.0, 0, 40.0, 40.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+		 
+
+		 
 	}
 
 	@Test
@@ -290,13 +371,146 @@ public class OfferControllerIntegrationTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSaveOffer_DescriptionAndTitleAreEmpty() throws Exception {
+	public void testSaveOffer_TitleNull() throws Exception {
 		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
-				new OfferDTO(21l, "", "", 0.0, 50, 50.0, 50.0, "novi sad"), headers);
+				new OfferDTO(21l, null, "ovo je neki description", 0.0, 50, 50.0, 50.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_DescriptionNull() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, "ovo je neki naslov", null, 0.0, 50, 50.0, 50.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_Placenull() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, "ovo je naslov", "ovo je opis", 0.0, 50, 50.0, 50.0, ""), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_DescriptionAndTitleArenull() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, null, null, 0.0, 50, 50.0, 50.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_PlaceAndTitleAreNull() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, "novi naslov", null, 0.0, 50, 50.0, 50.0, null), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_DescriptionAndPlaceAreNull() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, "naslov ponude", "", 0.0, 50, 50.0, 50.0, ""), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_DescriptionAndTitleAndPlaceAreNull() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, null, null, 0.0, 50, 50.0, 50.0, ""), headers);
 
 		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
 				HttpMethod.POST, httpEntity, OfferDTO.class);
@@ -313,13 +527,13 @@ public class OfferControllerIntegrationTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testUpdateOffer_PlaceAndTitleAreEmpty() throws Exception {
+	public void testUpdateOffer_TitleNull() throws Exception {
 
 		login(ADMIN_EMAIL, ADMIN_PASSWORD);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
-				new OfferDTO(ID_OFFER, "", "opis", 0.0, 0, 40.0, 40.0, ""), headers);
+				new OfferDTO(ID_OFFER, null, "opis", 0.0, 0, 40.0, 40.0, "novi sad"), headers);
 
 		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
 				HttpMethod.PUT, httpEntity, OfferDTO.class);
@@ -330,6 +544,128 @@ public class OfferControllerIntegrationTest {
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
 	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_DescriptionNull() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, "naslov", null, 0.0, 0, 40.0, 40.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_PlaceNull() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, "naslov", "opis", 0.0, 0, 40.0, 40.0, null), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	
+	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_PlaceAndTitleAreNull() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, null, "opis", 0.0, 0, 40.0, 40.0, null), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_PlaceAndDescriptionArenull() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, "naslov", null, 0.0, 0, 40.0, 40.0, null), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_DesctiptionAndTitleArenull() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, null, null, 0.0, 0, 40.0, 40.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_DesctiptionAndTitleAndPlaceArenull() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER,null, null, 0.0, 0, 40.0, 40.0, null), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
 
 	@Test
 	public void filter1() {
@@ -363,6 +699,307 @@ public class OfferControllerIntegrationTest {
 		assertEquals(result.getStatusCode(), HttpStatus.OK);
 		assertEquals(2, result.getBody().getContent().size());
 		
+	}
+	
+	
+	/*Neuspesno dodavanje i izmena kada su unete vrednosti null*/
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_TitleEmpty() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, "", "ovo je neki description", 0.0, 50, 50.0, 50.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_DescriptionEmpty() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, "ovo je neki naslov", "", 0.0, 50, 50.0, 50.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_PlaceEmpty() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, "ovo je naslov", "ovo je opis", 0.0, 50, 50.0, 50.0, ""), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_DescriptionAndTitleAreEmpty() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, "", "", 0.0, 50, 50.0, 50.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_PlaceAndTitleAreEmpty() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, "novi naslov", "", 0.0, 50, 50.0, 50.0, ""), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_DescriptionAndPlaceAreEmpty() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, "naslov ponude", "", 0.0, 50, 50.0, 50.0, ""), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSaveOffer_DescriptionAndTitleAndPlaceAreEmpty() throws Exception {
+		int size = offerService.listAll().size(); // broj slogova pre ubacivanja novog
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(21l, "", "", 0.0, 50, 50.0, 50.0, ""), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.POST, httpEntity, OfferDTO.class);
+
+		// provera odgovora servera
+		OfferDTO offer = responseEntity.getBody();
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+		List<Offer> offers = offerService.listAll();
+		assertEquals(size, offers.size()); // mora biti jednak kao i pre
+	}
+	
+	/*NEUSPESNA IZMENA */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_TitleEmpty() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, "", "opis", 0.0, 0, 40.0, 40.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_DescriptionEmpty() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, "naslov", "", 0.0, 0, 40.0, 40.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_PlaceEmpty() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, "naslov", "opis", 0.0, 0, 40.0, 40.0, ""), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	
+	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_PlaceAndTitleAreEmpty() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, "", "opis", 0.0, 0, 40.0, 40.0, ""), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_PlaceAndDescriptionAreEmpty() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, "naslov", "", 0.0, 0, 40.0, 40.0, ""), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_DesctiptionAndTitleAreEmpty() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, "", "", 0.0, 0, 40.0, 40.0, "novi sad"), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateOffer_DesctiptionAndTitleAndPlaceAreEmpty() throws Exception {
+
+		login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+				new OfferDTO(ID_OFFER, "", "", 0.0, 0, 40.0, 40.0, ""), headers);
+
+		ResponseEntity<OfferDTO> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/offers/1",
+				HttpMethod.PUT, httpEntity, OfferDTO.class);
+
+		OfferDTO offer = responseEntity.getBody();
+
+		// provera odgovora servera
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
 	
 }

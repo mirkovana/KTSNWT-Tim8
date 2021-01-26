@@ -39,12 +39,14 @@ export class CommentService{
     }
 
     createComment(offerId: number, text: string, image: Blob){
+        let bear  = localStorage.getItem("token");
+        let headers1: HttpHeaders = new HttpHeaders({"Authorization": "Bearer " + bear})
         const data = new FormData();
         console.log(text + " tekst ");
         data.append("text", text);
         data.append("image", image)
-        data.append("offerId", "" + offerId)
-        return this.http.post(this.url, data, {headers: this.headers});
+        data.append("offerId", "" + localStorage.getItem('offerId'))
+        return this.http.post(this.url, data, {headers: headers1});
     }
 
     deleteComment(commentId: number){

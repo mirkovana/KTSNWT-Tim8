@@ -24,3 +24,17 @@ export class OfferImagePage {
         this.content = offerImages;
     }
 }
+
+export class Page1 {
+    content: OfferImage[];
+    totalElements: number;
+    totalPages: number;
+
+    constructor(content, totalEl, totalP){
+        this.content = content;
+        this.totalElements = totalEl;
+        this.totalPages = totalP;
+    }
+
+      
+}
