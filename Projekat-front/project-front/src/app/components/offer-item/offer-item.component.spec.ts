@@ -46,6 +46,7 @@ describe('OfferItemComponent', () => {
     const debugElement = fixture.debugElement.query(By.css('a.view-on-map'))
     let button = fixture.debugElement.nativeElement.querySelector('a.view-on-map');
     button.click();
+    spyOn(component, 'viewOnMap');
     fixture.whenStable().then(() => {
       expect(component.viewOnMap).toHaveBeenCalled();
       expect(offerService.offerChosenEvent.next).toHaveBeenCalled();
