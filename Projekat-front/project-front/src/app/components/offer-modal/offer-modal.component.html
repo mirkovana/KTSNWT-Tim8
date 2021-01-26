@@ -1,6 +1,6 @@
 <p-dialog header={{informacije.title}} [(visible)]="displayModal" [style]="{width: '50vw'}" [baseZIndex]="10000">
 
-    <p-button label="Edit" class="editBtn"></p-button>
+    <p-button id="edit" label="Edit" class="editBtn" (click)="edit(informacije.id)"></p-button>
     <!-- ///////////////////////////////////////////////////////// -->
     <!-- <h1 style="text-align:center;">Angular 9 Material Carousel Slider</h1> -->
 

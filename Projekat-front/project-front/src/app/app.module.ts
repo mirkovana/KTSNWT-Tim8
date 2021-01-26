@@ -58,6 +58,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatDialogModule} from '@angular/material/dialog';
 import { AddCategoryComponent } from './components/add-category/add-category.component';
 import { AddSubcategoryComponent } from './components/add-subcategory/add-subcategory.component';
+import { AddOfferImageComponent } from './components/add-offer-image/add-offer-image.component';
 
 @NgModule({
   declarations: [
@@ -89,10 +90,8 @@ import { AddSubcategoryComponent } from './components/add-subcategory/add-subcat
     PostItemComponent,
     AddPostComponent,
     AddCategoryComponent,
-    AddSubcategoryComponent
-
-
-   
+    AddSubcategoryComponent,
+    AddOfferImageComponent
 
   ],
   imports: [
@@ -122,6 +121,7 @@ import { AddSubcategoryComponent } from './components/add-subcategory/add-subcat
     MatSelectModule,
     MatGridListModule,
     MatDialogModule
+    
     
   ],
   providers: [],

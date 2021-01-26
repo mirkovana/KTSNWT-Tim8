@@ -3,7 +3,6 @@ package ktsnwt_tim8.demo.e2e;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
-
 import ktsnwt_tim8.demo.page.HomePage;
 import ktsnwt_tim8.demo.page.LoginPage;
 import ktsnwt_tim8.demo.page.SubscriptionsPage;

@@ -195,42 +195,10 @@ public class OfferImageControllerIntegrationTest {
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
 
-	@Test
-	public void testUpdateDesc() throws Exception {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
-		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
 
-		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-		body.add("offerID", OfferImageConstants.NEW_OFFER_IMAGE_ID);
-		body.add("description", OfferImageConstants.NEW_IMAGE_DESCRIPTION);
-		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
-
-		ResponseEntity<OfferImageDTO> responseEntity = restTemplate.exchange(
-				"http://localhost:" + port + "/api/Offer-images", HttpMethod.PUT, request, OfferImageDTO.class);
-
-		OfferImageDTO ret = responseEntity.getBody();
-
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertNotNull(ret);
-
-		assertEquals(OfferImageConstants.NEW_OFFER_IMAGE_ID, ret.getID());
-
-		assertEquals(OfferImageConstants.NEW_IMAGE_DESCRIPTION, ret.getDescription());
-
-		Pageable paging = PageRequest.of(0, 20);
-		Page<OfferImage> page = service.findAllByOfferID(OfferImageConstants.OFFER_ID, paging);
-		List<OfferImage> list = page.toList();
-
-		assertEquals(OfferImageConstants.NEW_OFFER_IMAGE_ID, list.get(list.size() - 1).getID());
-		assertEquals(OfferImageConstants.NEW_IMAGE_DESCRIPTION, list.get(list.size() - 1).getDescription());
-
-		ret.setDescription(OfferImageConstants.IMAGE_DESCRIPTION);
-		service.updateImageDesc(OfferImageConstants.NEW_OFFER_IMAGE_ID, ret);
-	}
 
 	@Test
-	public void testUpdateDescBadParams() throws Exception {
+	public void testUpdateDescNotAllParams() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
@@ -246,4 +214,62 @@ public class OfferImageControllerIntegrationTest {
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
 
+	@Test
+	public void testUpdateDescNotBadParams() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+		body.add("offerID1231", OfferImageConstants.NEW_OFFER_IMAGE_ID);
+		body.add("descsription12312", OfferImageConstants.NEW_IMAGE_DESCRIPTION);
+		body.add("somethingsadas", OfferImageConstants.IMAGE_ID);
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<OfferImageDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/Offer-images", HttpMethod.PUT, request, OfferImageDTO.class);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+
+	
+	
+	
+	@Test
+	@Transactional
+	public void testUpdateDesc() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+		body.add("offerID", OfferImageConstants.OFFER_ID);
+		body.add("description", OfferImageConstants.NEW_IMAGE_DESCRIPTION);
+		body.add("imageID", OfferImageConstants.IMAGE_ID);
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<OfferImageDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/Offer-images", HttpMethod.PUT, request, OfferImageDTO.class);
+
+		OfferImageDTO ret = responseEntity.getBody();
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertNotNull(ret);
+
+		assertEquals(OfferImageConstants.IMAGE_ID, ret.getID());
+
+		assertEquals(OfferImageConstants.NEW_IMAGE_DESCRIPTION, ret.getDescription());
+
+		Pageable paging = PageRequest.of(0, 20);
+		Page<OfferImage> page = service.findAllByOfferID(OfferImageConstants.OFFER_ID, paging);
+		List<OfferImage> list = page.toList();
+
+		// -1 zbog indeksa niza, -1 zbog brisanja prvog reda tabele
+		assertEquals(OfferImageConstants.IMAGE_ID, list.get(OfferImageConstants.IMAGE_ID.intValue()-2).getID());
+		assertEquals(OfferImageConstants.NEW_IMAGE_DESCRIPTION, list.get(OfferImageConstants.IMAGE_ID.intValue()-2).getDescription());
+
+		ret.setDescription(OfferImageConstants.IMAGE_DESCRIPTION);
+		service.updateImageDesc(OfferImageConstants.OFFER_ID, ret);
+	}
+	
 }

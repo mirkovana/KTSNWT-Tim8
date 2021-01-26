@@ -27,17 +27,7 @@ export class OfferService {
     const body=JSON.stringify(offer);
     console.log(body)
     //console.log("USAAAAAAAAAAAAAAAAAAAAAAAAAAAOOOO")
-    return this.http.post<any>('http://localhost:8080/api/offers/'+idSubcategory, body, {headers: this.headers}).subscribe(
-      (val) => {
-          console.log("POST call successful value returned in body", 
-                      val);
-      },
-      response => {
-          console.log("POST call in error", response);
-      },
-      () => {
-          console.log("The POST observable is now completed.");
-      });
+    return this.http.post<any>('http://localhost:8080/api/offers/'+idSubcategory, body, {headers: this.headers});
       
  }
 

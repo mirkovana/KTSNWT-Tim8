@@ -16,6 +16,11 @@ public class OfferImageDTO {
 		this.description = desc;
 	}
 
+	public OfferImageDTO(String desc, Long id) {
+		this.description = desc;
+		this.ID = id;
+	}
+
 	public OfferImageDTO(Long iD, String description, String imageBase64) {
 		super();
 		ID = iD;

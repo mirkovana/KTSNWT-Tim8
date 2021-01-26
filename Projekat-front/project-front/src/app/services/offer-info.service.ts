@@ -27,7 +27,8 @@ export class OfferInfoService {
   }
 
   getSubscriptions(page, size){
-    return this.http.get<Page>("http://localhost:8080/api/users/getSubscriptions/"+page+"/"+size, { headers: new HttpHeaders().append('Authorization', `Bearer ${this.auth_token}`) });
+    console.log(this.auth_token);
+    return this.http.get<Page>("http://localhost:8080/api/users/getSubscriptions/"+page+"/"+size, { headers: new HttpHeaders().append('Authorization', `Bearer ${ localStorage.getItem('token')}`) });
   }
 
   getOffersPage(pageable: PaginatorPageable){

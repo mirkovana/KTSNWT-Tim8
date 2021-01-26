@@ -11,8 +11,8 @@
                 <li *ngIf="!loggedIn"><a href="#" routerLink="/registration">Registration</a></li>
 
                 <li *ngIf="!loggedIn"><a id="login" href="#" routerLink="/login">Login</a></li>
-                <li><a id="editOffer" href="#" routerLink="/edit-offer">Edit offer</a></li>
-                <li><a id="subs" href="#" routerLink="/subscriptions">Subs</a></li>
+                <!-- <li *ngIf="broj===1"><a id="editOffer" href="#" routerLink="/edit-offer">Edit offer</a></li> -->
+                <li *ngIf="loggedIn && broj=== 2"><a id="subs" href="#" routerLink="/subscriptions">Subs</a></li>
                 <li *ngIf="loggedIn"><a href="#" (click)="logout()">Logout</a></li>
             </ul>
         </nav>

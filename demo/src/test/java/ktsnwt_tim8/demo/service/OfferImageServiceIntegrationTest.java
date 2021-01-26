@@ -115,11 +115,10 @@ public class OfferImageServiceIntegrationTest {
 	}
 
 	@Test
+	@Transactional
 	public void updateImageDesc() throws Exception {
-		OfferImageDTO dto = new OfferImageDTO(OfferImageConstants.NEW_OFFER_IMAGE_ID,
+		OfferImageDTO dto = new OfferImageDTO(OfferImageConstants.IMAGE_ID,
 				OfferImageConstants.NEW_IMAGE_DESCRIPTION, OfferImageConstants.IMAGE_BASE_64);
-		FileInputStream inputFile = new FileInputStream(OfferImageConstants.IMAGE_PATH);
-		MockMultipartFile file = new MockMultipartFile("file", "NameOfTheFile", "multipart/form-data", inputFile);
 		OfferImage offer = offerImageService.updateImageDesc(OfferImageConstants.OFFER_ID, dto);
 
 		assertEquals(OfferImageConstants.NEW_IMAGE_DESCRIPTION, offer.getDescription());
@@ -127,20 +126,24 @@ public class OfferImageServiceIntegrationTest {
 
 	@Test(expected = java.lang.Exception.class)
 	public void updateImageDescBadDescripiton() throws Exception {
-		OfferImageDTO dto = new OfferImageDTO(OfferImageConstants.NEW_OFFER_IMAGE_ID,
+		OfferImageDTO dto = new OfferImageDTO(OfferImageConstants.IMAGE_ID,
 				OfferImageConstants.BAD_IMAGE_DESCRIPTION, OfferImageConstants.IMAGE_BASE_64);
-		FileInputStream inputFile = new FileInputStream(OfferImageConstants.IMAGE_PATH);
-		MockMultipartFile file = new MockMultipartFile("file", "NameOfTheFile", "multipart/form-data", inputFile);
 		OfferImage offer = offerImageService.updateImageDesc(OfferImageConstants.OFFER_ID, dto);
-
+		
 	}
 
 	@Test(expected = java.lang.Exception.class)
 	public void updateImageDescBadID() throws Exception {
-		OfferImageDTO dto = new OfferImageDTO(OfferImageConstants.NEW_OFFER_IMAGE_ID,
+		OfferImageDTO dto = new OfferImageDTO(OfferImageConstants.IMAGE_ID,
 				OfferImageConstants.NEW_IMAGE_DESCRIPTION, OfferImageConstants.IMAGE_BASE_64);
-		FileInputStream inputFile = new FileInputStream(OfferImageConstants.IMAGE_PATH);
-		MockMultipartFile file = new MockMultipartFile("file", "NameOfTheFile", "multipart/form-data", inputFile);
+		OfferImage offer = offerImageService.updateImageDesc(OfferImageConstants.BAD_OFFER_ID, dto);
+
+	}
+	
+	@Test(expected = java.lang.Exception.class)
+	public void updateImageDescBadImageID() throws Exception {
+		OfferImageDTO dto = new OfferImageDTO(OfferImageConstants.OFFER_IMAGE_BAD_ID,
+				OfferImageConstants.NEW_IMAGE_DESCRIPTION, OfferImageConstants.IMAGE_BASE_64);
 		OfferImage offer = offerImageService.updateImageDesc(OfferImageConstants.BAD_OFFER_ID, dto);
 
 	}

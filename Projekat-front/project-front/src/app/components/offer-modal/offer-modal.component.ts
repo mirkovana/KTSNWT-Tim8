@@ -11,6 +11,7 @@ import { MatCarousel, MatCarouselComponent } from '@ngmodule/material-carousel';
 import { OfferInfoService } from 'src/app/services/offer-info.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { EventEmitter } from 'events';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -26,8 +27,8 @@ export class OfferModalComponent implements OnInit {//OnChanges,
   displayModal: boolean;
   starRating: number = 0;
   oldRating: number = 0;
-  toastColor: string; 
-  uslov:boolean = false; //za toast
+  toastColor: string;
+  uslov: boolean = false; //za toast
   subSuccess: string = "///"; //Tekst poruke toast-a
 
 
@@ -39,15 +40,16 @@ export class OfferModalComponent implements OnInit {//OnChanges,
     private sanitizer: DomSanitizer,
     private offerService: OfferInfoService,
     private subService: SubscriptionService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router
   ) { };
 
   ngOnInit() {
-    console.log("ON INIT" + " " + this.nesto);
+    // console.log("ON INIT" + " " + this.nesto);
   }
-  rate(id: number) {
+  // rate(id: number) {
 
-  }
+  // }
 
   ngOnChanges(changes: SimpleChange) {
 
@@ -90,5 +92,9 @@ export class OfferModalComponent implements OnInit {//OnChanges,
 
   }
 
+  edit(offerID: number) {
+    this.router.navigate(['edit-offer/'], { queryParams: { offerID: offerID } });
+
+  }
 
 }

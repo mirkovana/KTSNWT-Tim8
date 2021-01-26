@@ -25,13 +25,16 @@ public class HomePage {
 
 	@FindBy(xpath = "//img[contains(@title,'pozoriste jagodina')]")
 	private WebElement marker;
-	
+
 	@FindBy(xpath = "//img[contains(@title,'Uzice')]")
 	private WebElement markerUzice;
-	
+
 	@FindBy(xpath = "//img[contains(@title,'Srpsko narodno pozoriste')]")
 	private WebElement badMarker;
-	
+
+	@FindBy(xpath = "//img[contains(@title,'Madjarsko pozoriste')]")
+	private WebElement madjarskoMarker;
+
 	@FindBy(xpath = "//img[contains(@title,'Kraljevo')]")
 	private WebElement kraljevoMarker;
 
@@ -43,6 +46,9 @@ public class HomePage {
 
 	@FindBy(xpath = "//*[@class=\"green-snackbar\"]")
 	private WebElement greenToast;
+
+	@FindBy(xpath = "//*[@id=\"edit\"]")
+	private WebElement editBtn;
 
 	public HomePage() {
 
@@ -58,13 +64,11 @@ public class HomePage {
 	}
 
 	public void ensureIsDisplayedRedToast() {
-		(new WebDriverWait(driver, 30))
-				.until(ExpectedConditions.elementToBeClickable(By.className("red-snackbar")));
+		(new WebDriverWait(driver, 30)).until(ExpectedConditions.elementToBeClickable(By.className("red-snackbar")));
 	}
 
 	public void ensureIsDisplayedGreenToast() {
-		(new WebDriverWait(driver, 30))
-				.until(ExpectedConditions.elementToBeClickable(By.className("green-snackbar")));
+		(new WebDriverWait(driver, 30)).until(ExpectedConditions.elementToBeClickable(By.className("green-snackbar")));
 	}
 
 	public WebElement getMap() {
@@ -110,5 +114,13 @@ public class HomePage {
 	public WebElement getKraljevoMarker() {
 		return kraljevoMarker;
 	}
-	
+
+	public WebElement getMadjarskoMarker() {
+		return madjarskoMarker;
+	}
+
+	public WebElement getEditBtn() {
+		return editBtn;
+	}
+
 }

@@ -70,6 +70,10 @@ public class OfferImageService {
 		if (imageDTO.getDescription().isEmpty()) {
 			throw new Exception("Description cannot be empty.");
 		}
+		
+		if(!imageDTO.getDescription().matches("[a-zA-Z0-9., ]*")) {
+			throw new Exception("Description can only contains letters and numbers.");
+		}
 
 		int randNum = random.nextInt(100000);
 
@@ -133,11 +137,26 @@ public class OfferImageService {
 		if (imageDTO.getDescription().isEmpty()) {
 			throw new Exception("Description cannot be empty.");
 		}
+		if(!imageDTO.getDescription().matches("[a-zA-Z0-9., ]*")) {
+			throw new Exception("Description can only contains letters and numbers.");
+		}
 
-		Optional<OfferImage> offerImage = repo.findById(offerID);
+		Optional<OfferImage> offerImage = repo.findById(imageDTO.getID());
 
 		if (!offerImage.isPresent()) {
 			throw new Exception("Offer image with given id does not exist.");
+		}
+		boolean uslov = true;
+		Offer offer = offerRepo.findOneByID(offerID);
+		Set<OfferImage>images = offer.getImages();
+		for (Iterator<OfferImage> iterator = images.iterator(); iterator.hasNext();) {
+			OfferImage img = iterator.next();
+			if (img.getID().equals(imageDTO.getID())) {
+				uslov = false;
+			}
+		}
+		if(uslov) {
+			throw new Exception("Offer image with given id does not exist in offer.");
 		}
 
 		OfferImage o;
