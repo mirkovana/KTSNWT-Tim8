@@ -103,7 +103,7 @@ describe('CommentEditComponent', () => {
     //klikni na dugme?
     component.submit();
     tick();
-    expect(commentService.updateComment).toHaveBeenCalled();
+    expect(commentService.updateComment).toHaveBeenCalledWith(1, "updated comment", new Blob());
     expect(component.commentEdited.emit).toHaveBeenCalled();
     expect(component.done.emit).toHaveBeenCalledWith("Comment edited.");
     
