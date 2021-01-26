@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { doesNotReject } from 'assert';
 import { Offer } from 'src/app/models/Offer';
 import { OfferInfoService } from 'src/app/services/offer-info.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
@@ -83,6 +84,7 @@ export class SubscriptionTableComponent implements AfterViewInit, OnInit {
       this.dataSource = new MatTableDataSource<DisplayOffer>(this.display);
       console.log("OVO : " + this.paginator.pageIndex);
       this.dataSource.paginator = this.paginator;
+      
     })
 
   }
