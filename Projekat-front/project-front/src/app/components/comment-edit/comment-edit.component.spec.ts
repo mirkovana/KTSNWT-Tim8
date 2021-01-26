@@ -17,7 +17,7 @@ describe('CommentEditComponent', () => {
   beforeEach(async () => {
 
     let commentServiceMock = {
-      createComment: jasmine.createSpy("createComment").and.returnValue(of("")),
+      createComment: jasmine.createSpy("createComment").and.returnValue(of("")),    // these need to be set
       updateComment: jasmine.createSpy("updateComment").and.returnValue(of(""))
     }
 

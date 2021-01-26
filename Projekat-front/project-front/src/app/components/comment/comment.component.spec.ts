@@ -100,7 +100,7 @@ describe('CommentComponent', () => {
     "user@gmail.com", new Date(), true, false, null); // user can edit
     fixture.detectChanges();
     component.openDialog();
-    expect(commentService.deleteComment).toHaveBeenCalled();
+    expect(commentService.deleteComment).toHaveBeenCalledWith(1);
   }))
 
 });
