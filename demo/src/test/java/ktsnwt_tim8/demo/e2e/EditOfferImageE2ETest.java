@@ -2,8 +2,20 @@ package ktsnwt_tim8.demo.e2e;
 
 import static org.junit.Assert.assertEquals;
 
+import java.awt.AWTException;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.CopyOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+import javax.transaction.Transactional;
+import javax.xml.transform.Source;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -11,6 +23,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.springframework.test.annotation.Rollback;
+
+import com.google.common.io.Files;
 
 import ktsnwt_tim8.demo.page.AddOfferImagePage;
 import ktsnwt_tim8.demo.page.EditOfferPage;
@@ -45,10 +60,10 @@ public class EditOfferImageE2ETest {
 		addOfferPage = PageFactory.initElements(driver, AddOfferImagePage.class);
 	}
 
-//	@After
-//	public void tearDown() {
-//		driver.quit();
-//	}
+	@After
+	public void tearDown() {
+		driver.quit();
+	}
 
 	public void login() {
 		driver.get("http://localhost:4200/login");
@@ -113,7 +128,9 @@ public class EditOfferImageE2ETest {
 	}
 
 	@Test
-	public void deleteOfferImage() throws InterruptedException {
+//	@Rollback
+//	@Transactional
+	public void deleteOfferImage() throws InterruptedException, AWTException {
 
 		login();
 
@@ -136,9 +153,31 @@ public class EditOfferImageE2ETest {
 
 		assertEquals(inputs.size() - 1, inputs1.size());
 
+		// PONOVNO DODAVANJE SLIKE
+
+		File file = new File("src/main/resources/petrovaradin.jpg");
+		URI uri = file.toURI();
+		file = new File(uri);
+		String path = file.getAbsolutePath();
+
+		File file1 = new File("src/test/resources");
+		URI uri1 = file1.toURI();
+		file = new File(uri1);
+		String path1 = file1.getAbsolutePath();
+
+		try {
+			copyFile(path, path1);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	
+	public static void copyFile(String from, String to) throws IOException {
+		Path src = Paths.get(from);
+		Path dest = Paths.get(to);
+		Files.copy(src.toFile(), dest.toFile());
+	}
+
 	private void justWait() throws InterruptedException {
 		synchronized (driver) {
 			driver.wait(1000);

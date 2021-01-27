@@ -56,6 +56,7 @@ INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subc
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4.6,'Opis spomenika sadsa asd asd asadasdasd goierhoghe eijrgo iehogiherio gheriohg eioheriohg erohg herhogh eoirhgi e junaku', 20.390551, 45.382233, 2300,'Spomenik neznanom junaku',5, 'Zrenjanin');
 
 INSERT INTO USER_OFFER (user_id, offer_id) values (2, 1);
+INSERT INTO USER_OFFER (user_id, offer_id) values (2, 10);
 
 
 

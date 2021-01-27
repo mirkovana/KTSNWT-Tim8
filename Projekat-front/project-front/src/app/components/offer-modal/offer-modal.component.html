@@ -1,6 +1,6 @@
 <p-dialog header={{informacije.title}} [(visible)]="displayModal" [style]="{width: '50vw'}" [baseZIndex]="10000">
 
-    <p-button id="edit" label="Edit" class="editBtn" (click)="edit(informacije.id)"></p-button>
+    <p-button *ngIf="loggedIn && broj=== 1" id="edit" label="Edit" class="editBtn" (click)="edit(informacije.id)"></p-button>
     <!-- ///////////////////////////////////////////////////////// -->
     <!-- <h1 style="text-align:center;">Angular 9 Material Carousel Slider</h1> -->
 
@@ -19,7 +19,7 @@
             <div class="starsRating"> <img src="assets/img/star1.png"><b>{{informacije.avgRating| number:'1.1-1'}}/10, voted: {{informacije.nmbOfRatings}}
                     people</b></div>
 
-            <p-button id="subBtn" label="Subscribe" class="subBtn" (click)="subscribe(informacije)"></p-button>
+            <p-button *ngIf="loggedIn && broj=== 2" id="subBtn" label="Subscribe" class="subBtn" (click)="subscribe(informacije)"></p-button>
             <app-toast id="toast" [succ]="subSuccess" [color]="toastColor" [cond]="uslov"></app-toast>
             <!--  -->
         </div>

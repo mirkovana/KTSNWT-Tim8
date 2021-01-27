@@ -87,11 +87,12 @@ public class SubscriptionsE2ETest {
 		login();
 
 		justWait(1000);
+		
 		homePage.getSubs().click();
-
-		assertEquals("http://localhost:4200/subscriptions", driver.getCurrentUrl());
-
+		
 		justWait(1000);
+		
+		assertEquals("http://localhost:4200/subscriptions", driver.getCurrentUrl());
 
 		subPage.ensureTabelaIsDisplayed();
 
@@ -157,8 +158,11 @@ public class SubscriptionsE2ETest {
 		login();
 
 		justWait(1000);
+		
 		homePage.getSubs().click();
-
+		
+		justWait(1000);
+		
 		assertEquals("http://localhost:4200/subscriptions", driver.getCurrentUrl());
 
 		justWait(1000);
@@ -167,7 +171,8 @@ public class SubscriptionsE2ETest {
 
 		List<WebElement> subs = driver.findElements(By.tagName("tr"));
 
-		subPage.getUnsubOne().click();
+		subPage.getUnsubTen().click();
+		justWait(1000);
 
 		List<WebElement> subs1 = driver.findElements(By.tagName("tr"));
 
@@ -181,6 +186,7 @@ public class SubscriptionsE2ETest {
 
 		justWait(1000);
 		homePage.getSubs().click();
+		justWait(1000);
 
 		assertEquals("http://localhost:4200/subscriptions", driver.getCurrentUrl());
 
@@ -191,7 +197,7 @@ public class SubscriptionsE2ETest {
 		List<WebElement> subs = driver.findElements(By.tagName("tr"));
 
 		subPage.getUnsubOne().click();
-
+		justWait(1000);
 		List<WebElement> subs1 = driver.findElements(By.tagName("tr"));
 
 		assertEquals(subs.size() - 1, subs1.size());
@@ -250,6 +256,8 @@ public class SubscriptionsE2ETest {
 		assertEquals(subs.size() + 1, subs1.size());
 
 		subPage.getUnsubFive().click();
+		
+		justWait(1000);
 
 		List<WebElement> subs2 = driver.findElements(By.tagName("tr"));
 

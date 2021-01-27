@@ -29,6 +29,9 @@ public class SubscriptionsPage {
 	@FindBy(xpath = "//*[@id=\"5\"]")
 	private WebElement unsubFive;
 
+	@FindBy(xpath = "//*[@id=\"10\"]")
+	private WebElement unsubTen;
+
 	@FindBy(xpath = "//*[@id=\"Kraljevo\"]")
 	private WebElement kraveljnoBtn;
 
@@ -70,6 +73,10 @@ public class SubscriptionsPage {
 
 	public WebElement getKraveljnoBtn() {
 		return kraveljnoBtn;
+	}
+
+	public WebElement getUnsubTen() {
+		return unsubTen;
 	}
 
 }

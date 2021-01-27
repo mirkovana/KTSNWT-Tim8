@@ -7,6 +7,8 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 import org.junit.After;
@@ -85,8 +87,13 @@ public class AddOfferImageE2ETest {
 
 		Robot rb = new Robot();
 
-		StringSelection str = new StringSelection(
-				"D:\\FTN\\Cetvrta godina\\KTS\\Projekat\\KTSNWT-Tim8\\demo\\src\\main\\resources\\images\\beforeHouseWasDisco.jpg");
+//		
+		File file = new File("src/main/resources/images/beforeHouseWasDisco.jpg");
+    	URI    uri  = file.toURI();
+    	file = new File(uri);
+    	String path = file.getAbsolutePath();
+    	StringSelection str = new StringSelection(path);
+		
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
 
 		rb.keyPress(KeyEvent.VK_CONTROL);
@@ -107,8 +114,12 @@ public class AddOfferImageE2ETest {
 		justWait();
 
 		addOfferPage.ensureIsDisplayedGreenToast();
+		
+		justWait();
 
 		addOfferPage.getEditOffer().click();
+		
+		justWait();
 
 		List<WebElement> inputs1 = driver.findElements(By.tagName("tr"));
 

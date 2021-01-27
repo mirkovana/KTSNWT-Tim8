@@ -23,14 +23,14 @@ export class OfferModalComponent implements OnInit {//OnChanges,
 
   @Input() nesto: boolean; // uslov
   @Input() informacije: Offer; //Offer koju prikazujemo
-
+  loggedIn = localStorage.getItem('username');
   displayModal: boolean;
   starRating: number = 0;
   oldRating: number = 0;
   toastColor: string;
   uslov: boolean = false; //za toast
   subSuccess: string = "///"; //Tekst poruke toast-a
-
+  broj:number;
 
   offerImages: OfferImagePage = new OfferImagePage(0, 0, []);
 
@@ -45,7 +45,11 @@ export class OfferModalComponent implements OnInit {//OnChanges,
   ) { };
 
   ngOnInit() {
-    // console.log("ON INIT" + " " + this.nesto);
+    if(this.loggedIn){
+      console.log("ulogovan je neko");
+      if(this.loggedIn==="admin@nesto.com"){this.broj=1;} //kad je ulogovan admin
+      else{this.broj=2;} //kad je ulogovan korisnik koji nije admin
+    } 
   }
   // rate(id: number) {
 

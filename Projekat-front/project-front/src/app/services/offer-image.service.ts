@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { OfferImagePage } from '../models/OfferImage';
+import { OfferImagePage, Page1 } from '../models/OfferImage';
 // import { auth_token}  from '../models/app.constants'
 import { auth_token}  from '../models/app.constants';
 import { PaginatorPageable } from 'src/app/models/PaginatorPageable';

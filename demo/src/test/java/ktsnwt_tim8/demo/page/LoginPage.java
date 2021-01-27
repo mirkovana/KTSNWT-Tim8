@@ -11,7 +11,7 @@ public class LoginPage {
 
 	private WebDriver driver;
 
-    @FindBy(xpath = "//*[@id=\"email\"]")
+	@FindBy(xpath = "//*[@id=\"email\"]")
 	private WebElement username;
 
 	@FindBy(xpath = "//*[@id=\"pass\"]")
@@ -19,6 +19,9 @@ public class LoginPage {
 
 	@FindBy(xpath = "//*[@id=\"loginBtn\"]")
 	private WebElement loginBtn;
+
+	@FindBy(xpath = "//*[@id=\"home\"]")
+	private WebElement homeBtn;
 
 	public LoginPage() {
 	}
@@ -45,6 +48,10 @@ public class LoginPage {
 
 	public WebElement getLoginBtn() {
 		return loginBtn;
+	}
+
+	public WebElement getHomeBtn() {
+		return homeBtn;
 	}
 
 }
