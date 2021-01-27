@@ -38,112 +38,112 @@ public class LoginE2ETest {
         }
     }
 	
-//	@Test
-//	public void LoginTestSuccess() throws InterruptedException {
-//
-//		driver.get("http://localhost:4200/login");
-//
-//		justWait(1000);
-//
-//		loginPage.ensureIsDisplayedEmail();
-//		loginPage.getEmail().sendKeys("admin@nesto.com");
-//		loginPage.getPassword().sendKeys("1");
-//		loginPage.getLoginBtn().click();
-//		justWait(2000);
-//		loginPage.ensureIsNotVisibleLoginBtn();
-//		loginPage.ensureIsNotVisibleEmail();
-//
-//		assertEquals("http://localhost:4200/home", driver.getCurrentUrl());
-//	}
+	@Test
+	public void LoginTestSuccess() throws InterruptedException {
+
+		driver.get("http://localhost:4200/login");
+
+		justWait(1000);
+
+		loginPage.ensureIsDisplayedEmail();
+		loginPage.getEmail().sendKeys("admin@nesto.com");
+		loginPage.getPassword().sendKeys("1");
+		loginPage.getLoginBtn().click();
+		justWait(2000);
+		loginPage.ensureIsNotVisibleLoginBtn();
+		loginPage.ensureIsNotVisibleEmail();
+
+		assertEquals("http://localhost:4200/home", driver.getCurrentUrl());
+	}
 	
-//	@Test
-//	public void LoginTestEmailDNE() throws InterruptedException {
-//
-//		driver.get("http://localhost:4200/login");
-//
-//		justWait(1000);
-//
-//		loginPage.ensureIsDisplayedEmail();
-//		loginPage.getEmail().sendKeys("fff@nesto.com");
-//		loginPage.getPassword().sendKeys("1");
-//		loginPage.getLoginBtn().click();
-//		justWait(2000);
-//		loginPage.ensureIsDisplayedEmail();
-//
-//		assertEquals("http://localhost:4200/login", driver.getCurrentUrl());
-//	}
-//	
-//	@Test
-//	public void LoginTestPasswordDNE() throws InterruptedException {
-//
-//		driver.get("http://localhost:4200/login");
-//
-//		justWait(1000);
-//
-//		loginPage.ensureIsDisplayedEmail();
-//		loginPage.getEmail().sendKeys("admin@nesto.com");
-//		loginPage.getPassword().sendKeys("5555551");
-//		loginPage.getLoginBtn().click();
-//		justWait(2000);
-//		loginPage.ensureIsDisplayedEmail();
-//
-//		assertEquals("http://localhost:4200/login", driver.getCurrentUrl());
-//	}
+	@Test
+	public void LoginTestEmailDNE() throws InterruptedException {
+
+		driver.get("http://localhost:4200/login");
+
+		justWait(1000);
+
+		loginPage.ensureIsDisplayedEmail();
+		loginPage.getEmail().sendKeys("fff@nesto.com");
+		loginPage.getPassword().sendKeys("1");
+		loginPage.getLoginBtn().click();
+		justWait(2000);
+		loginPage.ensureIsDisplayedEmail();
+
+		assertEquals("http://localhost:4200/login", driver.getCurrentUrl());
+	}
 	
-//	@Test
-//	public void LoginTestEmailEmpty() throws InterruptedException {
-//
-//		driver.get("http://localhost:4200/login");
-//
-//		justWait(1000);
-//
-//		loginPage.ensureIsDisplayedEmail();
-//		loginPage.getEmail().sendKeys("");
-//		loginPage.getPassword().sendKeys("5555551");
-//		loginPage.getLoginBtn().click();
-//		justWait(2000);
-//		loginPage.ensureIsDisplayedEmail();
-//
-//		assertTrue(loginPage.messageErrorDisplayed("usernameReqLogin") );
-//		assertEquals("http://localhost:4200/login", driver.getCurrentUrl());
-//	}
-//	
-//	@Test
-//	public void LoginTestPasswordEmpty() throws InterruptedException {
-//
-//		driver.get("http://localhost:4200/login");
-//
-//		justWait(1000);
-//
-//		loginPage.ensureIsDisplayedEmail();
-//		loginPage.getEmail().sendKeys("admin@nesto.com");
-//		loginPage.getPassword().sendKeys("");
-//		loginPage.getLoginBtn().click();
-//		justWait(2000);
-//		loginPage.ensureIsDisplayedEmail();
-//
-//		assertTrue(loginPage.messageErrorDisplayed("passwordReqLogin") );
-//		assertEquals("http://localhost:4200/login", driver.getCurrentUrl());
-//	}
-//	
-//	@Test
-//	public void LoginTestEmailAndPasswordEmpty() throws InterruptedException {
-//
-//		driver.get("http://localhost:4200/login");
-//
-//		justWait(1000);
-//
-//		loginPage.ensureIsDisplayedEmail();
-//		loginPage.getEmail().sendKeys("");
-//		loginPage.getPassword().sendKeys("");
-//		loginPage.getLoginBtn().click();
-//		justWait(2000);
-//		loginPage.ensureIsDisplayedEmail();
-//
-//		assertTrue(loginPage.messageErrorDisplayed("usernameReqLogin") );
-//		assertTrue(loginPage.messageErrorDisplayed("passwordReqLogin") );
-//		assertEquals("http://localhost:4200/login", driver.getCurrentUrl());
-//	}
+	@Test
+	public void LoginTestPasswordDNE() throws InterruptedException {
+
+		driver.get("http://localhost:4200/login");
+
+		justWait(1000);
+
+		loginPage.ensureIsDisplayedEmail();
+		loginPage.getEmail().sendKeys("admin@nesto.com");
+		loginPage.getPassword().sendKeys("5555551");
+		loginPage.getLoginBtn().click();
+		justWait(2000);
+		loginPage.ensureIsDisplayedEmail();
+
+		assertEquals("http://localhost:4200/login", driver.getCurrentUrl());
+	}
+	
+	@Test
+	public void LoginTestEmailEmpty() throws InterruptedException {
+
+		driver.get("http://localhost:4200/login");
+
+		justWait(1000);
+
+		loginPage.ensureIsDisplayedEmail();
+		loginPage.getEmail().sendKeys("");
+		loginPage.getPassword().sendKeys("5555551");
+		loginPage.getLoginBtn().click();
+		justWait(2000);
+		loginPage.ensureIsDisplayedEmail();
+
+		assertTrue(loginPage.messageErrorDisplayed("usernameReqLogin") );
+		assertEquals("http://localhost:4200/login", driver.getCurrentUrl());
+	}
+	
+	@Test
+	public void LoginTestPasswordEmpty() throws InterruptedException {
+
+		driver.get("http://localhost:4200/login");
+
+		justWait(1000);
+
+		loginPage.ensureIsDisplayedEmail();
+		loginPage.getEmail().sendKeys("admin@nesto.com");
+		loginPage.getPassword().sendKeys("");
+		loginPage.getLoginBtn().click();
+		justWait(2000);
+		loginPage.ensureIsDisplayedEmail();
+
+		assertTrue(loginPage.messageErrorDisplayed("passwordReqLogin") );
+		assertEquals("http://localhost:4200/login", driver.getCurrentUrl());
+	}
+	
+	@Test
+	public void LoginTestEmailAndPasswordEmpty() throws InterruptedException {
+
+		driver.get("http://localhost:4200/login");
+
+		justWait(1000);
+
+		loginPage.ensureIsDisplayedEmail();
+		loginPage.getEmail().sendKeys("");
+		loginPage.getPassword().sendKeys("");
+		loginPage.getLoginBtn().click();
+		justWait(2000);
+		loginPage.ensureIsDisplayedEmail();
+
+		assertTrue(loginPage.messageErrorDisplayed("usernameReqLogin") );
+		assertTrue(loginPage.messageErrorDisplayed("passwordReqLogin") );
+		assertEquals("http://localhost:4200/login", driver.getCurrentUrl());
+	}
 	
 	@Test
 	public void LoginTestEmailNotValidForm() throws InterruptedException {

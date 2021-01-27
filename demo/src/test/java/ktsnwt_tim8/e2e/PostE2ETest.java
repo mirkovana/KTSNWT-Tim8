@@ -56,92 +56,92 @@ public class PostE2ETest {
        
     }
 
-//	 @Test
-//	public void NewPostTestSuccess() throws InterruptedException {
-//
-//	 
-//		logIn();
-//		chooseOffer();
-//		justWait(1000);
-// 
-//
-//		postPage.getAddPostDialog().click();
-//		postPage.getPostTitle().sendKeys("ovo je novi naziv za post");
-//		postPage.getPostContent().sendKeys("neki kontent!!!!!");
-//		postPage.getAddPost().click();
-//		justWait(1000);
-//		postPage.ensureIsNotVisibleAddNewButton();
-//
-//
-//		assertEquals("http://localhost:4200/offers/1", driver.getCurrentUrl());
-//
-//	}
-//	@Test
-//	public void NewPostTitleEmptyTest() throws InterruptedException {
-//
-//		logIn();
-//		chooseOffer();
-//		justWait(1000);
-// 
-//
-//		postPage.getAddPostDialog().click();
-//		postPage.getPostTitle().sendKeys("");
-//		postPage.getPostContent().sendKeys("gore je prazno");
-//		postPage.getAddPost().click();
-//	   
-//	 
-//		 
-//	 
-//	    assertTrue(postPage.messageErrorDisplayed("postTitleReq") );
-//		assertFalse(postPage.ensureIsDisabledButton()); 
-//		assertEquals("http://localhost:4200/offers/1", driver.getCurrentUrl());
-//
-//	}
+	 @Test
+	public void NewPostTestSuccess() throws InterruptedException {
+
+	 
+		logIn();
+		chooseOffer();
+		justWait(1000);
+ 
+
+		postPage.getAddPostDialog().click();
+		postPage.getPostTitle().sendKeys("ovo je novi naziv za post");
+		postPage.getPostContent().sendKeys("neki kontent!!!!!");
+		postPage.getAddPost().click();
+		justWait(1000);
+		postPage.ensureIsNotVisibleAddNewButton();
+
+
+		assertEquals("http://localhost:4200/offers/1", driver.getCurrentUrl());
+
+	}
+	@Test
+	public void NewPostTitleEmptyTest() throws InterruptedException {
+
+		logIn();
+		chooseOffer();
+		justWait(1000);
+ 
+
+		postPage.getAddPostDialog().click();
+		postPage.getPostTitle().sendKeys("");
+		postPage.getPostContent().sendKeys("gore je prazno");
+		postPage.getAddPost().click();
+	   
+	 
+		 
+	 
+	    assertTrue(postPage.messageErrorDisplayed("postTitleReq") );
+		assertFalse(postPage.ensureIsDisabledButton()); 
+		assertEquals("http://localhost:4200/offers/1", driver.getCurrentUrl());
+
+	}
     
-//	@Test
-//	public void NewPostContentEmptyTest() throws InterruptedException {
-//
-//		logIn();
-//		chooseOffer();
-//		justWait(1000);
-//
-//		 
-//
-//		postPage.getAddPostDialog().click();
-//		postPage.getPostTitle().sendKeys("nestoooooooooooooooooooooo");
-//		postPage.getPostContent().sendKeys("");
-//		postPage.getAddPost().click();
-//	   
-//	 
-//		 
-//	 
-//	    assertTrue(postPage.messageErrorDisplayed("postContentReq") );
-//		assertFalse(postPage.ensureIsDisabledButton()); 
-//		assertEquals("http://localhost:4200/offers/1", driver.getCurrentUrl());
-//
-//	} 
-//	@Test
-//	public void EditPostTestSuccess() throws InterruptedException {
-//
-//		 
-//		logIn();
-//		chooseOffer();
-//		justWait(1000);
-//
-//		 
-//
-//		postPage.getName1().clear();
-//		postPage.getContent1().clear();
-//		postPage.getName1().sendKeys("ovo ce biti novi naslov");
-//		postPage.getContent1().sendKeys("neki tekst promenjen");
-//		postPage.getSavePostEdit1().click();
-//		justWait(1000);
-//		
-//
-//
-//		assertEquals("http://localhost:4200/offers/1", driver.getCurrentUrl());
-//
-//	}
+	@Test
+	public void NewPostContentEmptyTest() throws InterruptedException {
+
+		logIn();
+		chooseOffer();
+		justWait(1000);
+
+		 
+
+		postPage.getAddPostDialog().click();
+		postPage.getPostTitle().sendKeys("nestoooooooooooooooooooooo");
+		postPage.getPostContent().sendKeys("");
+		postPage.getAddPost().click();
+	   
+	 
+		 
+	 
+	    assertTrue(postPage.messageErrorDisplayed("postContentReq") );
+		assertFalse(postPage.ensureIsDisabledButton()); 
+		assertEquals("http://localhost:4200/offers/1", driver.getCurrentUrl());
+
+	} 
+	@Test
+	public void EditPostTestSuccess() throws InterruptedException {
+
+		 
+		logIn();
+		chooseOffer();
+		justWait(1000);
+
+		 
+
+		postPage.getName1().clear();
+		postPage.getContent1().clear();
+		postPage.getName1().sendKeys("ovo ce biti novi naslov");
+		postPage.getContent1().sendKeys("neki tekst promenjen");
+		postPage.getSavePostEdit1().click();
+		justWait(1000);
+		
+
+
+		assertEquals("http://localhost:4200/offers/1", driver.getCurrentUrl());
+
+	}
 	 
 //	@Test
 //	public void DeletePostTest() throws InterruptedException {
