@@ -41,11 +41,18 @@ public class OfferPage {
 	@FindBy(name = "yesButtonOffer")
 	WebElement yesButtonOffer;
 	
+	@FindBy(xpath = "//*[@class=\"green-snackbar\"]")
+	private WebElement greenToast;
+	
 	public OfferPage() {
 	}
 
 	public OfferPage(WebDriver driver) {
 		this.driver = driver;
+	}
+	
+	public void ensureIsDisplayedGreenToast() {
+		(new WebDriverWait(driver, 30)).until(ExpectedConditions.elementToBeClickable(By.className("green-snackbar")));
 	}
 	
 	public void ensureIsDisplayedTitle() {
@@ -122,5 +129,9 @@ public class OfferPage {
 
 	public WebElement getYesButtonOffer() {
 		return yesButtonOffer;
-	}	
+	}
+
+	public WebElement getGreenToast() {
+		return greenToast;
+	}
 }

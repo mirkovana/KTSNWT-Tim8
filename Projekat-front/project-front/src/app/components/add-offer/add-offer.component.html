@@ -1,7 +1,7 @@
 <!-- <app-navigation> -->
 <!-- </app-navigation> -->
 <h2>Add new offer</h2>
-<form [formGroup]="addOfferForm">
+<form [formGroup]="addOfferForm" class="novaForma">
     <!-- (ngSubmit)="onSubmit()" -->
     <!--        
         <app-navigation></app-navigation> -->
@@ -50,7 +50,7 @@
     <div class="form-group">
     </div>
     <div class="form-group">
-        <button [disabled]="!saveChangesEnabled()" class="btn btn-primary" (click)="add()">
+        <button [disabled]="!saveChangesEnabled()" class="btn btn-primary" (click)="add()" id="addOfferBtnnn">
         <!-- <button [disabled]="!saveChangesEnabled()" id="addOfferBtnnn" class="btn btn-primary"> -->
              
             Add
