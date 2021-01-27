@@ -13,7 +13,7 @@ public class OfferImageConstants {
 	public static final Long NEW_OFFER_IMAGE_ID = 6L;
 
 	public static final String IMAGE_DESCRIPTION = "SOME DESCRIPTION";
-	public static final String BAD_IMAGE_DESCRIPTION = "";
+	public static final String BAD_IMAGE_DESCRIPTION = "``#$";
 	public static final String NEW_IMAGE_DESCRIPTION = "NEW DESCRIPTION";
 	
 	public static final Long IMAGE_ID = 2L;

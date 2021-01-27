@@ -57,6 +57,17 @@ public class HomeE2ETest {
 	public void SubscribeSuccess() throws InterruptedException {
 		login();
 
+		homePage.ensureIsDisplayedMap();
+
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+
 		homePage.getMarker().click();
 
 		justWait();
@@ -74,9 +85,18 @@ public class HomeE2ETest {
 	public void SubscribeUnuccess() throws InterruptedException {
 		login();
 
-		homePage.getBadMarker().click();
+		homePage.ensureIsDisplayedMap();
 
-		justWait();
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+
+		homePage.getBadMarker().click();
 
 		homePage.getSubBtn().click();
 
@@ -89,6 +109,12 @@ public class HomeE2ETest {
 	private void justWait() throws InterruptedException {
 		synchronized (driver) {
 			driver.wait(1000);
+		}
+	}
+
+	private void justWait(int time) throws InterruptedException {
+		synchronized (driver) {
+			driver.wait(time);
 		}
 	}
 }

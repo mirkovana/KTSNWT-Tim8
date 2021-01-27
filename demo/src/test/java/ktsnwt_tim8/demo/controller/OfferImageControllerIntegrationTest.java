@@ -232,6 +232,25 @@ public class OfferImageControllerIntegrationTest {
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
 
+
+	@Test
+	public void testUpdateDescBadDescription() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", login(ADMIN_EMAIL, ADMIN_PASSWORD));
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+		body.add("offerID", OfferImageConstants.OFFER_ID);
+		body.add("descsription", OfferImageConstants.BAD_IMAGE_DESCRIPTION);
+		body.add("imageID", OfferImageConstants.IMAGE_ID);
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+		ResponseEntity<OfferImageDTO> responseEntity = restTemplate.exchange(
+				"http://localhost:" + port + "/api/Offer-images", HttpMethod.PUT, request, OfferImageDTO.class);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+
 	
 	
 	

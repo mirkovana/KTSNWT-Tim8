@@ -26,6 +26,9 @@ public class HomePage {
 	@FindBy(xpath = "//img[contains(@title,'pozoriste jagodina')]")
 	private WebElement marker;
 
+	@FindBy(xpath = "//a[contains(@title,'Zoom in')]")
+	private WebElement zoomIn;
+
 	@FindBy(xpath = "//img[contains(@title,'Uzice')]")
 	private WebElement markerUzice;
 
@@ -121,6 +124,10 @@ public class HomePage {
 
 	public WebElement getEditBtn() {
 		return editBtn;
+	}
+
+	public WebElement getZoomIn() {
+		return zoomIn;
 	}
 
 }

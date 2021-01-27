@@ -88,6 +88,16 @@ public class EditOfferImageE2ETest {
 		login();
 
 		homePage.ensureIsDisplayedMap();
+		
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+
 
 		homePage.getKraljevoMarker().click();
 
@@ -105,6 +115,16 @@ public class EditOfferImageE2ETest {
 		login();
 
 		homePage.ensureIsDisplayedMap();
+		
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+
 
 		homePage.getBadMarker().click();
 
@@ -135,6 +155,16 @@ public class EditOfferImageE2ETest {
 		login();
 
 		homePage.ensureIsDisplayedMap();
+		
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+
 
 		homePage.getBadMarker().click();
 
@@ -184,4 +214,10 @@ public class EditOfferImageE2ETest {
 		}
 	}
 
+	private void justWait(int time) throws InterruptedException {
+		synchronized (driver) {
+			driver.wait(time);
+		}
+	}
+	
 }
