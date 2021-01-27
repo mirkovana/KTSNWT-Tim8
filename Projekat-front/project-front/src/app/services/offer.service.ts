@@ -28,20 +28,21 @@ export class OfferService {
     const body=JSON.stringify(offer);
     console.log(body)
     //console.log("USAAAAAAAAAAAAAAAAAAAAAAAAAAAOOOO")
-    return this.http.post<any>('http://localhost:8080/api/offers/'+idSubcategory, body, {headers: this.headers}).subscribe(
-      (val) => {
-          console.log("POST call successful value returned in body", 
-                      val);
-      },
-      response => {
-          console.log("POST call in error", response);
-          this.openSnackBarUS();
-      },
-      () => {
-          console.log("The POST observable is now completed.");
-          this.openSnackBarS();
-          location.replace("http://localhost:4200/home");
-      });
+    return this.http.post<any>('http://localhost:8080/api/offers/'+idSubcategory, body, {headers: this.headers});
+    // return this.http.post<any>('http://localhost:8080/api/offers/'+idSubcategory, body, {headers: this.headers}).subscribe(
+    //   (val) => {
+    //       console.log("POST call successful value returned in body", 
+    //                   val);
+    //   },
+    //   response => {
+    //       console.log("POST call in error", response);
+    //       this.openSnackBarUS();
+    //   },
+    //   () => {
+    //       console.log("The POST observable is now completed.");
+    //       this.openSnackBarS();
+    //       location.replace("http://localhost:4200/home");
+    //   });
       
  }
 

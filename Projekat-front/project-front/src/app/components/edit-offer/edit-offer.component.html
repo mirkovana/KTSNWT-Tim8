@@ -1,1 +1,37 @@
-<app-file-upload></app-file-upload>
+<form [formGroup]="uploadForm" class="form">
+    <!-- (ngSubmit)="submit(image.ID)" -->
+    <div class="input-group mb-3">
+        <!-- <p class="error">{{error}} </p> -->
+        <!-- <p class="error" *ngIf="uploadForm.get('description').errors?.pattern">Invalid image description (only numbers and letters are allowed, 20 characters max)!</p> -->
+        <table>
+            <tr *ngFor="let image of images.content; let i = index" class="table">
+                <td class="imgTD">
+                    <img src={{imagePaths[i]}} alt="" class="img" id="image{{image.id}}">
+                    <!-- *ngFor="let path of imagePaths" -->
+                </td>
+
+                <td class="input-group mb-3 ">
+
+                    <input id="input{{image.id}}" type="text" class="inputTD form-control" formControlName="description" placeholder={{image.description}} aria-describedby="basic-addon2" required [pattern]="descPattern">
+                    <!-- //value={{fileInput.value.slice(12)}} -->
+                    <div class="input-group-append inputTD">
+                        <p-button id="submit{{image.id}}" matTooltip=" Upload image " (click)="submit(image.id)"> Submit</p-button>
+                    </div>
+                </td>
+                <p-button id="delete{{image.id}}" class="deleteBtn" (click)="deleteImage(image.id)">Delete image</p-button>
+            </tr>
+
+        </table>
+        <div class="else">
+            <div class="noImages" *ngIf="uslov == false || images.content.length == 0">
+                <p id="errorMsg">No images found</p>
+            </div>
+            <div class="a">
+                <p-button id="addImage" (click)="addImage()">Add image</p-button>
+            </div>
+        </div>
+    </div>
+
+</form>
+<app-toast id="toast" [succ]="subSuccess" [color]="toastColor" [cond]="cond"></app-toast>
+<app-toast id="toast1" *ngIf="uploadForm.get('description').errors?.pattern">idemo nedje</app-toast>

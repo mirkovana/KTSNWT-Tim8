@@ -15,6 +15,8 @@ public class OfferImageConstants {
 	public static final String IMAGE_DESCRIPTION = "SOME DESCRIPTION";
 	public static final String BAD_IMAGE_DESCRIPTION = "";
 	public static final String NEW_IMAGE_DESCRIPTION = "NEW DESCRIPTION";
+	
+	public static final Long IMAGE_ID = 2L;
 
 	public static final Integer PAGEABLE_PAGE = 0;
 	public static final Integer PAGEABLE_SIZE = 20;

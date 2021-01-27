@@ -41,5 +41,10 @@ public class UserService {
 	public void delete(Long id) {
 		repo.deleteById(id);
 	}
+	
+	public List<Long> getSubs(Long id){
+		return (List<Long>) repo.getSubs(id);
+		
+	}
 
 }

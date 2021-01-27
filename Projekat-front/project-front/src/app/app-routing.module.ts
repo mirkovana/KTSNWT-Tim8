@@ -9,6 +9,7 @@ import { ValidateEmailComponent } from './components/validate-email/validate-ema
 import { LoginComponent } from './components/login/login.component';
 import { OfferComponent } from './components/offer/offer.component';
 import { AddOfferComponent } from './components/add-offer/add-offer.component';
+import { AddOfferImageComponent } from './components/add-offer-image/add-offer-image.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -18,8 +19,11 @@ const routes: Routes = [
   { path: 'validateEmail', component: ValidateEmailComponent },
   { path: 'edit-offer', component: EditOfferComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'offer', component: OfferComponent }, // ovde treba da ide id jer ce se na osnovu njega dobaviti offer
+  { path: 'addOffer', component: AddOfferComponent },
+  { path: 'add-offer-image', component: AddOfferImageComponent},
   { path: 'offers/:id', component: OfferComponent }, // ovde treba da ide id jer ce se na osnovu njega dobaviti offer
-  { path: 'addOffer', component: AddOfferComponent }
+
 ];//component: MapComponent
 
 

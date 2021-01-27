@@ -11,6 +11,7 @@ import { MatCarousel, MatCarouselComponent } from '@ngmodule/material-carousel';
 import { OfferInfoService } from 'src/app/services/offer-info.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { EventEmitter } from 'events';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -22,14 +23,14 @@ export class OfferModalComponent implements OnInit {//OnChanges,
 
   @Input() nesto: boolean; // uslov
   @Input() informacije: Offer; //Offer koju prikazujemo
-
+  loggedIn = localStorage.getItem('username');
   displayModal: boolean;
   starRating: number = 0;
   oldRating: number = 0;
-  toastColor: string; 
-  uslov:boolean = false; //za toast
+  toastColor: string;
+  uslov: boolean = false; //za toast
   subSuccess: string = "///"; //Tekst poruke toast-a
-
+  broj:number;
 
   offerImages: OfferImagePage = new OfferImagePage(0, 0, []);
 
@@ -39,15 +40,20 @@ export class OfferModalComponent implements OnInit {//OnChanges,
     private sanitizer: DomSanitizer,
     private offerService: OfferInfoService,
     private subService: SubscriptionService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router
   ) { };
 
   ngOnInit() {
-    console.log("ON INIT" + " " + this.nesto);
+    if(this.loggedIn){
+      console.log("ulogovan je neko");
+      if(this.loggedIn==="admin@nesto.com"){this.broj=1;} //kad je ulogovan admin
+      else{this.broj=2;} //kad je ulogovan korisnik koji nije admin
+    } 
   }
-  rate(id: number) {
+  // rate(id: number) {
 
-  }
+  // }
 
   ngOnChanges(changes: SimpleChange) {
     if (this.nesto) {
@@ -89,5 +95,9 @@ export class OfferModalComponent implements OnInit {//OnChanges,
 
   }
 
+  edit(offerID: number) {
+    this.router.navigate(['edit-offer/'], { queryParams: { offerID: offerID } });
+
+  }
 
 }

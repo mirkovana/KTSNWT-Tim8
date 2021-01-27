@@ -56,6 +56,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatDialogModule} from '@angular/material/dialog';
 import { AddCategoryComponent } from './components/add-category/add-category.component';
 import { AddSubcategoryComponent } from './components/add-subcategory/add-subcategory.component';
+import { AddOfferImageComponent } from './components/add-offer-image/add-offer-image.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { OfferImagesComponent } from './components/offer-images/offer-images.component';
 import { ImageItemComponent } from './components/image-item/image-item.component';
@@ -92,6 +93,7 @@ import { DeletePostDialogComponent } from './components/delete-post-dialog/delet
     AddPostComponent,
     AddCategoryComponent,
     AddSubcategoryComponent,
+    AddOfferImageComponent,
     DialogComponent,
     OfferImagesComponent,
     ImageItemComponent,
@@ -129,6 +131,7 @@ import { DeletePostDialogComponent } from './components/delete-post-dialog/delet
     MatSelectModule,
     MatGridListModule,
     MatDialogModule
+    
     
   ],
   providers: [],

@@ -38,21 +38,24 @@ export class MapComponent implements OnChanges, AfterContentInit, OnInit {
 
   markers: L.Marker[] = new Array;
 
-  private map;
-  private on: boolean; // uslov za dodavanje ili brisanje
+  map;
+  on: boolean; // uslov za dodavanje ili brisanje
 
   // @ViewChild('content') content: OfferModalComponent;
 
-  constructor( private modalService: NgbModal, private cd: ChangeDetectorRef, private offerService: OfferInfoService) { }
+  constructor(
+    private modalService: NgbModal,
+    private cd: ChangeDetectorRef
+  ) { }
   ngOnInit(): void {
     this.uslov = false;
-    
+
   }
 
   //Da bi bili sigurni da je DOM kreiran i da mozemo da referenciramo komponentu
   ngOnChanges(): void {
-    
-    if (this.offers && this.map){
+
+    if (this.offers && this.map) {
       this.pinMarkers(this.map, this.offers);
       this.on = true;
     }
@@ -72,7 +75,7 @@ export class MapComponent implements OnChanges, AfterContentInit, OnInit {
 
   private initMap(): void {
 
-    this.map = L.map('map').setView([44.014167, 20.911667], 7);
+    this.map = L.map('map').setView([44.014167, 20.911667], 2);
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -102,14 +105,17 @@ export class MapComponent implements OnChanges, AfterContentInit, OnInit {
   pinMarkers(map: L.Map, data: Page): void { //dodavanje markera
     this.deleteMarkers(map);
     this.alloffers = data["content"];
-
+    let id: number = 0;
     for (const o of this.alloffers) {
+
       const lat = o.lat;
       const lon = o.lon;
       // let off = new L.customID(o.id, o.title, o.description, o.avgRating, o.nmbOfRatings, o.lat, o.lon, o.place); //o.id, o.title, o.description, o.avgRating, o.nmbOfRatings, o.lat, o.lon, o.place
       const marker = L.marker([lon, lat], { customID: o, title: o.title }).addTo(map).on('click', this.onClick);
       // const popup = L.popup().setLatLng([lon, lat]).setContent(o.title).addTo(map);
       this.markers.push(marker);
+
+      id = id + 1;
     }
   }
 

@@ -1,48 +1,62 @@
-<!-- <app-navigation></app-navigation> -->
+<!-- <app-navigation> -->
+<!-- </app-navigation> -->
+<h2>Add new offer</h2>
+<form [formGroup]="addOfferForm">
+    <!-- (ngSubmit)="onSubmit()" -->
+    <!--        
+        <app-navigation></app-navigation> -->
 
-<form [formGroup]="addOfferForm" class="novaForma" (ngSubmit)="onSubmit()">
-    <h2>Add new offer</h2>
+    <!-- <form [formGroup]="addOfferForm" class="novaForma" > -->
+
+    <!-- <h2>Add new offer</h2>  -->
+
     <div class="form-group">
         <mat-form-field>
-            <input matInput placeholder="Title of offer" value={{title}} formControlName="title" name="offerTitle"  required>
+            <input matInput placeholder="Title of offer" value={{title}} formControlName="title" name="offerTitle" required>
             <mat-error *ngIf="addOfferForm.controls.title.hasError('required')" name="offerTitleReq">
-              Please enter title
+                Please enter title
             </mat-error>
-          </mat-form-field>
-    </div>
-    <div class="form-group">
-        <mat-form-field>
-            <textarea matInput placeholder="Description of offer" value={{description}} formControlName="description" name="offerDescription"  required></textarea>
-            <mat-error *ngIf="addOfferForm.controls.description.hasError('required')" name="offerDescriptionReq">
-              Please enter description
-            </mat-error>
-          </mat-form-field>
-    </div>
-    <div class="form-group">
-        <mat-form-field>
-            <input matInput placeholder="Place of offer" value={{place}} formControlName="place" name="offerPlace"  required>
-            <mat-error *ngIf="addOfferForm.controls.place.hasError('required')" name="offerPlaceReq">
-              Please enter place
-            </mat-error>
-          </mat-form-field>
-    </div>
-    <div class="form-group">
-        <mat-form-field appearance="fill">
-        <mat-label>Subcategory</mat-label>
-        <mat-select [formControl]="subcategoryControl" required name="offerSubcategortyOpt" [(ngModel)]="selectedItem">
-            <mat-option>--</mat-option>
-            <mat-option *ngFor="let sub of subcategory1" [value]="sub">
-            {{sub.name}}
-            </mat-option>
-        </mat-select>
-        <mat-error *ngIf="subcategoryControl.hasError('required')" name="offerSubcategoryReq">Please choose an subcategory</mat-error>
         </mat-form-field>
     </div>
     <div class="form-group">
-        <button [disabled]="!saveChangesEnabled()" id="addOfferBtnnn" class="btn btn-primary">
+        <mat-form-field>
+            <textarea matInput placeholder="Description of offer" value={{description}} formControlName="description" name="offerDescription" required></textarea>
+            <mat-error *ngIf="addOfferForm.controls.description.hasError('required')" name="offerDescriptionReq">
+                Please enter description
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <input matInput placeholder="Place of offer" value={{place}} formControlName="place" name="offerPlace" required>
+            <mat-error *ngIf="addOfferForm.controls.place.hasError('required')" name="offerPlaceReq">
+                Please enter place
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field appearance="fill">
+            <mat-label>Subcategory</mat-label>
+            <mat-select [formControl]="subcategoryControl" required name="offerSubcategortyOpt" [(ngModel)]="selectedItem">
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let sub of subcategory1" [value]="sub">
+                    {{sub.name}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="subcategoryControl.hasError('required')" name="offerSubcategoryReq">Please choose an subcategory</mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="form-group">
+    </div>
+    <div class="form-group">
+        <button [disabled]="!saveChangesEnabled()" class="btn btn-primary" (click)="add()">
+        <!-- <button [disabled]="!saveChangesEnabled()" id="addOfferBtnnn" class="btn btn-primary"> -->
              
             Add
         </button>
         <a routerLink="/home" class="btn btn-link">Cancel</a>
     </div>
+
 </form>
+<app-toast id="toast" [succ]="subSuccess" [color]="toastColor" [cond]="cond"></app-toast>

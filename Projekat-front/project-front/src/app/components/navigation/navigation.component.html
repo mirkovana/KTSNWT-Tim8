@@ -1,16 +1,18 @@
 <header>
-    <div class="container"> 
-        <a routerLink="/home" class="logo">HOME</a>
+    <div class="container">
+        <a id="home" routerLink="/home" class="logo">HOME</a>
         <nav>
             <ul>
-                <li *ngIf="broj===1"><a href="#" onclick="return false;" name="addCategory"   (click)="openDialogCategory()"  >Add category</a></li> <!-- treba dodati jos metode za ovo -->
-                <li *ngIf="broj===1"><a href="#" onclick="return false;" name="addSubcategory" (click)="openDialogSubcategory()">Add subcategory</a></li>  <!-- treba dodati jos metode za ovo -->
+                <li *ngIf="broj===1"><a href="#" onclick="return false;" name="addCategory" (click)="openDialogCategory()">Add category</a></li>
+                <!-- treba dodati jos metode za ovo -->
+                <li *ngIf="broj===1"><a href="#" onclick="return false;" name="addSubcategory" (click)="openDialogSubcategory()">Add subcategory</a></li>
+                <!-- treba dodati jos metode za ovo -->
                 <li *ngIf="broj===1"><a href="#" name="addOffer" routerLink="/addOffer">Add offer</a></li>
                 <li *ngIf="!loggedIn"><a href="#" routerLink="/registration">Registration</a></li>
 
-                <li *ngIf="!loggedIn"><a href="#" routerLink="/login">Login</a></li>
-                <li><a href="#" routerLink="/edit-offer">Edit offer</a></li>
-                <li><a href="#" routerLink="/subscriptions">Subs</a></li>
+                <li *ngIf="!loggedIn"><a id="login" href="#" routerLink="/login">Login</a></li>
+                <!-- <li *ngIf="broj===1"><a id="editOffer" href="#" routerLink="/edit-offer">Edit offer</a></li> -->
+                <li *ngIf="loggedIn && broj=== 2"><a id="subs" href="#" routerLink="/subscriptions">Subs</a></li>
                 <li *ngIf="loggedIn"><a href="#" (click)="logout()">Logout</a></li>
             </ul>
         </nav>

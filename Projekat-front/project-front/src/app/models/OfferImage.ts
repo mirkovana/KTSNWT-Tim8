@@ -1,7 +1,15 @@
 export class OfferImage {
-    ID: number;
-    description: string;
+    id: number;
+    description: string; 
     imageBase64: string;
+
+    constructor(id?:number, desc?:string, image?:string){
+        this.id = id;
+        this.description = desc;
+        this.imageBase64 = image;
+    }
+
+    
 }
 
 

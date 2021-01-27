@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,6 +52,7 @@ public class OfferImageController {
 
 	}
 
+	@CrossOrigin
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{imageID}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> deleteImage(@PathVariable Long imageID) {
@@ -63,12 +65,14 @@ public class OfferImageController {
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
+	
+	
+	@CrossOrigin
 	@RequestMapping(method = RequestMethod.PUT)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<OfferImageDTO> updateImageDesc(@RequestParam("offerID") Long offerID,
-			@RequestParam("description") String desc) {
-		OfferImageDTO imageDTO = new OfferImageDTO(desc);
+			@RequestParam("description") String desc, @RequestParam("imageID") Long imageID) {
+		OfferImageDTO imageDTO = new OfferImageDTO(desc, imageID);
 
 		OfferImage img;
 
@@ -101,6 +105,7 @@ public class OfferImageController {
 			OfferImageDTO imgDTO = new OfferImageDTO(img.getID(), img.getDescription(),
 					Helper.fromFileToBase64(img.getPath()));
 			imagesDTO.add(imgDTO);
+			System.out.println(imgDTO.getID());
 		}
 
 		Page<OfferImageDTO> ret = new PageImpl<OfferImageDTO>(imagesDTO, paging, images.getTotalElements());

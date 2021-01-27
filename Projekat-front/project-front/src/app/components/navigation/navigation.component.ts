@@ -39,4 +39,11 @@ openDialogSubcategory(): void {
     width: '640px',disableClose: true 
   });
 }
+
+
+edit(offerID:number){
+  
+}
+
+
 }

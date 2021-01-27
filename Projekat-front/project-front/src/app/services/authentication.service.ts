@@ -40,6 +40,10 @@ login(username: string, password: string) {
                 //console.log("ROLAAAA: " + role);
                 //localStorage.setItem('role', info.role[0].authority);
                 //this.currentUserSubject.next(user);
+                console.log(userTokenState.accessToken)
+            }
+            else{
+              console.log("nema tokena")
             }
 
             return userTokenState.accessToken;
