@@ -253,7 +253,7 @@ public class CommentE2ETest {
     	justWait(2000);
     	
     	// cleaning up
-    	deleteCommentCleanUp();
+//    	deleteCommentCleanUp();
 
     }
     
