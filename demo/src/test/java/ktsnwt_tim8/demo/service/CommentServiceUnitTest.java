@@ -74,8 +74,8 @@ public class CommentServiceUnitTest {
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
         Page<Comment> commentsPage = new PageImpl<Comment>(comments, pageable, 3);
         given(offerRepo.findById(1L)).willReturn(Optional.of(off1));
-        given(repo.findAllByOfferID(1L, pageable)).willReturn(commentsPage);
-        given(repo.findAllByOfferID(5L, pageable)).willReturn(null);
+        given(repo.findAllByOfferIDOrderByDateDesc(1L, pageable)).willReturn(commentsPage);
+        given(repo.findAllByOfferIDOrderByDateDesc(5L, pageable)).willReturn(null);
         given(offerRepo.findOneByID(1L)).willReturn(off1);
         given(repo.save(c)).willReturn(c);
         given(repo.findById(1L)).willReturn(Optional.of(c));
@@ -88,7 +88,7 @@ public class CommentServiceUnitTest {
 		Pageable pageable = PageRequest.of(Constants.PAGEABLE_PAGE, Constants.PAGEABLE_SIZE);
 		Page<Comment> found = service.findAllByOfferID(1L, pageable);
 		verify(offerRepo, times(1)).findById(1L);
-		verify(repo, times(1)).findAllByOfferID(1L, pageable);
+		verify(repo, times(1)).findAllByOfferIDOrderByDateDesc(1L, pageable);
 		assertEquals(3, found.getNumberOfElements());
 	}
 	
