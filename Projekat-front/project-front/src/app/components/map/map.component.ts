@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as L from 'leaflet';
 import { Offer, Page } from 'src/app/models/Offer';
 import { OfferInfoService } from 'src/app/services/offer-info.service';
+import { OfferService } from 'src/app/services/offer.service';
 // import { MapService } from '../../services/map.service';
 import { OfferModalComponent } from '../offer-modal/offer-modal.component';
 
@@ -45,7 +46,8 @@ export class MapComponent implements OnChanges, AfterContentInit, OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private offerService: OfferInfoService
   ) { }
   ngOnInit(): void {
     this.uslov = false;

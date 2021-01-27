@@ -16,7 +16,7 @@ insert into user_authority (user_id, authority_id) values (4, 2); -- user has RO
 INSERT INTO CATEGORY(name) values ('Institucija');
 INSERT INTO SUBCATEGORY(name, category_id) values ('Muzej',1);
 INSERT INTO SUBCATEGORY(name, category_id) values ('Pozoriste',1);
-INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (12,'ovo je neki opis', 40,40,3,'Uzice',2, 'Uzice');
+INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4,'ovo je neki opis', 40,40,3,'Uzice',2, 'Uzice');
 INSERT INTO OFFER (avg_rating, description, lat,lon, nmb_of_ratings, title, subcategory_id, place) VALUES (4,'Opis madjarskog pozorista', 40,40,1,'Srpsko narodno pozoriste',2, 'Novi Sad');
 
 
