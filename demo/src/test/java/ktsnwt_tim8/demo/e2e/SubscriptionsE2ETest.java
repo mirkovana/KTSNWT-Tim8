@@ -62,6 +62,16 @@ public class SubscriptionsE2ETest {
 
 	public void subscribe(int uslov, boolean uslov1) throws InterruptedException {
 		homePage.ensureIsDisplayedMap();
+		
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+
 
 		if (uslov == 0) {
 			homePage.getMarkerUzice().click();

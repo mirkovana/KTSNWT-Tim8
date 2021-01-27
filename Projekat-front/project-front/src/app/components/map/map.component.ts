@@ -45,7 +45,8 @@ export class MapComponent implements OnChanges, AfterContentInit, OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private offerService: OfferInfoService
   ) { }
   ngOnInit(): void {
     this.uslov = false;

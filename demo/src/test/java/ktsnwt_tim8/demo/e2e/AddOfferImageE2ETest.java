@@ -64,10 +64,19 @@ public class AddOfferImageE2ETest {
 		login();
 
 		homePage.ensureIsDisplayedMap();
+		
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
+		homePage.getZoomIn().click();
+		justWait(300);
 
 		homePage.getBadMarker().click();
 
-		justWait();
+		justWait(1000);
 
 		homePage.getEditBtn().click();
 
@@ -83,7 +92,7 @@ public class AddOfferImageE2ETest {
 
 		addOfferPage.getAddImageBtn().click();
 
-		justWait();
+		justWait(1000);
 
 		Robot rb = new Robot();
 
@@ -102,7 +111,7 @@ public class AddOfferImageE2ETest {
 		rb.keyRelease(KeyEvent.VK_CONTROL);
 		rb.keyRelease(KeyEvent.VK_V);
 
-		justWait();
+		justWait(1000);
 
 		rb.keyPress(KeyEvent.VK_ENTER);
 		rb.keyRelease(KeyEvent.VK_ENTER);
@@ -111,15 +120,15 @@ public class AddOfferImageE2ETest {
 
 		addOfferPage.getSubmitBtn().click();
 
-		justWait();
+		justWait(1000);
 
 		addOfferPage.ensureIsDisplayedGreenToast();
 		
-		justWait();
+		justWait(1000);
 
 		addOfferPage.getEditOffer().click();
 		
-		justWait();
+		justWait(1000);
 
 		List<WebElement> inputs1 = driver.findElements(By.tagName("tr"));
 
@@ -128,9 +137,9 @@ public class AddOfferImageE2ETest {
 	}
 
 
-	private void justWait() throws InterruptedException {
+	private void justWait(int time) throws InterruptedException {
 		synchronized (driver) {
-			driver.wait(1000);
+			driver.wait(time);
 		}
 	}
 
