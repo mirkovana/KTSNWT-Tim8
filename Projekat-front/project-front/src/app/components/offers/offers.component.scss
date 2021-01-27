@@ -7,11 +7,17 @@ h3 {
 }
 
 .offers {
+    //overflow-x: auto;
+    min-height: 50px;
+    max-height: 500px;
     overflow-x: auto;
     // width: 100px;
-    height: 75vh;
+    //height: 65vh;
 }
 
+.offer {
+    margin-top:10px;
+}
 
 /* width */
 

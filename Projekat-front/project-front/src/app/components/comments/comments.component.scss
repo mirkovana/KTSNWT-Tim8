@@ -6,6 +6,12 @@
     width: 100%;
 }
 
+.center {
+    text-align: center;
+    font-size: 25px;
+    color: rgb(39, 39, 77);
+}
+
 :ng-deep .warinng .blue-snackbar {
    background: blue;
 }

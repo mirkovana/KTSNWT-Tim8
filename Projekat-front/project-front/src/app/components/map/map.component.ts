@@ -2,6 +2,7 @@ import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit,
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as L from 'leaflet';
 import { Offer, Page } from 'src/app/models/Offer';
+import { OfferInfoService } from 'src/app/services/offer-info.service';
 // import { MapService } from '../../services/map.service';
 import { OfferModalComponent } from '../offer-modal/offer-modal.component';
 
@@ -58,6 +59,14 @@ export class MapComponent implements OnChanges, AfterContentInit, OnInit {
       this.pinMarkers(this.map, this.offers);
       this.on = true;
     }
+    this.offerService.offerChosenEvent.subscribe(data => {
+      this.uslov = true;
+      this.offerInfo = data;
+      this.cd.detectChanges();
+      //this.offerInfo = null;
+      this.uslov = false;
+     
+    })
   }
 
   ngAfterContentInit(): void {

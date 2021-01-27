@@ -56,7 +56,6 @@ export class OfferModalComponent implements OnInit {//OnChanges,
   // }
 
   ngOnChanges(changes: SimpleChange) {
-
     if (this.nesto) {
       this.displayModal = true;
       this.offerImagesService.getOfferImages(this.informacije.id).subscribe(data => {

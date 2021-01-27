@@ -1,5 +1,7 @@
 package ktsnwt_tim8.pages;
 
+import java.util.function.BooleanSupplier;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -50,7 +52,7 @@ public class RatingPage {
 	}
 
 	public WebElement getAStar() {
-		return driver.findElement(By.cssSelector(".ng-star-inserted:nth-child(6)"));	
+		return driver.findElement(By.cssSelector(".d-inline-flex > .ng-star-inserted:nth-child(8)"));	
 	}
 	
 	public WebElement getRateButton(){
@@ -104,7 +106,7 @@ public class RatingPage {
 	}
 
 	public WebElement getAStar(int rating) {
-		return driver.findElement(By.cssSelector(".ng-star-inserted:nth-child(" + rating*2 + ")"));	
+		return driver.findElement(By.cssSelector(".d-inline-flex > .ng-star-inserted:nth-child(" + rating*2 + ")"));	
 	}
 
 	public WebElement getLoginLink() {
@@ -114,6 +116,17 @@ public class RatingPage {
 	public WebElement getSignupLink() {
 		return signupLink;
 	}
+
+	public WebElement getAppRating() {
+		
+		try{
+			return driver.findElement(By.tagName("app-rating"));	
+		}
+		catch(Exception e) {
+		
+			return null;
+		}
+		}
 	
 
 }

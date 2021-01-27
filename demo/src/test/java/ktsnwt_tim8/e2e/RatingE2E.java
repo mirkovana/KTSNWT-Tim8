@@ -30,12 +30,12 @@ public class RatingE2E {
 		driver.manage().window().maximize();
     }
     
-	private void logIn() throws InterruptedException {
+	private void logIn(String username, String password) throws InterruptedException {
 
 		driver.get("http://localhost:4200/login");
 		loginPage = PageFactory.initElements(driver, LoginPage.class);
-		loginPage.getEmail().sendKeys("kor1@nesto.com");
-		loginPage.getPassword().sendKeys("1");
+		loginPage.getEmail().sendKeys(username);
+		loginPage.getPassword().sendKeys(password);
 		loginPage.getLoginBtn().click();
 		justWait(3000);
 
@@ -53,12 +53,16 @@ public class RatingE2E {
 	
 	@Test
 	public void rateOffer() throws InterruptedException {
-		logIn();
+		logIn("kor1@nesto.com", "1");
 		selectOffer();
 		justWait(2000);
+		if (ratingPage.getRateButton() == null) {
+			ratingPage.getDeleteRatingButton().click();
+			justWait(4000);
+		}
 		// checking if rate button is disabled since initial rating iz 0 stars
 		assertTrue(!ratingPage.getRateButton().isEnabled()); 
-		ratingPage.getAStar().click(); //css=.ng-star-inserted:nth-child(8)
+		ratingPage.getAStar(3).click(); //css=.ng-star-inserted:nth-child(8)
 		ratingPage.getRateButton().click();
 		justWait(500);
 		assertTrue(ratingPage.snackBarSuccess(("Rating created.")));
@@ -85,11 +89,18 @@ public class RatingE2E {
 	}
 	
 	@Test
-	public void updateOffer() throws InterruptedException {
-		logIn();
+	public void updateRating() throws InterruptedException {
+		logIn("kor1@nesto.com", "1");
 		selectOffer();
 		rate();
 		justWait(2000);
+		
+		// if the randomly selected offer has not been rated
+		if (ratingPage.getRateButton() != null) {
+			rate();
+		}
+		
+		
 		// checking if rate button is not displayed
 		assertTrue(ratingPage.getRateButton() == null); 
 		
@@ -118,11 +129,15 @@ public class RatingE2E {
 	
 	@Test
 	public void deleteRating() throws InterruptedException {
-		logIn();
+		logIn("kor1@nesto.com", "1");
 		selectOffer();
 		rate();
 		justWait(2000);
 		// checking if rate button is not displayed
+		if (ratingPage.getRateButton() != null) {
+			rate();
+		}
+		
 		assertTrue(ratingPage.getRateButton() == null); 
 		
 		// checking if change rating button is displayed
@@ -177,6 +192,14 @@ public class RatingE2E {
 		 
 		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
 		
+	}
+	
+	@Test
+	public void rateAdmin() throws InterruptedException {
+		logIn("admin@nesto.com", "1");
+		selectOffer();
+		// make sure the entire rating component is not displayed
+		assertEquals(ratingPage.getAppRating(), null);
 	}
 
 	

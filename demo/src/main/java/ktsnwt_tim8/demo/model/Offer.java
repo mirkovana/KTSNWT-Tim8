@@ -12,6 +12,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -25,6 +26,7 @@ public class Offer {
 	@Column(nullable = false)
 	private String title;
 	
+	@Size(max = 4000)
 	@Column
 	private String description;
 	

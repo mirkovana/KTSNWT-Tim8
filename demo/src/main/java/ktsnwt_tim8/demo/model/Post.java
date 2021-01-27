@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Post {
@@ -20,6 +21,7 @@ public class Post {
 	@Column(nullable = false)
 	private String title;
 
+	@Size(max = 4000)
 	@Column
 	private String content;
 
