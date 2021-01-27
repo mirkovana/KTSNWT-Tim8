@@ -83,12 +83,14 @@ public class OfferE2ETest {
 //		offerPage.getOfferTitle().sendKeys("Ponuda1234");
 //		offerPage.getOfferDescription().sendKeys("opisssss");
 //		offerPage.getOfferPlace().sendKeys("Beograd");
-//		offerPage.getOfferSubcategorty().sendKeys("Muzej");
+//		offerPage.getOfferSubcategorty().sendKeys("Museum");
+//		justWait(3000);
 //		offerPage.getAddOfferBtn().click();
 //		justWait(5000);
-//		assertEquals("http://localhost:4200/home", driver.getCurrentUrl());
+//		offerPage.ensureIsDisplayedGreenToast();
+//		//assertEquals("http://localhost:4200/home", driver.getCurrentUrl());
 //	}
-//	
+	
 //	@Test
 //	public void AddOfferTestTitleEmpty() throws InterruptedException {
 //
@@ -103,7 +105,7 @@ public class OfferE2ETest {
 //		offerPage.getOfferTitle().sendKeys("");
 //		offerPage.getOfferDescription().sendKeys("opisssss");
 //		offerPage.getOfferPlace().sendKeys("Beograd");
-//		offerPage.getOfferSubcategorty().sendKeys("Muzej");
+//		offerPage.getOfferSubcategorty().sendKeys("Museum");
 //		offerPage.getAddOfferBtn().click();
 //		justWait(2000);
 //		assertTrue(offerPage.messageErrorDisplayed("offerTitleReq") );
@@ -125,7 +127,7 @@ public class OfferE2ETest {
 //		offerPage.getOfferTitle().sendKeys("Naslov");
 //		offerPage.getOfferDescription().sendKeys("");
 //		offerPage.getOfferPlace().sendKeys("Beograd");
-//		offerPage.getOfferSubcategorty().sendKeys("Muzej");
+//		offerPage.getOfferSubcategorty().sendKeys("Museum");
 //		offerPage.getAddOfferBtn().click();
 //		justWait(2000);
 //		assertTrue(offerPage.messageErrorDisplayed("offerDescriptionReq") );
@@ -147,7 +149,7 @@ public class OfferE2ETest {
 //		offerPage.getOfferTitle().sendKeys("Naslov");
 //		offerPage.getOfferDescription().sendKeys("opis");
 //		offerPage.getOfferPlace().sendKeys("");
-//		offerPage.getOfferSubcategorty().sendKeys("Muzej");
+//		offerPage.getOfferSubcategorty().sendKeys("Museum");
 //		offerPage.getAddOfferBtn().click();
 //		justWait(2000);
 //		assertTrue(offerPage.messageErrorDisplayed("offerPlaceReq") );
@@ -194,18 +196,18 @@ public class OfferE2ETest {
 //		assertEquals("http://localhost:4200/offers/5", driver.getCurrentUrl());
 //	}
 	
-//	@Test
-//	public void EditOfferTestTitleEmpty() throws InterruptedException {
-//		login();
-//		chooseOffer();
-//		justWait(1000);
-// 
-//		offerPage.getTitleForEditOffer().clear();
-//		offerPage.getTitleForEditOffer().sendKeys("");
-//		offerPage.getEditOfferBtnnn().click();
-//
-//		assertEquals("http://localhost:4200/offers/5", driver.getCurrentUrl());
-//	}
+	@Test
+	public void EditOfferTestTitleEmpty() throws InterruptedException {
+		login();
+		chooseOffer();
+		justWait(1000);
+ 
+		offerPage.getTitleForEditOffer().clear();
+		offerPage.getTitleForEditOffer().sendKeys("");
+		offerPage.getEditOfferBtnnn().click();
+
+		assertEquals("http://localhost:4200/offers/5", driver.getCurrentUrl());
+	}
 	
 //	@Test
 //	public void EditOfferTestDescriptionEmpty() throws InterruptedException {
@@ -222,7 +224,7 @@ public class OfferE2ETest {
 	
 	//-------------------------DELETE OFFER-------------------------------------
 	
-	@Test
+	/*@Test
 	public void DeleteOfferTestSuccess() throws InterruptedException {
 		login();
 		chooseOffer();
@@ -233,5 +235,5 @@ public class OfferE2ETest {
 		justWait(1000);
 
 		assertEquals("http://localhost:4200/home", driver.getCurrentUrl());
-	}
+	}*/
 }

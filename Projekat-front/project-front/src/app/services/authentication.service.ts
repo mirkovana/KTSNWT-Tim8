@@ -25,21 +25,9 @@ export class AuthenticationService {
 login(username: string, password: string) {
     return this.http.post<any>('http://localhost:8080/auth/log-in', { 'username':username,'password': password })
         .pipe(map(userTokenState => {
-            // login successful if there's a jwt token in the response
             if (userTokenState.accessToken) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('token', userTokenState.accessToken);
                 localStorage.setItem('username', username);
-                //const jwt: JwtHelperService = new JwtHelperService();
-                //console.log("jwt prosao");
-                //const info = jwt.decodeToken(userTokenState.accessToken);
-                //console.log("INFOOOOO: " + info);
-                //let prom = JSON.stringify(info);
-                //console.log(prom);
-                //const role = info.role[0].authority;
-                //console.log("ROLAAAA: " + role);
-                //localStorage.setItem('role', info.role[0].authority);
-                //this.currentUserSubject.next(user);
                 console.log(userTokenState.accessToken)
             }
             else{
@@ -54,7 +42,13 @@ logout() {
   // remove user from local storage to log user out
   localStorage.removeItem('token');
   localStorage.removeItem('username');
-  //this.currentUserSubject.next(null);
+}
+
+isLoggedIn(): boolean {
+  if (!localStorage.getItem('username')) {
+      return false;
+  }
+  return true;
 }
 
 }

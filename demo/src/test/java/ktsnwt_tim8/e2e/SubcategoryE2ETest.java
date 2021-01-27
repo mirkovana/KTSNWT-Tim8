@@ -59,7 +59,7 @@ public class SubcategoryE2ETest {
 			navigationBarAdminPage.getAddSubcategory().click();
 			justWait();
 			subcategoryPage.getSubcategoryName().sendKeys("znam za jedan grad zove se beograd");
-			subcategoryPage.getCategoryOpt().sendKeys("Institucija");
+			subcategoryPage.getCategoryOpt().sendKeys("Museum");
 			justWait();
 			subcategoryPage.getSaveSubcategory().click();
 			
@@ -81,7 +81,7 @@ public class SubcategoryE2ETest {
 			navigationBarAdminPage.getAddSubcategory().click();
 			justWait();
 			subcategoryPage.getSubcategoryName().sendKeys("");
-			subcategoryPage.getCategoryOpt().sendKeys("Institucija");
+			subcategoryPage.getCategoryOpt().sendKeys("Museum");
 			subcategoryPage.getSaveSubcategory().click();			 
 			subcategoryPage.ensureIsDisabledButton();
 		    assertTrue(subcategoryPage.messageErrorDisplayed("nameReq") );

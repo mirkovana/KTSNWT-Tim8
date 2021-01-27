@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -12,10 +13,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import ktsnwt_tim8.demo.model.User;
+import ktsnwt_tim8.demo.repository.UserRepository;
 
 // Utility klasa za rad sa JSON Web Tokenima
 @Component
 public class TokenUtils {
+	
+	@Autowired
+	private UserRepository repo;
 
     // Izdavac tokena
     @Value("spring-security-example")
@@ -44,12 +49,14 @@ public class TokenUtils {
 
     // Funkcija za generisanje JWT token
     public String generateToken(String username) {
+    	User u = repo.findByUsername(username);
         return Jwts.builder()
                 .setIssuer(APP_NAME)
                 .setSubject(username)
                 .setAudience(generateAudience())
                 .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate())
+                .claim("role", u.getAuthorities())
                 // .claim("key", value) //moguce je postavljanje proizvoljnih podataka u telo JWT tokena
                 .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
     }
