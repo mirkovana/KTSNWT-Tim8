@@ -17,7 +17,7 @@ public class Helper {
 		try {
 			fileContent = FileUtils.readFileToByteArray(new File(pathToFile));
 		} catch (IOException e) {
-			fileContent = null; 
+			return null;
 		}
 		return Base64.getEncoder().encodeToString(fileContent);
 	}

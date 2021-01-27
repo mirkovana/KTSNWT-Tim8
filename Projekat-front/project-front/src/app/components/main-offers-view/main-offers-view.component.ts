@@ -23,13 +23,7 @@ export class MainOffersViewComponent implements OnInit {
   constructor(private offerService: OfferInfoService) { 
 
   }
-/*
-  ngOnInit() {
-    this.offerService.getOffers().subscribe(data => {
-      this.offersPage = data;
-      this.dataReady = true;
-  });    
-  }*/
+
   
   ngOnInit(): void {
     

@@ -9,6 +9,7 @@ import { ɵINTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS } from '@angular/platform
 import { forkJoin } from 'rxjs';
 import { FilterParameters } from 'src/app/models/Filter';
 import { PaginatorPageable } from 'src/app/models/PaginatorPageable';
+import { SubcategoryService } from 'src/app/services/subcategory.service';
 
 
 @Component({
@@ -35,14 +36,13 @@ export class FilterComponent implements OnInit {
 
   allCompleteArray: boolean[] = [];
 
-  constructor(private offersService: OfferInfoService,
-    private http: HttpClient) { }
+  constructor(private subcategoryService: SubcategoryService) { }
 
   ngOnInit(): void {
 
     forkJoin([
-      this.http.get("http://localhost:8080/api/categories"), //observable 1
-      this.http.get("http://localhost:8080/api/subcategories") //observable 2
+      this.subcategoryService.getAllCategories(), //observable 1
+      this.subcategoryService.getAllSubcategories() //observable 2
     ]).subscribe(([categories, subcategories]) => {
       console.log(categories);
       console.log(subcategories)

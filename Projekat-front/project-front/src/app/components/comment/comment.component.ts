@@ -17,17 +17,12 @@ export class CommentComponent implements OnInit {
 
   @Input() comment: Comment = null;
   @Output() done = new EventEmitter<string>();
-
-  //@Input() canEdit = false;
-  editing = false;
   @Output() clickedEdit = new EventEmitter();
   @Output() commentDeleted = new EventEmitter();
 
   constructor(private commentService: CommentService, public dialog: MatDialog) { }
-
   
   ngOnInit(): void {
-
   }
 
   openDialog() {
@@ -45,7 +40,7 @@ export class CommentComponent implements OnInit {
       this.commentService.deleteComment(this.comment.id).subscribe(() => {
         this.commentDeleted.emit();
         this.done.emit("Comment deleted.")
-      })
+      }, error => this.done.emit("Sorry! There was a problem deleting this comment, try again later."))
 
   
   }

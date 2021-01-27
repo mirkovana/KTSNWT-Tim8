@@ -24,6 +24,9 @@ public class FilterPage {
 	@FindBy(name = "text")
 	WebElement nameInput;
 	
+	@FindBy(name = "location")
+	WebElement location;
+	
 	@FindBy(name = "search")
 	WebElement search;
 	
@@ -66,6 +69,15 @@ public class FilterPage {
 		return list;
 		
 	}
+	
+	public List<String> getOffersLocations(){
+		List<String> list = new ArrayList<String>();
+		for (WebElement el: offers) {
+			list.add(el.findElement(By.cssSelector("p.location")).getText());
+		}
+		return list;
+		
+	}
 
 	public WebElement getNameInput() {
 		return nameInput;
@@ -89,5 +101,9 @@ public class FilterPage {
 
 	public List<WebElement> getSubcategories() {
 		return subcategories;
+	}
+
+	public WebElement getLocation() {
+		return location;
 	}
 }

@@ -1,5 +1,5 @@
 
-<div *ngIf="!loggedIn">
+<div *ngIf="!loggedIn" class="center">
 
     <div class="rating-container">
         <p><a [routerLink]="['/login']">Log in</a> or <a [routerLink]="['/registration']" >sign up</a>
@@ -12,24 +12,27 @@
 
 </div>
 
-<div *ngIf="loggedIn">
+<div *ngIf="loggedIn" class="center">
     <div *ngIf="rated">
         <p>Your rating</p>
         <ngb-rating [max]="5" [(rate)]="starRating" [readonly]="!updating" class="stars">
         </ngb-rating> 
         <div *ngIf="!updating">
-            <button mat-raised-button color="primary" name="changeRatingButton" type="button" (click)="updating=true">Promijeni rating</button>
-            <button mat-raised-button (click)="deleteRating()" name="deleteRatingButton" color="warn">Delete</button>
+            <button mat-icon-button color="primary" name="changeRatingButton" type="button" (click)="updating=true"  matTooltip="Change rating"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button (click)="deleteRating()" name="deleteRatingButton" color="warn"  matTooltip="Delete rating"><mat-icon>delete</mat-icon></button>
         </div>
         <div *ngIf="updating">
-            <button mat-raised-button color="primary" id="saveUpdateB" name="saveUpdateButton" (click)="saveUpdate()" [disabled]="!starRating">Save update</button>
+            <button mat-icon-button color="primary" id="saveUpdateB" name="saveUpdateButton" (click)="saveUpdate()" 
+            matTooltip="Save update" [disabled]="!starRating"><mat-icon>check</mat-icon></button>
         </div>
     </div>
     <div *ngIf="!rated">
         <p>Rate offer</p>
         <ngb-rating [max]="5" [(rate)]="starRating" [readonly]="false" class="stars">
         </ngb-rating> 
-        <button mat-raised-button color="primary"  (click)="rateOffer()" name="rateButton" [disabled]="!starRating">Rate</button>
+        <div>
+        <button mat-icon-button color="primary"  (click)="rateOffer()" name="rateButton" [disabled]="!starRating"  matTooltip="Rate"><mat-icon>check</mat-icon></button>
+            </div>
     </div>
 
     <div *ngIf="updating">

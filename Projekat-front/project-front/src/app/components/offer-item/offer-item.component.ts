@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Offer } from 'src/app/models/Offer';
+import { OfferInfoService } from 'src/app/services/offer-info.service';
 
 @Component({
   selector: 'app-offer-item',
@@ -9,14 +11,15 @@ export class OfferItemComponent implements OnInit {
 
   @Input() offer;
 
-  constructor() { }
+  constructor(private offerService: OfferInfoService) { }
 
   ngOnInit(): void {
   }
 
-  saveOfferId(id:number){
-    console.log("ID OFERA JE:" + id );
-    localStorage.setItem('offerId',JSON.stringify(id));
+  viewOnMap(){
+    //this.viewOnMapEvent.emit(this.offer);
+    this.offerService.offerChosenEvent.next(this.offer);
   }
+
 
 }

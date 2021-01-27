@@ -1,5 +1,5 @@
-<h2>Comments</h2>
-<app-comment-edit (newComment)="onNewComment()" editing=false 
+<h2 class="center" >Comments</h2>
+<app-comment-edit *ngIf="!admin" [offerId]="offerId" (newComment)="onNewComment()"
 (done)="openSnackBar($event)"></app-comment-edit>
 
 <hr>
@@ -10,14 +10,12 @@
         (done)="openSnackBar($event)" *ngIf="!comment.editing" [comment]="comment"
         (commentDeleted)="onCommentDeleted()" (clickedEdit)="onClickedEdit($event)"></app-comment>  
         
-        <app-comment-edit *ngIf="comment.editing" (commentDeleted)="onCommentDeleted()"
+        <app-comment-edit *ngIf="comment.editing" 
         (done)="openSnackBar($event)"
-        (dogadjaj)="radiNesto()"
         (commentEdited)="onCommentEdited($event)"
-        (commentNew)="newComment($event)"
         (commentCreated)="onCommentCreated($event)"
-        [comment]="comment" editing=true [canEdit]="comment.canEdit"></app-comment-edit>        
-
+        [comment]="comment" [offerId]="offerId"></app-comment-edit>        
+        
         <hr>
     </div>
     <div class="row row-text" *ngIf="!content.content.length">
