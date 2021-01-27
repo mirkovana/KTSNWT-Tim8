@@ -36,139 +36,139 @@ public class RegistrationE2ETest {
 		driver.quit();
 	}
 
-//	@Test
-//	public void RegistrationTestSuccess() throws InterruptedException {
-//
-//		driver.get("http://localhost:4200/registration");
-//
-//		justWait();
-//
-//		registrationPage.getName().sendKeys("jovan");
-//
-//		registrationPage.getSurname().sendKeys("jovanovic");
-//		registrationPage.getUsername().sendKeys("jovan@nesto.com");
-//		registrationPage.getPassword().sendKeys("123456");
-//		registrationPage.getRegistrationButton().click();
-//
-//		registrationPage.ensureIsNotVisibleRegistrationButton();
-//
-//		validationEmailPage.ensureIsDisplayedToken();  
-//		assertEquals("http://localhost:4200/validateEmail", driver.getCurrentUrl());
-//
-//	}
-//
-//	
-//	@Test
-//	public void RegistrationTestNameEmpty() throws InterruptedException {
-//
-//		driver.get("http://localhost:4200/registration");
-//
-//		justWait();
-//
-//		registrationPage.getName().sendKeys("");
-//
-//		registrationPage.getSurname().sendKeys("jovanovic");
-//		registrationPage.getUsername().sendKeys("jovanasd@nesto.com");
-//		registrationPage.getPassword().sendKeys("123456");
-//		registrationPage.getRegistrationButton().click();
-//
-//		registrationPage.ensureIsDisplayedName();
-//
-//		//validationEmailPage.ensureIsDisplayedToken();  
-//		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
-//		assertTrue(registrationPage.messageErrorDisplayed("nameReq") );
-//	
-//     
-//
-//	}
-//	
-//	@Test
-//	public void RegistrationTestSurnameEmpty() throws InterruptedException {
-//
-//		driver.get("http://localhost:4200/registration");
-//
-//		justWait();
-//
-//		registrationPage.getName().sendKeys("jovan");
-//
-//		registrationPage.getSurname().sendKeys("");
-//		registrationPage.getUsername().sendKeys("jovanasd@nesto.com");
-//		registrationPage.getPassword().sendKeys("123456");
-//		registrationPage.getRegistrationButton().click();
-//
-//		registrationPage.ensureIsDisplayedName();
-//
-//		//validationEmailPage.ensureIsDisplayedToken();  
-//		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
-//		assertTrue(registrationPage.messageErrorDisplayed("surnameReq") );
-//     
-//
-//	}
-//	@Test
-//	public void RegistrationTestEmailEmpty() throws InterruptedException {
-//
-//		driver.get("http://localhost:4200/registration");
-//
-//		justWait();
-//
-//		registrationPage.getName().sendKeys("jovan");
-//
-//		registrationPage.getSurname().sendKeys("jovanovic");
-//		registrationPage.getUsername().sendKeys("");
-//		registrationPage.getPassword().sendKeys("123456");
-//		registrationPage.getRegistrationButton().click();
-//
-//		registrationPage.ensureIsDisplayedName();
-//
-// 		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
-//		assertTrue(registrationPage.messageErrorDisplayed("emailReq") );
-//     
-//
-//	}
-//	
-//	@Test
-//	public void RegistrationTestPasswordEmpty() throws InterruptedException {
-//
-//		driver.get("http://localhost:4200/registration");
-//
-//		justWait();
-//
-//		registrationPage.getName().sendKeys("jovan");
-//
-//		registrationPage.getSurname().sendKeys("jovanovic");
-//		registrationPage.getUsername().sendKeys("jovanasd@nesto.com");
-//		registrationPage.getPassword().sendKeys("");
-//		registrationPage.getRegistrationButton().click();
-//
-//		registrationPage.ensureIsDisplayedName();
-//
-// 		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
-//		assertTrue(registrationPage.messageErrorDisplayed("passwordReq") );
-//     
-//
-//	}
-//	
-//	@Test
-//	public void RegistrationTestPasswordTooShort() throws InterruptedException {
-//
-//		driver.get("http://localhost:4200/registration");
-//
-//		justWait();
-//
-//		registrationPage.getName().sendKeys("jovan");
-//
-//		registrationPage.getSurname().sendKeys("jovanovic");
-//		registrationPage.getUsername().sendKeys("jovanasd@nesto.com");
-//		registrationPage.getPassword().sendKeys("12");
-//		registrationPage.getRegistrationButton().click();
-//
-//		registrationPage.ensureIsDisplayedName();
-//
-// 		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
-//		assertTrue(registrationPage.messageErrorDisplayed("passwordShort") );
-//     
-//
-//	}
+	@Test
+	public void RegistrationTestSuccess() throws InterruptedException {
+
+		driver.get("http://localhost:4200/registration");
+
+		justWait();
+
+		registrationPage.getName().sendKeys("jovan");
+
+		registrationPage.getSurname().sendKeys("jovanovic");
+		registrationPage.getUsername().sendKeys("jovan@nesto.com");
+		registrationPage.getPassword().sendKeys("123456");
+		registrationPage.getRegistrationButton().click();
+
+		registrationPage.ensureIsNotVisibleRegistrationButton();
+
+		validationEmailPage.ensureIsDisplayedToken();  
+		assertEquals("http://localhost:4200/validateEmail", driver.getCurrentUrl());
+
+	}
+
+	
+	@Test
+	public void RegistrationTestNameEmpty() throws InterruptedException {
+
+		driver.get("http://localhost:4200/registration");
+
+		justWait();
+
+		registrationPage.getName().sendKeys("");
+
+		registrationPage.getSurname().sendKeys("jovanovic");
+		registrationPage.getUsername().sendKeys("jovanasd@nesto.com");
+		registrationPage.getPassword().sendKeys("123456");
+		registrationPage.getRegistrationButton().click();
+
+		registrationPage.ensureIsDisplayedName();
+
+		//validationEmailPage.ensureIsDisplayedToken();  
+		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
+		assertTrue(registrationPage.messageErrorDisplayed("nameReq") );
+	
+     
+
+	}
+	
+	@Test
+	public void RegistrationTestSurnameEmpty() throws InterruptedException {
+
+		driver.get("http://localhost:4200/registration");
+
+		justWait();
+
+		registrationPage.getName().sendKeys("jovan");
+
+		registrationPage.getSurname().sendKeys("");
+		registrationPage.getUsername().sendKeys("jovanasd@nesto.com");
+		registrationPage.getPassword().sendKeys("123456");
+		registrationPage.getRegistrationButton().click();
+
+		registrationPage.ensureIsDisplayedName();
+
+		//validationEmailPage.ensureIsDisplayedToken();  
+		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
+		assertTrue(registrationPage.messageErrorDisplayed("surnameReq") );
+     
+
+	}
+	@Test
+	public void RegistrationTestEmailEmpty() throws InterruptedException {
+
+		driver.get("http://localhost:4200/registration");
+
+		justWait();
+
+		registrationPage.getName().sendKeys("jovan");
+
+		registrationPage.getSurname().sendKeys("jovanovic");
+		registrationPage.getUsername().sendKeys("");
+		registrationPage.getPassword().sendKeys("123456");
+		registrationPage.getRegistrationButton().click();
+
+		registrationPage.ensureIsDisplayedName();
+
+ 		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
+		assertTrue(registrationPage.messageErrorDisplayed("emailReq") );
+     
+
+	}
+	
+	@Test
+	public void RegistrationTestPasswordEmpty() throws InterruptedException {
+
+		driver.get("http://localhost:4200/registration");
+
+		justWait();
+
+		registrationPage.getName().sendKeys("jovan");
+
+		registrationPage.getSurname().sendKeys("jovanovic");
+		registrationPage.getUsername().sendKeys("jovanasd@nesto.com");
+		registrationPage.getPassword().sendKeys("");
+		registrationPage.getRegistrationButton().click();
+
+		registrationPage.ensureIsDisplayedName();
+
+ 		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
+		assertTrue(registrationPage.messageErrorDisplayed("passwordReq") );
+     
+
+	}
+	
+	@Test
+	public void RegistrationTestPasswordTooShort() throws InterruptedException {
+
+		driver.get("http://localhost:4200/registration");
+
+		justWait();
+
+		registrationPage.getName().sendKeys("jovan");
+
+		registrationPage.getSurname().sendKeys("jovanovic");
+		registrationPage.getUsername().sendKeys("jovanasd@nesto.com");
+		registrationPage.getPassword().sendKeys("12");
+		registrationPage.getRegistrationButton().click();
+
+		registrationPage.ensureIsDisplayedName();
+
+ 		assertEquals("http://localhost:4200/registration", driver.getCurrentUrl());
+		assertTrue(registrationPage.messageErrorDisplayed("passwordShort") );
+     
+
+	}
 	
 	@Test
 	public void RegistrationTestEmailNotValidForm() throws InterruptedException {
